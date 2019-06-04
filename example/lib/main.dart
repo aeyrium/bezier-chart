@@ -47,10 +47,18 @@ class MyHomePage extends StatelessWidget {
           ),
           ListTile(
             title: Text("Sample 2"),
-            subtitle: Text("Weekly Chart"),
+            subtitle: Text("Number Chart/ 2 curves"),
             onTap: () => _onTap(
                   context,
                   sample2(context),
+                ),
+          ),
+          ListTile(
+            title: Text("Sample 2"),
+            subtitle: Text("Weekly Chart"),
+            onTap: () => _onTap(
+                  context,
+                  sample3(context),
                 ),
           ),
           ListTile(
@@ -58,7 +66,7 @@ class MyHomePage extends StatelessWidget {
             subtitle: Text("Montly Chart"),
             onTap: () => _onTap(
                   context,
-                  sample3(context),
+                  sample4(context),
                 ),
           ),
           ListTile(
@@ -66,7 +74,7 @@ class MyHomePage extends StatelessWidget {
             subtitle: Text("Yearly Chart"),
             onTap: () => _onTap(
                   context,
-                  sample4(context),
+                  sample5(context),
                 ),
           ),
         ],
