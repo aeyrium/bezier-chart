@@ -288,7 +288,7 @@ Widget sample5(BuildContext context) {
     height: MediaQuery.of(context).size.height / 2,
     width: MediaQuery.of(context).size.width,
     child: BezierLineChart(
-      bezierLineChartScale: BezierLineChartScale.WEEKLY,
+      bezierLineChartScale: BezierLineChartScale.YEARLY,
       fromDate: fromDate,
       toDate: toDate,
       selectedDate: toDate,
