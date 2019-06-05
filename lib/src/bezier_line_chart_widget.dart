@@ -174,9 +174,13 @@ class _BezierLineChartState extends State<BezierLineChart>
   ///Hide the vertical/bubble indicator and refresh the widget
   _onHideIndicator() {
     if (_displayIndicator) {
-      setState(
+      _animationController.reverse(from: 1.0).whenCompleteOrCancel(
         () {
-          _displayIndicator = false;
+          setState(
+            () {
+              _displayIndicator = false;
+            },
+          );
         },
       );
     }
@@ -482,7 +486,9 @@ class _BezierLineChartState extends State<BezierLineChart>
     _scrollController = ScrollController();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 150),
+      duration: Duration(
+        milliseconds: 300,
+      ),
     );
     _buildXDataPoints();
     _computeSeries();
@@ -559,7 +565,14 @@ class _BezierLineChartState extends State<BezierLineChart>
                       verticalIndicatorPosition: _verticalIndicatorPosition,
                       series: computedSeries,
                       showIndicator: _displayIndicator,
-                      animation: _animationController,
+                      animation: CurvedAnimation(
+                        parent: _animationController,
+                        curve: Interval(
+                          0.0,
+                          1.0,
+                          curve: Curves.elasticOut,
+                        ),
+                      ),
                       xAxisDataPoints: _xAxisDataPoints,
                       onDataPointSnap: _onDataPointSnap,
                       maxWitdth: MediaQuery.of(context).size.width,
@@ -676,7 +689,7 @@ class _BezierLineChartPainter extends CustomPainter {
       TextStyle styleFooter = TextStyle(
         color: config.footerColor,
         fontWeight: FontWeight.w400,
-        fontSize: 12,
+        fontSize: 11,
       );
 
       Paint paintLine = Paint()
@@ -798,7 +811,7 @@ class _BezierLineChartPainter extends CustomPainter {
         textPainterFooter.paint(
           canvas,
           Offset(valueX - textPainterFooter.width / 2,
-              size.height - textPainterFooter.height / 2),
+              height + textPainterFooter.height / 1.5),
         );
       }
 
@@ -861,7 +874,8 @@ class _BezierLineChartPainter extends CustomPainter {
         if (config.showVerticalIndicator) {
           canvas.drawLine(
             Offset(verticalX, height),
-            Offset(verticalX, center.dy),
+            Offset(verticalX,
+                config.verticalIndicatorFixedPosition ? 0.0 : center.dy),
             paintVerticalIndicator,
           );
         }
@@ -911,7 +925,7 @@ class _BezierLineChartPainter extends CustomPainter {
         }
 
         //draw shadow info
-        if (animation.value >= 1) {
+        if (animation.isCompleted) {
           Path path = Path();
           path.moveTo(center.dx - infoWidth / 2 + 4,
               center.dy - offsetInfo + infoHeight / 1.8);
@@ -934,76 +948,81 @@ class _BezierLineChartPainter extends CustomPainter {
             Rect.fromCenter(
               center: Offset(
                 center.dx,
-                center.dy - offsetInfo,
+                (center.dy - offsetInfo * animation.value),
               ),
               width: infoWidth,
-              height: infoHeight * animation.value,
+              height: infoHeight,
             ),
             Radius.circular(5),
           ),
           paintInfo,
         );
 
-        if (animation.value >= 1) {
+        if (animation.isCompleted) {
           final double triangleSize = 6;
           //draw triangle
           Path pathArrow = Path();
 
           pathArrow.moveTo(center.dx - triangleSize,
-              center.dy - offsetInfo + infoHeight / 2);
-          pathArrow.lineTo(center.dx,
-              center.dy - offsetInfo + infoHeight / 2 + triangleSize * 1.5);
+              center.dy - offsetInfo * animation.value + infoHeight / 2);
+          pathArrow.lineTo(
+              center.dx,
+              center.dy -
+                  offsetInfo * animation.value +
+                  infoHeight / 2 +
+                  triangleSize * 1.5);
           pathArrow.lineTo(center.dx + triangleSize,
-              center.dy - offsetInfo + infoHeight / 2);
+              center.dy - offsetInfo * animation.value + infoHeight / 2);
           pathArrow.close();
           canvas.drawPath(
             pathArrow,
             paintInfo,
           );
-        }
-        //end draw info
 
-        //draw Text
-        TextPainter textPainter = TextPainter(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            text: _getInfoTitleText(),
-            style: TextStyle(
-              color: Colors.grey,
-              fontWeight: FontWeight.w600,
-              fontSize: 9.5,
+          //end draw info
+
+          //draw Text
+          TextPainter textPainter = TextPainter(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: _getInfoTitleText(),
+              style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.w600,
+                fontSize: 9.5,
+              ),
+              children: textValues,
             ),
-            children: textValues,
-          ),
-          textDirection: TextDirection.ltr,
-        );
-        textPainter.layout();
-        textPainter.paint(
-          canvas,
-          Offset(
-              center.dx -
-                  textPainter.size.width / 2 +
-                  radiusDotIndicatorItems * 1.5,
-              center.dy - offsetInfo - infoHeight / 2.5),
-        );
+            textDirection: TextDirection.ltr,
+          );
+          textPainter.layout();
+          textPainter.paint(
+            canvas,
+            Offset(
+                center.dx -
+                    textPainter.size.width / 2 +
+                    radiusDotIndicatorItems * 1.5,
+                center.dy - offsetInfo - infoHeight / 2.5),
+          );
 
-        //draw circle indicators and text
-        for (int z = 0; z < _currentCustomValues.length; z++) {
-          _CustomValue customValue = _currentCustomValues[z];
-          Offset centerIndicator = centerCircles.reversed.toList()[z];
-          canvas.drawCircle(
-              centerIndicator,
-              radiusDotIndicatorItems,
-              Paint()
-                ..color = customValue.color
-                ..style = PaintingStyle.fill);
-          canvas.drawCircle(
-              centerIndicator,
-              radiusDotIndicatorItems,
-              Paint()
-                ..color = Colors.black
-                ..strokeWidth = 0.5
-                ..style = PaintingStyle.stroke);
+          //draw circle indicators and text
+          for (int z = 0; z < _currentCustomValues.length; z++) {
+            _CustomValue customValue = _currentCustomValues[z];
+            Offset centerIndicator = centerCircles.reversed.toList()[z];
+            canvas.drawCircle(
+                centerIndicator,
+                radiusDotIndicatorItems,
+                Paint()
+                  ..color = customValue.color
+                  ..style = PaintingStyle.fill);
+            canvas.drawCircle(
+                centerIndicator,
+                radiusDotIndicatorItems,
+                Paint()
+                  ..color = Colors.black
+                  ..strokeWidth = 0.5
+                  ..style = PaintingStyle.stroke);
+          }
         }
       }
     }
