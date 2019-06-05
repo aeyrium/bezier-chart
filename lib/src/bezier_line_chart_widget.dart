@@ -576,7 +576,7 @@ class _BezierLineChartState extends State<BezierLineChart>
                       xAxisDataPoints: _xAxisDataPoints,
                       onDataPointSnap: _onDataPointSnap,
                       maxWitdth: MediaQuery.of(context).size.width,
-                      scrollOffset: _scrollController.positions.isNotEmpty
+                      scrollOffset: _scrollController.hasClients
                           ? _scrollController.offset
                           : 0.0,
                     ),
@@ -945,7 +945,7 @@ class _BezierLineChartPainter extends CustomPainter {
 
         canvas.drawRRect(
           RRect.fromRectAndRadius(
-            Rect.fromCenter(
+            _fromCenter(
               center: Offset(
                 center.dx,
                 (center.dy - offsetInfo * animation.value),
@@ -1094,10 +1094,10 @@ class _BezierLineChartPainter extends CustomPainter {
     //X(t) = (1-t)^3 * X0 + 3*(1-t)^2 * t * X1 + 3*(1-t) * t^2 * X2 + t^3 * X3
     //Y(t) = (1-t)^3 * Y0 + 3*(1-t)^2 * t * Y1 + 3*(1-t) * t^2 * Y2 + t^3 * Y3
     //source: https://stackoverflow.com/questions/8217346/cubic-bezier-curves-get-y-for-given-x
-    final x0 = p0.dx, y0 = p0.dy;
-    final x1 = p1.dx, y1 = p1.dy;
-    final x2 = p2.dx, y2 = p2.dy;
-    final x3 = p3.dx, y3 = p3.dy;
+    final y0 = p0.dy; // x0 = p0.dx;
+    final y1 = p1.dy; //x1 = p1.dx,
+    final y2 = p2.dy; //x2 = p2.dx,
+    final y3 = p3.dy; //x3 = p3.dx,
 
     //print("p0: $p0, p1: $p1, p2: $p2, p3: $p3 , t: $t");
 
@@ -1107,6 +1107,14 @@ class _BezierLineChartPainter extends CustomPainter {
         pow(t, 3) * y3;
     return y;
   }
+
+  Rect _fromCenter({Offset center, double width, double height}) =>
+      Rect.fromLTRB(
+        center.dx - width / 2,
+        center.dy - height / 2,
+        center.dx + width / 2,
+        center.dy + height / 2,
+      );
 
   @override
   bool shouldRepaint(_BezierLineChartPainter oldDelegate) =>
