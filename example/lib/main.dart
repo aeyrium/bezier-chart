@@ -47,7 +47,7 @@ class MyHomePage extends StatelessWidget {
           ),
           ListTile(
             title: Text("Sample 2"),
-            subtitle: Text("Number Chart/ 2 curves"),
+            subtitle: Text("Number Chart/ multi curves"),
             onTap: () => _onTap(
                   context,
                   sample2(context),
@@ -154,6 +154,21 @@ Widget sample2(BuildContext context) {
             DataPoint<double>(value: 40, xAxis: 25),
             DataPoint<double>(value: 10, xAxis: 30),
             DataPoint<double>(value: 30, xAxis: 35),
+          ],
+        ),
+        BezierLine(
+          lineColor: Colors.black,
+          lineStrokeWidth: 2.0,
+          label: "Custom 3",
+          data: const [
+            DataPoint<double>(value: 5, xAxis: 0),
+            DataPoint<double>(value: 10, xAxis: 5),
+            DataPoint<double>(value: 35, xAxis: 10),
+            DataPoint<double>(value: 40, xAxis: 15),
+            DataPoint<double>(value: 40, xAxis: 20),
+            DataPoint<double>(value: 40, xAxis: 25),
+            DataPoint<double>(value: 9, xAxis: 30),
+            DataPoint<double>(value: 11, xAxis: 35),
           ],
         ),
       ],
@@ -308,6 +323,24 @@ Widget sample5(BuildContext context) {
             DataPoint<DateTime>(value: 100, xAxis: date4),
             DataPoint<DateTime>(value: 40, xAxis: date5),
             DataPoint<DateTime>(value: 47, xAxis: date6),
+          ],
+        ),
+        BezierLine(
+          label: "Flight",
+          lineColor: Colors.black26,
+          onMissingValue: (dateTime) {
+            if (dateTime.month.isEven) {
+              return 10.0;
+            }
+            return 3.0;
+          },
+          data: [
+            DataPoint<DateTime>(value: 20, xAxis: date1),
+            DataPoint<DateTime>(value: 30, xAxis: date2),
+            DataPoint<DateTime>(value: 150, xAxis: date3),
+            DataPoint<DateTime>(value: 80, xAxis: date4),
+            DataPoint<DateTime>(value: 45, xAxis: date5),
+            DataPoint<DateTime>(value: 45, xAxis: date6),
           ],
         ),
       ],

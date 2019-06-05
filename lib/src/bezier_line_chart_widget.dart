@@ -10,6 +10,7 @@ import 'bezier_line_chart_config.dart';
 import 'package:intl/intl.dart' as intl;
 
 class BezierLineChart extends StatefulWidget {
+  ///Chart configuration
   final BezierLineChartConfig config;
 
   ///Type of Chart
@@ -94,24 +95,45 @@ class BezierLineChart extends StatefulWidget {
 
 class _BezierLineChartState extends State<BezierLineChart>
     with SingleTickerProviderStateMixin {
-  Offset _verticalIndicatorPosition;
-  bool _displayIndicator = false;
   AnimationController _animationController;
   ScrollController _scrollController;
-  //padding for leading and trailing of the chart
-  final double horizontalPadding = 50.0;
-  //spacing between each datapoint
-  double horizontalSpacing = 60.0;
-  List<DataPoint> _xAxisDataPoints = [];
   GlobalKey _keyScroll = GlobalKey();
+
+  ///Track the current position when dragging the indicator
+  Offset _verticalIndicatorPosition;
+  bool _displayIndicator = false;
+
+  ///padding for leading and trailing of the chart
+  final double horizontalPadding = 50.0;
+
+  ///spacing between each datapoint
+  double horizontalSpacing = 60.0;
+
+  ///List of `DataPoint`s used to display all the values for the `X` axis
+  List<DataPoint> _xAxisDataPoints = [];
+
+  ///List of `BezierLine`s used to display all lines, each line contains a list of `DataPoint`s
   List<BezierLine> computedSeries = [];
+
+  ///Current scale when use pinch/zoom
   double _currentScale = 1.0;
+
+  ///This value allow us to get the last scale used when start the pinch/zoom again
   double _previousScale;
+
+  ///The current chart scale
   BezierLineChartScale _currentBezierLineChartScale;
+
   double _lastValueSnapped = double.infinity;
   bool get isPinchZoomActive => _touchFingers > 1;
+
+  ///When we only have 1 axis we don't need to much span to change the date type chart`
   bool get isOnlyOneAxis => _xAxisDataPoints.length <= 1;
 
+  double _contentWidth = 0.0;
+  bool _isScrollable = false;
+
+  ///Refresh the position of the vertical/bubble
   _refreshPosition(details) {
     if (_animationController.status == AnimationStatus.completed &&
         _displayIndicator) {
@@ -119,6 +141,7 @@ class _BezierLineChartState extends State<BezierLineChart>
     }
   }
 
+  ///Update and refresh the position based on the current screen
   _updatePosition(details) {
     setState(
       () {
@@ -135,6 +158,8 @@ class _BezierLineChartState extends State<BezierLineChart>
     );
   }
 
+  ///After long press this method is called to display the bubble indicator if is not visible
+  ///An animation and snap sound are triggered
   _onDisplayIndicator(details) {
     if (!_displayIndicator) {
       _displayIndicator = true;
@@ -146,6 +171,7 @@ class _BezierLineChartState extends State<BezierLineChart>
     _updatePosition(details);
   }
 
+  ///Hide the vertical/bubble indicator and refresh the widget
   _onHideIndicator() {
     if (_displayIndicator) {
       setState(
@@ -156,6 +182,7 @@ class _BezierLineChartState extends State<BezierLineChart>
     }
   }
 
+  ///When the current indicator reach any data point a feedback is triggered
   void _onDataPointSnap(double value) {
     if (_lastValueSnapped != value && widget.config.snap) {
       if (Platform.isIOS) {
@@ -167,6 +194,7 @@ class _BezierLineChartState extends State<BezierLineChart>
     }
   }
 
+  ///Building the data points for the `X` axis based on the `_currentBezierLineChartScale`
   void _buildXDataPoints() {
     _xAxisDataPoints = [];
     final scale = _currentBezierLineChartScale;
@@ -223,6 +251,7 @@ class _BezierLineChartState extends State<BezierLineChart>
     }
   }
 
+  ///Calculating the size of the content based on the parent constraints and on the `_currentBezierLineChartScale`
   double _buildContentWidth(BoxConstraints constraints) {
     final scale = _currentBezierLineChartScale;
     if (scale == BezierLineChartScale.CUSTOM) {
@@ -252,6 +281,7 @@ class _BezierLineChartState extends State<BezierLineChart>
     }
   }
 
+  ///When the widget finish rendering for the first time
   _onLayoutDone(_) {
     //Move to selected position
     if (widget.selectedDate != null) {
@@ -268,6 +298,7 @@ class _BezierLineChartState extends State<BezierLineChart>
             (dp) => (dp.xAxis as DateTime).year == widget.selectedDate.year);
       }
 
+      //If it's a valid index then scroll to the date selected based on the current position
       if (index >= 0) {
         final jumpToX = (index * horizontalSpacing) -
             horizontalPadding / 2 -
@@ -290,8 +321,20 @@ class _BezierLineChartState extends State<BezierLineChart>
         );
       }
     }
+    _checkIfNeedScroll();
+    if (_isScrollable) {
+      setState(() {});
+    }
   }
 
+  _checkIfNeedScroll() {
+    if (_contentWidth >=
+        _keyScroll.currentContext.size.width - horizontalPadding * 2) {
+      _isScrollable = true;
+    }
+  }
+
+  ///Calculating the new series based on the `_currentBezierLineChartScale`
   _computeSeries() {
     computedSeries = [];
     //fill data series for DateTime scale type
@@ -301,7 +344,6 @@ class _BezierLineChartState extends State<BezierLineChart>
         Map<String, double> valueMap = Map();
         for (DataPoint<DateTime> dataPoint in line.data) {
           String key;
-
           if (_currentBezierLineChartScale == BezierLineChartScale.MONTHLY) {
             key =
                 "${dataPoint.xAxis.year},${dataPoint.xAxis.month.toString().padLeft(2, '0')}";
@@ -320,6 +362,7 @@ class _BezierLineChartState extends State<BezierLineChart>
         List<DataPoint<DateTime>> newDataPoints = [];
         valueMap.keys.forEach(
           (key) {
+            ///Sum all the values corresponding to each month and create a new data serie
             if (_currentBezierLineChartScale == BezierLineChartScale.MONTHLY) {
               List<String> split = key.split(",");
               int year = int.parse(split[0]);
@@ -331,6 +374,7 @@ class _BezierLineChartState extends State<BezierLineChart>
                 ),
               );
             } else {
+              ///Sum all the values corresponding to each year and create a new data serie
               int year = int.parse(key);
               newDataPoints.add(
                 DataPoint<DateTime>(
@@ -358,9 +402,11 @@ class _BezierLineChartState extends State<BezierLineChart>
     }
   }
 
+  ///Pinch and zoom based on the scale reported by the gesture detector
   _onPinchZoom(double scale) {
     scale = double.parse(scale.toStringAsFixed(1));
     if (isPinchZoomActive) {
+      //when the scale is below 1 then we'll try to change the chart scale depending of the `_currentBezierLineChartScale`
       if (scale < 1) {
         if (_currentBezierLineChartScale == BezierLineChartScale.WEEKLY) {
           _currentBezierLineChartScale = BezierLineChartScale.MONTHLY;
@@ -374,29 +420,34 @@ class _BezierLineChartState extends State<BezierLineChart>
           () {
             _buildXDataPoints();
             _computeSeries();
+            _checkIfNeedScroll();
           },
         );
+
         return;
+        //if the scale is greater than 1.5 then we'll try to change the chart scale depending of the `_currentBezierLineChartScale`
       } else if (scale > 1.5 || (isOnlyOneAxis && scale > 1.2)) {
         if (_currentBezierLineChartScale == BezierLineChartScale.YEARLY) {
           _currentBezierLineChartScale = BezierLineChartScale.MONTHLY;
           _currentScale = 1.0;
-          _previousScale = 1.0;
+          _previousScale = 1.0 / scale;
           setState(
             () {
               _buildXDataPoints();
               _computeSeries();
+              _checkIfNeedScroll();
             },
           );
         } else if (_currentBezierLineChartScale ==
             BezierLineChartScale.MONTHLY) {
           _currentBezierLineChartScale = BezierLineChartScale.WEEKLY;
           _currentScale = 1.0;
-          _previousScale = 1.0;
+          _previousScale = 1.0 / scale;
           setState(
             () {
               _buildXDataPoints();
               _computeSeries();
+              _checkIfNeedScroll();
             },
           );
           return;
@@ -412,6 +463,17 @@ class _BezierLineChartState extends State<BezierLineChart>
         }
       }
     }
+  }
+
+  @override
+  void didUpdateWidget(BezierLineChart oldWidget) {
+    ///Rebuild data points and series only if the bezierLineChartScale is different from the old one
+    if (oldWidget.bezierLineChartScale != widget.bezierLineChartScale) {
+      _currentBezierLineChartScale = widget.bezierLineChartScale;
+      _buildXDataPoints();
+      _computeSeries();
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -470,16 +532,15 @@ class _BezierLineChartState extends State<BezierLineChart>
           onScaleUpdate:
               _currentBezierLineChartScale != BezierLineChartScale.CUSTOM &&
                       !_displayIndicator
-                  ? (details) {
-                      _onPinchZoom(_previousScale * details.scale);
-                    }
+                  ? (details) => _onPinchZoom(_previousScale * details.scale)
                   : null,
           onTap: isPinchZoomActive ? null : _onHideIndicator,
           child: LayoutBuilder(
             builder: (context, constraints) {
+              _contentWidth = _buildContentWidth(constraints);
               return SingleChildScrollView(
                 controller: _scrollController,
-                physics: isPinchZoomActive
+                physics: isPinchZoomActive || !_isScrollable
                     ? NeverScrollableScrollPhysics()
                     : AlwaysScrollableScrollPhysics(),
                 key: _keyScroll,
@@ -489,7 +550,7 @@ class _BezierLineChartState extends State<BezierLineChart>
                   alignment: Alignment(0.0, 0.7),
                   child: CustomPaint(
                     size: Size(
-                      _buildContentWidth(constraints),
+                      _contentWidth,
                       constraints.biggest.height * 0.7,
                     ),
                     painter: _BezierLineChartPainter(
@@ -553,6 +614,7 @@ class _BezierLineChartPainter extends CustomPainter {
     _maxValueX = _getMaxValueX();
   }
 
+  ///return the max value of the Axis X
   double _getMaxValueX() {
     double x = double.negativeInfinity;
     for (double val in xAxisDataPoints.map((dp) => dp.value).toList()) {
@@ -561,6 +623,7 @@ class _BezierLineChartPainter extends CustomPainter {
     return x;
   }
 
+  ///return the max value of the Axis Y
   double _getMaxValueY() {
     double y = double.negativeInfinity;
     for (BezierLine line in series) {
@@ -571,12 +634,12 @@ class _BezierLineChartPainter extends CustomPainter {
     return y;
   }
 
+  ///return the real value of canvas
   _getRealValue(double value, double maxConstraint, double maxValue) =>
       maxConstraint * value / (maxValue == 0 ? 1 : maxValue);
 
   @override
   void paint(Canvas canvas, Size size) {
-    //print("CANVAS size: $size ..");
     final height = size.height - config.footerHeight;
     Paint paintVerticalIndicator = Paint()
       ..color = config.verticalIndicatorColor
@@ -586,9 +649,8 @@ class _BezierLineChartPainter extends CustomPainter {
 
     Paint paintControlPoints = Paint()..strokeCap = StrokeCap.round;
 
-    //fixing verticalIndicator outbounds
     double verticalX = 0.0;
-
+    //fixing verticalIndicator outbounds
     if (verticalIndicatorPosition != null) {
       verticalX = verticalIndicatorPosition.dx;
       if (verticalIndicatorPosition.dx < 0) {
@@ -628,6 +690,7 @@ class _BezierLineChartPainter extends CustomPainter {
       );
       path.moveTo(0, height);
 
+      //display each data point
       for (int i = 0; i < xAxisDataPoints.length; i++) {
         double value = 0.0;
 
@@ -639,7 +702,7 @@ class _BezierLineChartPainter extends CustomPainter {
           _maxValueX,
         );
 
-        //only calculate and display the necessary data to improve the performance of the scrolling
+        //Only calculate and display the necessary data to improve the performance of the scrolling
         final range = maxWitdth * 10;
         if (scrollOffset - range >= valueX || scrollOffset + range <= valueX) {
           continue;
@@ -707,6 +770,7 @@ class _BezierLineChartPainter extends CustomPainter {
             );
           }
 
+          //if vertical indicator is in range then display the bubble info
           if (verticalX >= valueX - (valueX - lastX) / 2 &&
               verticalX <= valueX + (nextX - valueX) / 2) {
             _currentXDataPoint = xAxisDataPoints[i];
@@ -730,7 +794,6 @@ class _BezierLineChartPainter extends CustomPainter {
           text: _getFooterText(xAxisDataPoints[i]),
           style: styleFooter,
         );
-
         textPainterFooter.layout(maxWidth: 50.0);
         textPainterFooter.paint(
           canvas,
@@ -739,10 +802,12 @@ class _BezierLineChartPainter extends CustomPainter {
         );
       }
 
+      //only draw the footer for the first line because it is the same for all the lines
       if (!footerDrawed) footerDrawed = true;
 
       canvas.drawPath(path, paintLine);
       if (config.showDataPoints) {
+        //draw data points
         canvas.drawPoints(
             PointMode.points,
             dataPoints,
@@ -774,14 +839,6 @@ class _BezierLineChartPainter extends CustomPainter {
         );
       }
 
-      if (config.showVerticalIndicator) {
-        canvas.drawLine(
-          Offset(verticalX, 0),
-          Offset(verticalX, height),
-          paintVerticalIndicator,
-        );
-      }
-
       if (p0 != null) {
         final yValue = _getYValues(
           p0,
@@ -801,6 +858,15 @@ class _BezierLineChartPainter extends CustomPainter {
             ? Offset(verticalX, offsetInfo)
             : centerForCircle;
 
+        if (config.showVerticalIndicator) {
+          print("center.dy: ${center.dy}");
+          canvas.drawLine(
+            Offset(verticalX, height),
+            Offset(verticalX, center.dy),
+            paintVerticalIndicator,
+          );
+        }
+
         //draw point
         canvas.drawCircle(
           centerForCircle,
@@ -813,10 +879,11 @@ class _BezierLineChartPainter extends CustomPainter {
         //calculate the total lenght of the lines
         List<TextSpan> textValues = [];
         List<Offset> centerCircles = [];
-        double space = 0;
+
+        double space = 12.0 - (4.0 * _currentCustomValues.length);
+        infoHeight = infoHeight + (_currentCustomValues.length - 1) * 13;
         for (_CustomValue customValue
             in _currentCustomValues.reversed.toList()) {
-          infoHeight += 9;
           textValues.add(
             TextSpan(
               text: "${customValue.value} ",
@@ -839,22 +906,30 @@ class _BezierLineChartPainter extends CustomPainter {
           );
           centerCircles.add(
             Offset(center.dx - infoWidth / 2 + radiusDotIndicatorItems * 1.5,
-                center.dy - offsetInfo - radiusDotIndicatorItems / 2 + space),
+                center.dy - offsetInfo - radiusDotIndicatorItems + space),
           );
-          space += 14;
+          space += 12.5;
         }
 
         //draw shadow info
-        Path path = Path();
-        path.moveTo(center.dx - infoWidth / 2, center.dy - offsetInfo + 5);
-        path.lineTo(center.dx + infoWidth / 2, center.dy - offsetInfo + 5);
-        path.lineTo(center.dx + infoWidth / 2, center.dy - offsetInfo - 10);
-        canvas.drawShadow(path, Colors.black, 20.0, false);
+        if (animation.value >= 1) {
+          Path path = Path();
+          path.moveTo(center.dx - infoWidth / 2 + 4,
+              center.dy - offsetInfo + infoHeight / 1.8);
+          path.lineTo(center.dx + infoWidth / 2 + 4,
+              center.dy - offsetInfo + infoHeight / 1.8);
+          path.lineTo(center.dx + infoWidth / 2 + 4,
+              center.dy - offsetInfo - infoHeight / 3);
+          //path.close();
+          // canvas.drawShadow(path, Colors.black, 20.0, false);
+          canvas.drawPath(path, paintControlPoints..color = Colors.black12);
+        }
 
         final paintInfo = Paint()
           ..color = Colors.white
           ..style = PaintingStyle.fill;
         //draw info
+
         canvas.drawRRect(
           RRect.fromRectAndRadius(
             Rect.fromCenter(
@@ -870,18 +945,23 @@ class _BezierLineChartPainter extends CustomPainter {
           paintInfo,
         );
 
-        final double trianguleSize = 8;
-        Path pathArrow = Path();
-        pathArrow.moveTo(
-            center.dx - trianguleSize, center.dy - offsetInfo / 2 - 2);
-        pathArrow.lineTo(center.dx, center.dy - offsetInfo / 4 - 2);
-        pathArrow.lineTo(
-            center.dx + trianguleSize, center.dy - offsetInfo / 2 - 2);
-        pathArrow.close();
-        canvas.drawPath(
-          pathArrow,
-          paintInfo,
-        );
+        if (animation.value >= 1) {
+          final double triangleSize = 6;
+          //draw triangle
+          Path pathArrow = Path();
+
+          pathArrow.moveTo(center.dx - triangleSize,
+              center.dy - offsetInfo + infoHeight / 2);
+          pathArrow.lineTo(center.dx,
+              center.dy - offsetInfo + infoHeight / 2 + triangleSize * 1.5);
+          pathArrow.lineTo(center.dx + triangleSize,
+              center.dy - offsetInfo + infoHeight / 2);
+          pathArrow.close();
+          canvas.drawPath(
+            pathArrow,
+            paintInfo,
+          );
+        }
         //end draw info
 
         //draw Text
@@ -892,7 +972,7 @@ class _BezierLineChartPainter extends CustomPainter {
             style: TextStyle(
               color: Colors.grey,
               fontWeight: FontWeight.w600,
-              fontSize: 11,
+              fontSize: 9.5,
             ),
             children: textValues,
           ),
@@ -908,7 +988,7 @@ class _BezierLineChartPainter extends CustomPainter {
               center.dy - offsetInfo - infoHeight / 2.5),
         );
 
-        //draw circle indicators
+        //draw circle indicators and text
         for (int z = 0; z < _currentCustomValues.length; z++) {
           _CustomValue customValue = _currentCustomValues[z];
           Offset centerIndicator = centerCircles.reversed.toList()[z];
@@ -1011,7 +1091,10 @@ class _BezierLineChartPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
+  bool shouldRepaint(_BezierLineChartPainter oldDelegate) =>
+      oldDelegate.verticalIndicatorPosition != verticalIndicatorPosition ||
+      oldDelegate.scrollOffset != scrollOffset ||
+      oldDelegate.showIndicator != showIndicator;
 }
 
 class _AxisValue {

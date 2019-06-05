@@ -2,11 +2,21 @@ import 'package:flutter/material.dart';
 
 typedef MissingValueBuilder = double Function(DateTime value);
 
+///This Bezier line is used to display your data
 class BezierLine {
   final Color lineColor;
+
+  ///`width` of the bezier line
   final double lineStrokeWidth;
+
+  ///List of data points used to build the bezier line
   final List<DataPoint> data;
+
+  ///This builder is only valid for `bezierLineChartScale` of date types
+  ///It uses the double value returned by the function based on the current `DateTime` received as parameter
   final MissingValueBuilder onMissingValue;
+
+  ///Label used in the bubble info indicator
   final String label;
 
   const BezierLine({
@@ -28,8 +38,12 @@ class BezierLine {
   }
 }
 
+///This class represent each value `Y` per `X` axis
 class DataPoint<T> {
+  ///The value `Y`
   final double value;
+
+  ///The `X` Axis value, it supports `double` and `DateTime` for now
   final T xAxis;
 
   const DataPoint({
