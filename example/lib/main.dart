@@ -21,7 +21,7 @@ class MyHomePage extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => Scaffold(
-              //appBar: AppBar(),
+              appBar: AppBar(),
               body: widget,
             ),
       ),
