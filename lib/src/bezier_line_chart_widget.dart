@@ -859,7 +859,6 @@ class _BezierLineChartPainter extends CustomPainter {
             : centerForCircle;
 
         if (config.showVerticalIndicator) {
-          print("center.dy: ${center.dy}");
           canvas.drawLine(
             Offset(verticalX, height),
             Offset(verticalX, center.dy),
