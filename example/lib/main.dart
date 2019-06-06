@@ -96,36 +96,82 @@ class MyHomePage extends StatelessWidget {
 
 //SAMPLE CUSTOM VALUES
 Widget sample1(BuildContext context) {
-  return Center(
-    child: Container(
-      color: Colors.red,
-      height: MediaQuery.of(context).size.height / 2,
-      width: MediaQuery.of(context).size.width * 0.9,
-      child: BezierLineChart(
-        bezierLineChartScale: BezierLineChartScale.CUSTOM,
-        xAxisCustomValues: const [0, 5, 10, 15, 20, 25, 30, 35],
-        series: const [
-          BezierLine(
-            data: const [
-              DataPoint<double>(value: 10, xAxis: 0),
-              DataPoint<double>(value: 130, xAxis: 5),
-              DataPoint<double>(value: 50, xAxis: 10),
-              DataPoint<double>(value: 150, xAxis: 15),
-              DataPoint<double>(value: 75, xAxis: 20),
-              DataPoint<double>(value: 0, xAxis: 25),
-              DataPoint<double>(value: 5, xAxis: 30),
-              DataPoint<double>(value: 45, xAxis: 35),
-            ],
-          ),
+  return Container(
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          Colors.black54,
+          Colors.black87,
+          Colors.black87,
+          Colors.black,
         ],
-        config: BezierLineChartConfig(
-          verticalIndicatorStrokeWidth: 3.0,
-          verticalIndicatorColor: Colors.black26,
-          showVerticalIndicator: true,
-          backgroundColor: Colors.red,
-          snap: false,
-        ),
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
       ),
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text(
+          "Bezier Chart - Numbers",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 28,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        Center(
+          child: Card(
+            elevation: 12,
+            clipBehavior: Clip.hardEdge,
+            child: Container(
+              height: MediaQuery.of(context).size.height / 2,
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: BezierLineChart(
+                bezierLineChartScale: BezierLineChartScale.CUSTOM,
+                xAxisCustomValues: const [0, 5, 10, 15, 20, 25, 30, 35],
+                footerValueBuilder: (double value) {
+                  return "${intOrDouble(value)}\ndays";
+                },
+                series: const [
+                  BezierLine(
+                    label: "m",
+                    data: const [
+                      DataPoint<double>(value: 10, xAxis: 0),
+                      DataPoint<double>(value: 130, xAxis: 5),
+                      DataPoint<double>(value: 50, xAxis: 10),
+                      DataPoint<double>(value: 150, xAxis: 15),
+                      DataPoint<double>(value: 75, xAxis: 20),
+                      DataPoint<double>(value: 0, xAxis: 25),
+                      DataPoint<double>(value: 5, xAxis: 30),
+                      DataPoint<double>(value: 45, xAxis: 35),
+                    ],
+                  ),
+                ],
+                config: BezierLineChartConfig(
+                  footerHeight: 40,
+                  verticalIndicatorStrokeWidth: 3.0,
+                  verticalIndicatorColor: Colors.black26,
+                  showVerticalIndicator: true,
+                  verticalIndicatorFixedPosition: false,
+                  backgroundGradient: LinearGradient(
+                    colors: [
+                      Colors.red[300],
+                      Colors.red[400],
+                      Colors.red[400],
+                      Colors.red[500],
+                      Colors.red,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                  snap: false,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     ),
   );
 }

@@ -9,6 +9,8 @@ import 'bezier_line.dart';
 import 'bezier_line_chart_config.dart';
 import 'package:intl/intl.dart' as intl;
 
+typedef FooterValueBuilder = String Function(double value);
+
 class BezierLineChart extends StatefulWidget {
   ///Chart configuration
   final BezierLineChartConfig config;
@@ -19,6 +21,10 @@ class BezierLineChart extends StatefulWidget {
   ///This value is required only if the `bezierLineChartScale` is `BezierLineChartScale.CUSTOM`
   ///and these values must be sorted in increasing way (These will be showed in the Axis X).
   final List<double> xAxisCustomValues;
+
+  ///This value is optional only if the `bezierLineChartScale` is `BezierLineChartScale.CUSTOM` otherwise it will be ignored
+  ///This is used to display a custom footer value based on the current 'x' value
+  final FooterValueBuilder footerValueBuilder;
 
   ///This value is required only if the `bezierLineChartScale` is not `BezierLineChartScale.CUSTOM`
   final DateTime fromDate;
@@ -39,6 +45,7 @@ class BezierLineChart extends StatefulWidget {
     Key key,
     this.config,
     this.xAxisCustomValues,
+    this.footerValueBuilder,
     this.fromDate,
     this.toDate,
     this.selectedDate,
@@ -575,10 +582,11 @@ class _BezierLineChartState extends State<BezierLineChart>
                       ),
                       xAxisDataPoints: _xAxisDataPoints,
                       onDataPointSnap: _onDataPointSnap,
-                      maxWitdth: MediaQuery.of(context).size.width,
+                      maxWidth: MediaQuery.of(context).size.width,
                       scrollOffset: _scrollController.hasClients
                           ? _scrollController.offset
                           : 0.0,
+                      footerValueBuilder: widget.footerValueBuilder,
                     ),
                   ),
                 ),
@@ -607,9 +615,10 @@ class _BezierLineChartPainter extends CustomPainter {
   final Animation animation;
   final ValueChanged<double> onDataPointSnap;
   final BezierLineChartScale bezierLineChartScale;
-  final double maxWitdth;
+  final double maxWidth;
   final double scrollOffset;
   bool footerDrawed = false;
+  final FooterValueBuilder footerValueBuilder;
 
   _BezierLineChartPainter({
     this.config,
@@ -620,7 +629,8 @@ class _BezierLineChartPainter extends CustomPainter {
     this.animation,
     this.bezierLineChartScale,
     this.onDataPointSnap,
-    this.maxWitdth,
+    this.maxWidth,
+    this.footerValueBuilder,
     this.scrollOffset,
   }) : super(repaint: animation) {
     _maxValueY = _getMaxValueY();
@@ -716,7 +726,7 @@ class _BezierLineChartPainter extends CustomPainter {
         );
 
         //Only calculate and display the necessary data to improve the performance of the scrolling
-        final range = maxWitdth * 10;
+        final range = maxWidth * 10;
         if (scrollOffset - range >= valueX || scrollOffset + range <= valueX) {
           continue;
         }
@@ -791,7 +801,7 @@ class _BezierLineChartPainter extends CustomPainter {
               onDataPointSnap(xAxisDataPoints[i].value);
               _currentCustomValues.add(
                 _CustomValue(
-                  value: "${_intOrDouble(axisY)}",
+                  value: "${intOrDouble(axisY)}",
                   label: line.label,
                   color: line.lineColor,
                 ),
@@ -807,7 +817,7 @@ class _BezierLineChartPainter extends CustomPainter {
           text: _getFooterText(xAxisDataPoints[i]),
           style: styleFooter,
         );
-        textPainterFooter.layout(maxWidth: 50.0);
+        textPainterFooter.layout();
         textPainterFooter.paint(
           canvas,
           Offset(valueX - textPainterFooter.width / 2,
@@ -1031,7 +1041,7 @@ class _BezierLineChartPainter extends CustomPainter {
   String _getInfoTitleText() {
     final scale = bezierLineChartScale;
     if (scale == BezierLineChartScale.CUSTOM) {
-      return "${_intOrDouble(_currentXDataPoint.value)}\n";
+      return "${intOrDouble(_currentXDataPoint.value)}\n";
     } else if (scale == BezierLineChartScale.WEEKLY) {
       final dateFormat = intl.DateFormat('EEE d');
       final date = _currentXDataPoint.xAxis as DateTime;
@@ -1066,7 +1076,11 @@ class _BezierLineChartPainter extends CustomPainter {
   String _getFooterText(DataPoint dataPoint) {
     final scale = bezierLineChartScale;
     if (scale == BezierLineChartScale.CUSTOM) {
-      return "${_intOrDouble(dataPoint.value)}\n";
+      if (footerValueBuilder != null) {
+        return footerValueBuilder(dataPoint.value);
+      } else {
+        return "${intOrDouble(dataPoint.value)}\n";
+      }
     } else if (scale == BezierLineChartScale.WEEKLY) {
       final dateFormat = intl.DateFormat('EEE\nd');
       return "${dateFormat.format(dataPoint.xAxis as DateTime)}";
@@ -1169,7 +1183,8 @@ bool _allPositive(List<double> list) {
   return true;
 }
 
-String _intOrDouble(double str) {
+///This method remove the decimals if the value doesn't have decimals 
+String intOrDouble(double str) {
   final values = str.toString().split(".");
   if (values.length > 1) {
     final int intDecimal = int.parse(values[1]);
