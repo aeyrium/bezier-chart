@@ -11,7 +11,8 @@ alt="Aeyrium Inc. is a provider of innovative software solutions for the busines
 <p>
 <img src="https://media.giphy.com/media/Su5zIeMZ5Vmm9aj4fQ/giphy.gif" alt="drawing" width="230px" hspace="5"/>  
 <img src="https://media.giphy.com/media/ni7sTQ9Z0hrwPsV287/giphy.gif" alt="drawing" width="230px" /> 
-
+</p>
+<p>
 <img src="https://media.giphy.com/media/ni7sTQ9Z0hrwPsV287/giphy.gif" alt="drawing" width="230px" hspace="5"/> 
 <img src="https://media.giphy.com/media/Re0h53AH4QkQVfW4Ih/giphy.gif" alt="drawing" width="230px"  /> 
 </p>
