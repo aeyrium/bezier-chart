@@ -5,13 +5,18 @@
 A beautiful bezier line chart widget for flutter that is highly interactive and configurable.
 
 <p align="center">
-<a href="https://aeyrium.com">
-<img src="https://drive.google.com/uc?id=1TP33E66rwZ6wsbaO3vw7PqrMFY2sgZxE" width="1228px" alt="Aeyrium Inc. is a provider of innovative software solutions for the business and commercial aviation"/>
-<img src="https://media.giphy.com/media/Su5zIeMZ5Vmm9aj4fQ/giphy.gif" alt="drawing" width="230px" hspace="30"/>  <img src="https://media.giphy.com/media/ni7sTQ9Z0hrwPsV287/giphy.gif" alt="drawing" width="230px"/> 
-<!-- 
-<img src="https://media.giphy.com/media/Su5zIeMZ5Vmm9aj4fQ/giphy.gif" alt="drawing" width="230px" hspace="30"/>  -->
-<p align="center"> <img src="https://media.giphy.com/media/ni7sTQ9Z0hrwPsV287/giphy.gif" alt="drawing" width="230px"/> 
-<img src="https://media.giphy.com/media/Re0h53AH4QkQVfW4Ih/giphy.gif" alt="drawing" width="230px"/> 
+<img src="https://drive.google.com/uc?id=1TP33E66rwZ6wsbaO3vw7PqrMFY2sgZxE" width="500px" 
+alt="Aeyrium Inc. is a provider of innovative software solutions for the business and commercial aviation"/>
+</p>
+
+<p align="center"> 
+<img src="https://media.giphy.com/media/Su5zIeMZ5Vmm9aj4fQ/giphy.gif" alt="drawing" width="230px" hspace="30"/>  
+<img src="https://media.giphy.com/media/ni7sTQ9Z0hrwPsV287/giphy.gif" alt="drawing" width="230px"/> 
+</p>
+
+<p align="center"> 
+<img src="https://media.giphy.com/media/ni7sTQ9Z0hrwPsV287/giphy.gif" alt="drawing" width="230px" hspace="30"/> 
+<img src="https://media.giphy.com/media/Re0h53AH4QkQVfW4Ih/giphy.gif" alt="drawing" width="230px"  /> 
 </p>
 
 ## Features
