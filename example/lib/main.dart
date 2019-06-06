@@ -123,7 +123,6 @@ Widget sample1(BuildContext context) {
         Center(
           child: Card(
             elevation: 12,
-            clipBehavior: Clip.hardEdge,
             child: Container(
               height: MediaQuery.of(context).size.height / 2,
               width: MediaQuery.of(context).size.width * 0.9,
@@ -181,7 +180,6 @@ Widget sample2(BuildContext context) {
     color: Colors.black87,
     child: Center(
       child: Card(
-        clipBehavior: Clip.hardEdge,
         elevation: 20,
         margin: EdgeInsets.all(8.0),
         child: Container(
@@ -190,7 +188,7 @@ Widget sample2(BuildContext context) {
           child: BezierLineChart(
             bezierLineChartScale: BezierLineChartScale.CUSTOM,
             xAxisCustomValues: const [0, 3, 10, 15, 20, 25, 30, 35],
-            footerValueBuilder: (double value){
+            footerValueBuilder: (double value) {
               return "${value.toInt()}\nHrs";
             },
             series: const [
@@ -531,7 +529,6 @@ _buildChart(
     child: Card(
       elevation: 10,
       margin: EdgeInsets.all(25.0),
-      clipBehavior: Clip.hardEdge,
       child: Container(
         color: Colors.red,
         height: MediaQuery.of(context).size.height / 3,

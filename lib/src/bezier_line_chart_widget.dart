@@ -9,6 +9,8 @@ import 'bezier_line.dart';
 import 'bezier_line_chart_config.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'my_single_child_scroll_view.dart';
+
 typedef FooterValueBuilder = String Function(double value);
 
 class BezierLineChart extends StatefulWidget {
@@ -551,7 +553,7 @@ class _BezierLineChartState extends State<BezierLineChart>
           child: LayoutBuilder(
             builder: (context, constraints) {
               _contentWidth = _buildContentWidth(constraints);
-              return SingleChildScrollView(
+              return MySingleChildScrollView(
                 controller: _scrollController,
                 physics: isPinchZoomActive || !_isScrollable
                     ? NeverScrollableScrollPhysics()
@@ -564,7 +566,7 @@ class _BezierLineChartState extends State<BezierLineChart>
                   child: CustomPaint(
                     size: Size(
                       _contentWidth,
-                      constraints.biggest.height * 0.7,
+                      constraints.biggest.height * 0.8,
                     ),
                     painter: _BezierLineChartPainter(
                       config: widget.config,

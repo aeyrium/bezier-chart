@@ -1,6 +1,6 @@
 name: bezier_chart
 description: A beautiful bezier line chart widget for flutter that is highly interactive and configurable.
-version: 1.0.3
+version: 1.0.4
 author: Aeyrium Inc. <diego@aeyrium.com>
 homepage: https://aeyrium.com/
 repository: https://github.com/aeyrium/bezier-chart
