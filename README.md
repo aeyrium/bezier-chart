@@ -4,30 +4,9 @@
 
 A beautiful bezier line chart widget for flutter that is highly interactive and configurable.
 
-<style>
-p.note
-{
-     -moz-border-radius: 6px;
-     -webkit-border-radius: 6px;
-     color: #fff;
-     background-color: #F44336;
-     background-image: url(https://drive.google.com/uc?id=1Y9YtmJue8EQiRxR42zreoVNJB8HOqQef);
-     background-position: 9px 9px;
-     background-repeat: no-repeat;
-     background-size: 70px 70px;
-     border: solid 1px #F44336;
-     border-radius: 6px;
-     line-height: 18px;
-     overflow: hidden;
-     padding: 25px 90px;
-}
-p > a, p > a:hover, p > a:active, p > a:visited { text-decoration: none; }
-</style>
-<a href="https://aeyrium.com">
-<p class="note">Provided to you by <em>Aeyrium Inc.</em>, creators
-of innovative software solutions for the aviation industry.</p>
-</a>
 <p align="center">
+<a href="https://aeyrium.com">
+<img src="https://drive.google.com/uc?id=1TP33E66rwZ6wsbaO3vw7PqrMFY2sgZxE" width="1228px"/>
 <img src="https://media.giphy.com/media/Su5zIeMZ5Vmm9aj4fQ/giphy.gif" alt="drawing" width="230px" hspace="30"/>  <img src="https://media.giphy.com/media/ni7sTQ9Z0hrwPsV287/giphy.gif" alt="drawing" width="230px"/> 
 <!-- 
 <img src="https://media.giphy.com/media/Su5zIeMZ5Vmm9aj4fQ/giphy.gif" alt="drawing" width="230px" hspace="30"/>  -->
