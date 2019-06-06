@@ -4,9 +4,10 @@
 
 A beautiful bezier line chart widget for flutter that is highly interactive and configurable.
 
-<p align="center">
-<img src="https://media.giphy.com/media/Su5zIeMZ5Vmm9aj4fQ/giphy.gif" alt="drawing" width="230px" hspace="30"/>  <img src="https://media.giphy.com/media/ni7sTQ9Z0hrwPsV287/giphy.gif" alt="drawing" width="230px"/> 
-<img src="https://media.giphy.com/media/lorQ1rqP0CABf4t4TY/giphy.gif" alt="drawing" width="230px"/> 
+<!-- 
+<img src="https://media.giphy.com/media/Su5zIeMZ5Vmm9aj4fQ/giphy.gif" alt="drawing" width="230px" hspace="30"/>  -->
+<p align="center"> <img src="https://media.giphy.com/media/ni7sTQ9Z0hrwPsV287/giphy.gif" alt="drawing" width="230px"/> 
+<img src="https://media.giphy.com/media/Re0h53AH4QkQVfW4Ih/giphy.gif" alt="drawing" width="230px"/> 
 </p>
 
 ## Features
