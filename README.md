@@ -9,11 +9,11 @@ A beautiful bezier line chart widget for flutter that is highly interactive and 
 alt="Aeyrium Inc. is a provider of innovative software solutions for the business and commercial aviation"/>
 </p>
 <p>
-<img src="https://media.giphy.com/media/Su5zIeMZ5Vmm9aj4fQ/giphy.gif" alt="drawing" width="230px" hspace="5"/>  
+<img src="https://media.giphy.com/media/4PUllVsmWsspYFYVD3/giphy.gif" alt="drawing" width="230px" hspace="5"/>  
 <img src="https://media.giphy.com/media/ni7sTQ9Z0hrwPsV287/giphy.gif" alt="drawing" width="230px" /> 
 </p>
 <p>
-<img src="https://media.giphy.com/media/ni7sTQ9Z0hrwPsV287/giphy.gif" alt="drawing" width="230px" hspace="5"/> 
+<img src="https://media.giphy.com/media/4TkcwE3CmI1x7uQtPp/giphy.gif" alt="drawing" width="230px" hspace="5"/> 
 <img src="https://media.giphy.com/media/Re0h53AH4QkQVfW4Ih/giphy.gif" alt="drawing" width="230px"  /> 
 </p>
 
@@ -35,7 +35,7 @@ alt="Aeyrium Inc. is a provider of innovative software solutions for the busines
 You should ensure that you add the dependency in your flutter project.
 ```yaml
 dependencies:
- bezier_chart: "^1.0.0"
+ bezier_chart: "^1.0.3"
 ```
 
 You should then run `flutter packages upgrade` or update your packages in IntelliJ.

@@ -1183,7 +1183,7 @@ bool _allPositive(List<double> list) {
   return true;
 }
 
-///This method remove the decimals if the value doesn't have decimals 
+///This method remove the decimals if the value doesn't have decimals
 String intOrDouble(double str) {
   final values = str.toString().split(".");
   if (values.length > 1) {
