@@ -6,7 +6,7 @@ A beautiful bezier line chart widget for flutter that is highly interactive and 
 
 <p align="center">
 <a href="https://aeyrium.com">
-<img src="https://drive.google.com/uc?id=1TP33E66rwZ6wsbaO3vw7PqrMFY2sgZxE" width="1228px"/>
+<img src="https://drive.google.com/uc?id=1TP33E66rwZ6wsbaO3vw7PqrMFY2sgZxE" width="1228px" alt="Aeyrium Inc. is a provider of innovative software solutions for the business and commercial aviation"/>
 <img src="https://media.giphy.com/media/Su5zIeMZ5Vmm9aj4fQ/giphy.gif" alt="drawing" width="230px" hspace="30"/>  <img src="https://media.giphy.com/media/ni7sTQ9Z0hrwPsV287/giphy.gif" alt="drawing" width="230px"/> 
 <!-- 
 <img src="https://media.giphy.com/media/Su5zIeMZ5Vmm9aj4fQ/giphy.gif" alt="drawing" width="230px" hspace="30"/>  -->
