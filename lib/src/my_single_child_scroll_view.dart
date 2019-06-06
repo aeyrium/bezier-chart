@@ -362,16 +362,10 @@ class _RenderSingleChildViewport extends RenderBox
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {Offset position}) {
+  bool hitTestChildren(HitTestResult result, {Offset position}) {
     if (child != null) {
-      return result.addWithPaintOffset(
-        offset: _paintOffset,
-        position: position,
-        hitTest: (BoxHitTestResult result, Offset transformed) {
-          assert(transformed == position + -_paintOffset);
-          return child.hitTest(result, position: transformed);
-        },
-      );
+      final Offset transformed = position + -_paintOffset;
+      return child.hitTest(result, position: transformed);
     }
     return false;
   }
