@@ -22,6 +22,9 @@ class BezierLineChartConfig {
   ///`true` if you want to keep the info indicator in a fixed position
   final bool verticalIndicatorFixedPosition;
 
+  ///Color of the bubble indicator, it's white by default
+  final Color bubbleIndicatorColor;
+
   ///Color of the background of the chart
   final Color backgroundColor;
 
@@ -58,6 +61,7 @@ class BezierLineChartConfig {
     this.footerHeight = 20.0,
     this.contentWidth,
     this.pinchZoom = true,
+    this.bubbleIndicatorColor = Colors.white,
     this.backgroundGradient,
     this.verticalIndicatorFixedPosition = true,
   });

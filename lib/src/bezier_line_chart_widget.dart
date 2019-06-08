@@ -612,7 +612,7 @@ class _BezierLineChartPainter extends CustomPainter {
   List<_CustomValue> _currentCustomValues = [];
   DataPoint _currentXDataPoint;
   final double radiusDotIndicatorMain = 7;
-  final double radiusDotIndicatorItems = 5;
+  final double radiusDotIndicatorItems = 3.5;
   final bool showIndicator;
   final Animation animation;
   final ValueChanged<double> onDataPointSnap;
@@ -873,11 +873,14 @@ class _BezierLineChartPainter extends CustomPainter {
           (verticalX - p0.dx) / (p3.dx - p0.dx),
         );
 
-        double infoWidth = 85;
-        double infoHeight = 35;
+        double infoWidth = 0; //base value, modified based on the label text
+        double infoHeight = 40;
 
-        double offsetInfo =
-            infoHeight * 1.2 + ((_currentCustomValues.length - 1.0) * 10.0);
+        //bubble indicator padding
+        final horizontalPadding = 28.0;
+        final verticalPadding = 25.0;
+
+        double offsetInfo = 42 + ((_currentCustomValues.length - 1.0) * 10.0);
         final centerForCircle = Offset(verticalX, height - yValue);
         final center = config.verticalIndicatorFixedPosition
             ? Offset(verticalX, offsetInfo)
@@ -905,8 +908,10 @@ class _BezierLineChartPainter extends CustomPainter {
         List<TextSpan> textValues = [];
         List<Offset> centerCircles = [];
 
-        double space = 12.0 - (4.0 * _currentCustomValues.length);
-        infoHeight = infoHeight + (_currentCustomValues.length - 1) * 13;
+        double space =
+            10 - ((infoHeight / (8.75)) * _currentCustomValues.length);
+        infoHeight =
+            infoHeight + (_currentCustomValues.length - 1) * (infoHeight / 3);
         for (_CustomValue customValue
             in _currentCustomValues.reversed.toList()) {
           textValues.add(
@@ -930,13 +935,40 @@ class _BezierLineChartPainter extends CustomPainter {
             ),
           );
           centerCircles.add(
-            Offset(center.dx - infoWidth / 2 + radiusDotIndicatorItems * 1.5,
-                center.dy - offsetInfo - radiusDotIndicatorItems + space),
+            // Offset(center.dx - infoWidth / 2 + radiusDotIndicatorItems * 1.5,
+            Offset(
+                center.dx,
+                center.dy -
+                    offsetInfo -
+                    radiusDotIndicatorItems +
+                    space +
+                    (_currentCustomValues.length == 1 ? 1 : 0)),
           );
           space += 12.5;
         }
 
-        //draw shadow info
+        //Calculate Text size
+        TextPainter textPainter = TextPainter(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            text: _getInfoTitleText(),
+            style: TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.w600,
+              fontSize: 9.5,
+            ),
+            children: textValues,
+          ),
+          textDirection: TextDirection.ltr,
+        );
+        textPainter.layout();
+
+        infoWidth =
+            textPainter.width + radiusDotIndicatorItems * 2 + horizontalPadding;
+
+        ///Draw Bubble Indicator Info
+
+        /// Draw shadow bubble info
         if (animation.isCompleted) {
           Path path = Path();
           path.moveTo(center.dx - infoWidth / 2 + 4,
@@ -951,10 +983,10 @@ class _BezierLineChartPainter extends CustomPainter {
         }
 
         final paintInfo = Paint()
-          ..color = Colors.white
+          ..color = config.bubbleIndicatorColor
           ..style = PaintingStyle.fill;
-        //draw info
 
+        //Draw Bubble info
         canvas.drawRRect(
           RRect.fromRectAndRadius(
             _fromCenter(
@@ -970,65 +1002,56 @@ class _BezierLineChartPainter extends CustomPainter {
           paintInfo,
         );
 
+        //Draw triangle Bubble
+        final double triangleSize = 6;
+
+        Path pathArrow = Path();
+
+        pathArrow.moveTo(center.dx - triangleSize,
+            center.dy - offsetInfo * animation.value + infoHeight / 2.1);
+        pathArrow.lineTo(
+            center.dx,
+            center.dy -
+                offsetInfo * animation.value +
+                infoHeight / 2.1 +
+                triangleSize * 1.5);
+        pathArrow.lineTo(center.dx + triangleSize,
+            center.dy - offsetInfo * animation.value + infoHeight / 2.1);
+        pathArrow.close();
+        canvas.drawPath(
+          pathArrow,
+          paintInfo,
+        );
+        //End triangle
+
         if (animation.isCompleted) {
-          final double triangleSize = 6;
-          //draw triangle
-          Path pathArrow = Path();
-
-          pathArrow.moveTo(center.dx - triangleSize,
-              center.dy - offsetInfo * animation.value + infoHeight / 2);
-          pathArrow.lineTo(
-              center.dx,
-              center.dy -
-                  offsetInfo * animation.value +
-                  infoHeight / 2 +
-                  triangleSize * 1.5);
-          pathArrow.lineTo(center.dx + triangleSize,
-              center.dy - offsetInfo * animation.value + infoHeight / 2);
-          pathArrow.close();
-          canvas.drawPath(
-            pathArrow,
-            paintInfo,
-          );
-
-          //end draw info
-
-          //draw Text
-          TextPainter textPainter = TextPainter(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              text: _getInfoTitleText(),
-              style: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.w600,
-                fontSize: 9.5,
-              ),
-              children: textValues,
-            ),
-            textDirection: TextDirection.ltr,
-          );
-          textPainter.layout();
+          //Paint Text , title and description
           textPainter.paint(
             canvas,
             Offset(
-                center.dx -
-                    textPainter.size.width / 2 +
-                    radiusDotIndicatorItems * 1.5,
-                center.dy - offsetInfo - infoHeight / 2.5),
+              center.dx - textPainter.width / 2,
+              center.dy - offsetInfo - infoHeight / 2.5,
+            ),
           );
 
           //draw circle indicators and text
           for (int z = 0; z < _currentCustomValues.length; z++) {
             _CustomValue customValue = _currentCustomValues[z];
             Offset centerIndicator = centerCircles.reversed.toList()[z];
+            Offset fixedCenter = Offset(
+                centerIndicator.dx -
+                    infoWidth / 2 +
+                    radiusDotIndicatorItems +
+                    4,
+                centerIndicator.dy);
             canvas.drawCircle(
-                centerIndicator,
+                fixedCenter,
                 radiusDotIndicatorItems,
                 Paint()
                   ..color = customValue.color
                   ..style = PaintingStyle.fill);
             canvas.drawCircle(
-                centerIndicator,
+                fixedCenter,
                 radiusDotIndicatorItems,
                 Paint()
                   ..color = Colors.black

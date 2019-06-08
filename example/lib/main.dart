@@ -148,6 +148,7 @@ Widget sample1(BuildContext context) {
                   ),
                 ],
                 config: BezierLineChartConfig(
+                  bubbleIndicatorColor: Colors.white.withOpacity(0.9),
                   footerHeight: 40,
                   verticalIndicatorStrokeWidth: 3.0,
                   verticalIndicatorColor: Colors.black26,
