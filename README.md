@@ -35,7 +35,7 @@ alt="Aeyrium Inc. is a provider of innovative software solutions for the busines
 You should ensure that you add the dependency in your flutter project.
 ```yaml
 dependencies:
- bezier_chart: "^1.0.6"
+ bezier_chart: "^1.0.7"
 ```
 
 You should then run `flutter packages upgrade` or update your packages in IntelliJ.
@@ -56,8 +56,8 @@ There is a example project in the `example` folder. Check it out. Otherwise, kee
       color: Colors.red,
       height: MediaQuery.of(context).size.height / 2,
       width: MediaQuery.of(context).size.width * 0.9,
-      child: BezierLineChart(
-        bezierLineChartScale: BezierLineChartScale.CUSTOM,
+      child: BezierChart(
+        bezierChartScale: BezierChartScale.CUSTOM,
         xAxisCustomValues: const [0, 5, 10, 15, 20, 25, 30, 35],
         series: const [
           BezierLine(
@@ -73,7 +73,7 @@ There is a example project in the `example` folder. Check it out. Otherwise, kee
             ],
           ),
         ],
-        config: BezierLineChartConfig(
+        config: BezierChartConfig(
           verticalIndicatorStrokeWidth: 3.0,
           verticalIndicatorColor: Colors.black26,
           showVerticalIndicator: true,
@@ -100,8 +100,8 @@ Widget sample2(BuildContext context) {
       color: Colors.red,
       height: MediaQuery.of(context).size.height / 2,
       width: MediaQuery.of(context).size.width,
-      child: BezierLineChart(
-        bezierLineChartScale: BezierLineChartScale.CUSTOM,
+      child: BezierChart(
+        bezierChartScale: BezierChartScale.CUSTOM,
         xAxisCustomValues: const [0, 3, 10, 15, 20, 25, 30, 35],
         series: const [
           BezierLine(
@@ -148,7 +148,7 @@ Widget sample2(BuildContext context) {
             ],
           ),
         ],
-        config: BezierLineChartConfig(
+        config: BezierChartConfig(
           verticalIndicatorStrokeWidth: 2.0,
           verticalIndicatorColor: Colors.black12,
           showVerticalIndicator: true,
@@ -180,9 +180,9 @@ Widget sample3(BuildContext context) {
       color: Colors.red,
       height: MediaQuery.of(context).size.height / 2,
       width: MediaQuery.of(context).size.width,
-      child: BezierLineChart(
+      child: BezierChart(
         fromDate: fromDate,
-        bezierLineChartScale: BezierLineChartScale.WEEKLY,
+        bezierChartScale: BezierChartScale.WEEKLY,
         toDate: toDate,
         selectedDate: toDate,
         series: [
@@ -200,7 +200,7 @@ Widget sample3(BuildContext context) {
             ],
           ),
         ],
-        config: BezierLineChartConfig(
+        config: BezierChartConfig(
           verticalIndicatorStrokeWidth: 3.0,
           verticalIndicatorColor: Colors.black26,
           showVerticalIndicator: true,
@@ -240,8 +240,8 @@ Widget sample4(BuildContext context) {
       color: Colors.red,
       height: MediaQuery.of(context).size.height / 2,
       width: MediaQuery.of(context).size.width,
-      child: BezierLineChart(
-        bezierLineChartScale: BezierLineChartScale.MONTHLY,
+      child: BezierChart(
+        bezierChartScale: BezierChartScale.MONTHLY,
         fromDate: fromDate,
         toDate: toDate,
         selectedDate: toDate,
@@ -264,7 +264,7 @@ Widget sample4(BuildContext context) {
             ],
           ),
         ],
-        config: BezierLineChartConfig(
+        config: BezierChartConfig(
           verticalIndicatorStrokeWidth: 3.0,
           verticalIndicatorColor: Colors.black26,
           showVerticalIndicator: true,
@@ -304,8 +304,8 @@ Widget sample5(BuildContext context) {
       color: Colors.red,
       height: MediaQuery.of(context).size.height / 2,
       width: MediaQuery.of(context).size.width,
-      child: BezierLineChart(
-        bezierLineChartScale: BezierLineChartScale.YEARLY,
+      child: BezierChart(
+        bezierChartScale: BezierChartScale.YEARLY,
         fromDate: fromDate,
         toDate: toDate,
         selectedDate: toDate,
@@ -346,7 +346,7 @@ Widget sample5(BuildContext context) {
             ],
           ),
         ],
-        config: BezierLineChartConfig(
+        config: BezierChartConfig(
           verticalIndicatorStrokeWidth: 3.0,
           verticalIndicatorColor: Colors.black26,
           showVerticalIndicator: true,

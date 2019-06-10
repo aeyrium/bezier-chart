@@ -126,8 +126,8 @@ Widget sample1(BuildContext context) {
             child: Container(
               height: MediaQuery.of(context).size.height / 2,
               width: MediaQuery.of(context).size.width * 0.9,
-              child: BezierLineChart(
-                bezierLineChartScale: BezierLineChartScale.CUSTOM,
+              child: BezierChart(
+                bezierChartScale: BezierChartScale.CUSTOM,
                 xAxisCustomValues: const [0, 5, 10, 15, 20, 25, 30, 35],
                 footerValueBuilder: (double value) {
                   return "${intOrDouble(value)}\ndays";
@@ -147,7 +147,7 @@ Widget sample1(BuildContext context) {
                     ],
                   ),
                 ],
-                config: BezierLineChartConfig(
+                config: BezierChartConfig(
                   bubbleIndicatorColor: Colors.white.withOpacity(0.9),
                   footerHeight: 40,
                   verticalIndicatorStrokeWidth: 3.0,
@@ -186,8 +186,8 @@ Widget sample2(BuildContext context) {
         child: Container(
           height: MediaQuery.of(context).size.height / 2,
           width: MediaQuery.of(context).size.width,
-          child: BezierLineChart(
-            bezierLineChartScale: BezierLineChartScale.CUSTOM,
+          child: BezierChart(
+            bezierChartScale: BezierChartScale.CUSTOM,
             xAxisCustomValues: const [0, 3, 10, 15, 20, 25, 30, 35],
             footerValueBuilder: (double value) {
               return "${value.toInt()}\nHrs";
@@ -238,13 +238,12 @@ Widget sample2(BuildContext context) {
                 ],
               ),
             ],
-            config: BezierLineChartConfig(
+            config: BezierChartConfig(
               verticalIndicatorStrokeWidth: 2.0,
               verticalIndicatorColor: Colors.black12,
               showVerticalIndicator: true,
               verticalIndicatorFixedPosition: false,
               contentWidth: MediaQuery.of(context).size.width * 1.5,
-              footerHeight: 30.0,
               backgroundGradient: LinearGradient(
                 colors: [
                   Colors.purpleAccent[400],
@@ -278,9 +277,9 @@ Widget sample3(BuildContext context) {
       color: Colors.red,
       height: MediaQuery.of(context).size.height / 2,
       width: MediaQuery.of(context).size.width,
-      child: BezierLineChart(
+      child: BezierChart(
         fromDate: fromDate,
-        bezierLineChartScale: BezierLineChartScale.WEEKLY,
+        bezierChartScale: BezierChartScale.WEEKLY,
         toDate: toDate,
         selectedDate: toDate,
         series: [
@@ -298,13 +297,12 @@ Widget sample3(BuildContext context) {
             ],
           ),
         ],
-        config: BezierLineChartConfig(
+        config: BezierChartConfig(
           verticalIndicatorStrokeWidth: 3.0,
           verticalIndicatorColor: Colors.black26,
           showVerticalIndicator: true,
           verticalIndicatorFixedPosition: false,
           backgroundColor: Colors.red,
-          footerHeight: 30.0,
         ),
       ),
     ),
@@ -331,8 +329,8 @@ Widget sample4(BuildContext context) {
       color: Colors.red,
       height: MediaQuery.of(context).size.height / 2,
       width: MediaQuery.of(context).size.width,
-      child: BezierLineChart(
-        bezierLineChartScale: BezierLineChartScale.MONTHLY,
+      child: BezierChart(
+        bezierChartScale: BezierChartScale.MONTHLY,
         fromDate: fromDate,
         toDate: toDate,
         selectedDate: toDate,
@@ -355,13 +353,13 @@ Widget sample4(BuildContext context) {
             ],
           ),
         ],
-        config: BezierLineChartConfig(
+        config: BezierChartConfig(
           verticalIndicatorStrokeWidth: 3.0,
           verticalIndicatorColor: Colors.black26,
           showVerticalIndicator: true,
           verticalIndicatorFixedPosition: false,
           backgroundColor: Colors.red,
-          footerHeight: 30.0,
+          footerHeight: 35.0,
         ),
       ),
     ),
@@ -388,8 +386,8 @@ Widget sample5(BuildContext context) {
       color: Colors.red,
       height: MediaQuery.of(context).size.height / 2,
       width: MediaQuery.of(context).size.width,
-      child: BezierLineChart(
-        bezierLineChartScale: BezierLineChartScale.YEARLY,
+      child: BezierChart(
+        bezierChartScale: BezierChartScale.YEARLY,
         fromDate: fromDate,
         toDate: toDate,
         selectedDate: toDate,
@@ -430,7 +428,7 @@ Widget sample5(BuildContext context) {
             ],
           ),
         ],
-        config: BezierLineChartConfig(
+        config: BezierChartConfig(
           verticalIndicatorStrokeWidth: 3.0,
           verticalIndicatorColor: Colors.black26,
           showVerticalIndicator: true,
@@ -446,7 +444,7 @@ Widget sample5(BuildContext context) {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
-          footerHeight: 30.0,
+          footerHeight: 35.0,
         ),
       ),
     ),
@@ -479,7 +477,7 @@ Widget sample6(BuildContext context) {
           ),
         ),
         _buildChart(
-          BezierLineChartScale.MONTHLY,
+          BezierChartScale.MONTHLY,
           context,
           LinearGradient(
             colors: [
@@ -494,7 +492,7 @@ Widget sample6(BuildContext context) {
           ),
         ),
         _buildChart(
-            BezierLineChartScale.YEARLY,
+            BezierChartScale.YEARLY,
             context,
             LinearGradient(
               colors: [
@@ -513,7 +511,7 @@ Widget sample6(BuildContext context) {
 }
 
 _buildChart(
-    BezierLineChartScale scale, BuildContext context, LinearGradient gradient) {
+    BezierChartScale scale, BuildContext context, LinearGradient gradient) {
   final fromDate = DateTime(2012, 11, 22);
   final toDate = DateTime.now();
 
@@ -534,8 +532,8 @@ _buildChart(
         color: Colors.red,
         height: MediaQuery.of(context).size.height / 3,
         width: MediaQuery.of(context).size.width,
-        child: BezierLineChart(
-          bezierLineChartScale: scale,
+        child: BezierChart(
+          bezierChartScale: scale,
           fromDate: fromDate,
           toDate: toDate,
           selectedDate: toDate,
@@ -576,7 +574,7 @@ _buildChart(
               ],
             ),
           ],
-          config: BezierLineChartConfig(
+          config: BezierChartConfig(
             verticalIndicatorStrokeWidth: 3.0,
             verticalIndicatorColor: Colors.black26,
             showVerticalIndicator: true,

@@ -12,7 +12,7 @@ class BezierLine {
   ///List of data points used to build the bezier line
   final List<DataPoint> data;
 
-  ///This builder is only valid for `bezierLineChartScale` of date types
+  ///This builder is only valid for `bezierChartScale` of date types
   ///It uses the double value returned by the function based on the current `DateTime` received as parameter
   final MissingValueBuilder onMissingValue;
 

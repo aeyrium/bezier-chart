@@ -63,8 +63,8 @@ class MyHomePage extends StatelessWidget {
             child: Container(
               height: MediaQuery.of(context).size.height / 2,
               width: MediaQuery.of(context).size.width * 0.9,
-              child: BezierLineChart(
-                bezierLineChartScale: BezierLineChartScale.CUSTOM,
+              child: BezierChart(
+                bezierChartScale: BezierChartScale.CUSTOM,
                 xAxisCustomValues: const [0, 5, 10, 15, 20, 25, 30, 35],
                 footerValueBuilder: (double value) {
                   return "${intOrDouble(value)}\ndays";
@@ -84,7 +84,7 @@ class MyHomePage extends StatelessWidget {
                     ],
                   ),
                 ],
-                config: BezierLineChartConfig(
+                config: BezierChartConfig(
                   footerHeight: 40,
                   verticalIndicatorStrokeWidth: 3.0,
                   verticalIndicatorColor: Colors.black26,
