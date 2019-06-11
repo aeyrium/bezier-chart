@@ -708,11 +708,7 @@ class _BezierChartPainter extends CustomPainter {
         ..strokeWidth = line.lineStrokeWidth
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round;
-      _AxisValue lastPoint = _AxisValue(
-        x: 0,
-        y: height,
-      );
-      path.moveTo(0, height);
+      _AxisValue lastPoint;
 
       //display each data point
       for (int i = 0; i < xAxisDataPoints.length; i++) {
@@ -759,6 +755,11 @@ class _BezierChartPainter extends CustomPainter {
               height,
               _maxValueY,
             );
+
+        if (lastPoint == null) {
+          lastPoint = _AxisValue(x: valueX, y: valueY);
+          path.moveTo(valueX, valueY);
+        }
 
         final double controlPointX = lastPoint.x + (valueX - lastPoint.x) / 2;
         path.cubicTo(

@@ -35,7 +35,7 @@ alt="Aeyrium Inc. is a provider of innovative software solutions for the busines
 You should ensure that you add the dependency in your flutter project.
 ```yaml
 dependencies:
- bezier_chart: "^1.0.7"
+ bezier_chart: "^1.0.8"
 ```
 
 You should then run `flutter packages upgrade` or update your packages in IntelliJ.

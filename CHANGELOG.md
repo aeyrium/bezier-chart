@@ -1,3 +1,7 @@
+## [1.0.8]
+
+* Chart starts from the first data point, not from zero.
+
 ## [1.0.1 - 1.0.7] - Added example documentation
 
 * Added an example README.md for the `bezier_chart` package.
