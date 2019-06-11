@@ -1,6 +1,8 @@
 ## [1.0.8]
 
 * Chart starts from the first data point, not from zero.
+* `displayYAxis` was added (false by default).
+* `footerColor` was removed from `BezierChartConfig`, now you can use `xAxisTextStyle` or `yAxisTextStyle` both are `TextStyle`.
 
 ## [1.0.1 - 1.0.7] - Added example documentation
 
