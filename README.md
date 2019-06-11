@@ -1,6 +1,7 @@
 # Bezier Chart
 
 [![pub package](https://img.shields.io/pub/v/bezier_chart.svg)](https://pub.dev/packages/bezier_chart)
+[![Codemagic build status](https://api.codemagic.io/apps/5cfddc1cc80788001bb746fe/5cfddc1cc80788001bb746fd/status_badge.svg)](https://codemagic.io/apps/5cfddc1cc80788001bb746fe/5cfddc1cc80788001bb746fd/latest_build)
 
 A beautiful bezier line chart widget for flutter that is highly interactive and configurable.
 
