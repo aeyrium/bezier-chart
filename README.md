@@ -21,7 +21,7 @@ alt="Aeyrium Inc. is a provider of innovative software solutions for the busines
 ## Features
 
 - Multi bezier lines
-- Allow numbers and datetimes 
+- Allow numbers and datetimes
 - Gestures support like touch, pinch/zoom, scrolling
 - Highly customizable
 
@@ -34,9 +34,10 @@ alt="Aeyrium Inc. is a provider of innovative software solutions for the busines
 ## Getting started
 
 You should ensure that you add the dependency in your flutter project.
+
 ```yaml
 dependencies:
- bezier_chart: "^1.0.7"
+  bezier_chart: "^1.0.8"
 ```
 
 You should then run `flutter packages upgrade` or update your packages in IntelliJ.
@@ -48,7 +49,6 @@ There is a example project in the `example` folder. Check it out. Otherwise, kee
 ## Usage
 
 **Custom Numbers**
-
 
 ```dart
   Widget sample1(BuildContext context) {
@@ -86,13 +86,12 @@ There is a example project in the `example` folder. Check it out. Otherwise, kee
   );
 }
 ```
+
 <p align="center">
   <img src="https://media.giphy.com/media/xUe2FKdR1V5nldAPmu/giphy.gif">
 </p>
 
-
 **Custom Numbers multiline**
-
 
 ```dart
 Widget sample2(BuildContext context) {
@@ -161,12 +160,12 @@ Widget sample2(BuildContext context) {
   );
 }
 ```
+
 <p align="center">
   <img src="https://media.giphy.com/media/322EPqPW8oNSbJTq0U/giphy.gif">
 </p>
 
 **Weekly Chart**
-
 
 ```dart
 Widget sample3(BuildContext context) {
@@ -214,13 +213,12 @@ Widget sample3(BuildContext context) {
   );
 }
 ```
+
 <p align="center">
   <img src="https://media.giphy.com/media/1gdqUZAXlHpJfFpyqj/giphy.gif">
 </p>
 
-
 **Monthly Chart**
-
 
 ```dart
 Widget sample4(BuildContext context) {
@@ -278,13 +276,12 @@ Widget sample4(BuildContext context) {
   );
 }
 ```
+
 <p align="center">
   <img src="https://media.giphy.com/media/1AgF6MKYykSNJMiUdl/giphy.gif">
 </p>
 
-
 **Yearly Chart**
-
 
 ```dart
 Widget sample5(BuildContext context) {
@@ -370,10 +367,10 @@ Widget sample5(BuildContext context) {
   );
 }
 ```
+
 <p align="center">
   <img src="https://media.giphy.com/media/8ccsvxkgEIG4jDYI0j/giphy.gif">
 </p>
-
 
 [Aeyrium Inc](https://aeyrium.com/)
 
