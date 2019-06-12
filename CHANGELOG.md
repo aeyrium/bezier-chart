@@ -1,10 +1,8 @@
-## [1.0.1 - 1.0.7] - Added example documentation
+## [1.0.1 - 1.0.8] - Added example documentation
 
-* Added an example README.md for the `bezier_chart` package.
-* Added a repository url to the pubspec
+- Added an example README.md for the `bezier_chart` package.
+- Added a repository url to the pubspec
 
 ## [1.0.0] - First release
 
-* First release of our beautiful `bezier_chart` package.
-
-
+- First release of our beautiful `bezier_chart` package.
