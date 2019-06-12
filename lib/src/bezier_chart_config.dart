@@ -31,8 +31,14 @@ class BezierChartConfig {
   ///Gradient of the background of the chart
   final LinearGradient backgroundGradient;
 
-  ///Color of the text of the footer
-  final Color footerColor;
+  ///`true` if you want to display the value of the Y axis, [false] by default
+  final bool displayYAxis;
+
+  ///TextStyle of the text of the Y Axis values
+  final TextStyle yAxisTextStyle;
+
+  ///TextStyle of the text of the X Axis values
+  final TextStyle xAxisTextStyle;
 
   ///Height of the footer
   final double footerHeight;
@@ -55,9 +61,11 @@ class BezierChartConfig {
     this.verticalIndicatorColor = Colors.black,
     this.showVerticalIndicator = true,
     this.showDataPoints = true,
+    this.displayYAxis = false,
     this.snap = true,
     this.backgroundColor = Colors.transparent,
-    this.footerColor = Colors.white,
+    this.xAxisTextStyle,
+    this.yAxisTextStyle,
     this.footerHeight = 35.0,
     this.contentWidth,
     this.pinchZoom = true,

@@ -154,6 +154,7 @@ Widget sample1(BuildContext context) {
                   verticalIndicatorColor: Colors.black26,
                   showVerticalIndicator: true,
                   verticalIndicatorFixedPosition: false,
+                  displayYAxis: true,
                   backgroundGradient: LinearGradient(
                     colors: [
                       Colors.red[300],
@@ -244,6 +245,11 @@ Widget sample2(BuildContext context) {
               showVerticalIndicator: true,
               verticalIndicatorFixedPosition: false,
               contentWidth: MediaQuery.of(context).size.width * 1.5,
+              xAxisTextStyle: TextStyle(
+                color: Colors.white60,
+                fontSize: 19,
+              ),
+              footerHeight: 45,
               backgroundGradient: LinearGradient(
                 colors: [
                   Colors.purpleAccent[400],
