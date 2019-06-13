@@ -2,8 +2,6 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/rendering.dart' as prefix0;
 import 'package:flutter/services.dart';
 
 import 'bezier_line.dart';
@@ -646,9 +644,9 @@ class BezierChartState extends State<BezierChart>
                           fontSize / 2,
                       left: 10.0,
                       child: Text(
-                        intOrDouble(val),
+                        formatAsIntOrDouble(val),
                         style: widget.config.yAxisTextStyle ??
-                            prefix0.TextStyle(
+                            TextStyle(
                               color: Colors.white,
                               fontSize: fontSize,
                             ),
