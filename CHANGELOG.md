@@ -1,6 +1,6 @@
 ## [1.0.9]
 
-- Optimizing for loops removing unneessary convertion from `Iterable` to `List`.
+- Optimizing `for` loops removing unnecessary convertion from `Iterable` to `List`.
 
 ## [1.0.8]
 
