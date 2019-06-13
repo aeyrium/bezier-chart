@@ -2,8 +2,6 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/rendering.dart' as prefix0;
 import 'package:flutter/services.dart';
 
 import 'bezier_line.dart';
@@ -75,7 +73,7 @@ class BezierChart extends StatefulWidget {
         ),
         assert(
           (bezierChartScale == BezierChartScale.CUSTOM &&
-                  _allPositive(xAxisCustomValues) &&
+                  _areAllPositive(xAxisCustomValues) &&
                   _checkCustomValues(series)) ||
               bezierChartScale != BezierChartScale.CUSTOM,
           "xAxisCustomValues and series must be positives",
@@ -151,26 +149,24 @@ class BezierChartState extends State<BezierChart>
   List<double> _tempYValues;
 
   ///Refresh the position of the vertical/bubble
-  _refreshPosition(details) {
+  void _refreshPosition(details) {
     if (_animationController.status == AnimationStatus.completed &&
         _displayIndicator) {
-      _updatePosition(details);
+      return _updatePosition(details.globalPosition);
     }
   }
 
   ///Update and refresh the position based on the current screen
-  _updatePosition(details) {
-    setState(
+  void _updatePosition(Offset globalPosition) {
+    RenderBox renderBox = context.findRenderObject();
+    final position = renderBox.globalToLocal(globalPosition);
+    if (position == null) return;
+    return setState(
       () {
-        RenderBox renderBox = context.findRenderObject();
-        final position = renderBox.globalToLocal(details.globalPosition);
-
-        if (position != null) {
-          final fixedPosition = Offset(
-              position.dx + _scrollController.offset - horizontalPadding,
-              position.dy);
-          _verticalIndicatorPosition = fixedPosition;
-        }
+        final fixedPosition = Offset(
+            position.dx + _scrollController.offset - horizontalPadding,
+            position.dy);
+        _verticalIndicatorPosition = fixedPosition;
       },
     );
   }
@@ -185,7 +181,7 @@ class BezierChartState extends State<BezierChart>
       );
     }
     _onDataPointSnap(double.maxFinite);
-    _updatePosition(details);
+    _updatePosition(details.globalPosition);
   }
 
   ///Hide the vertical/bubble indicator and refresh the widget
@@ -648,9 +644,9 @@ class BezierChartState extends State<BezierChart>
                           fontSize / 2,
                       left: 10.0,
                       child: Text(
-                        intOrDouble(val),
+                        formatAsIntOrDouble(val),
                         style: widget.config.yAxisTextStyle ??
-                            prefix0.TextStyle(
+                            TextStyle(
                               color: Colors.white,
                               fontSize: fontSize,
                             ),
@@ -715,8 +711,8 @@ class _BezierChartPainter extends CustomPainter {
   ///return the max value of the Axis X
   double _getMaxValueX() {
     double x = double.negativeInfinity;
-    for (double val in xAxisDataPoints.map((dp) => dp.value).toList()) {
-      if (val > x) x = val;
+    for (DataPoint dp in xAxisDataPoints) {
+      if (dp.value > x) x = dp.value;
     }
     return x;
   }
@@ -725,8 +721,8 @@ class _BezierChartPainter extends CustomPainter {
   double _getMaxValueY() {
     double y = double.negativeInfinity;
     for (BezierLine line in series) {
-      for (double val in line.data.map((dp) => dp.value).toList()) {
-        if (val > y) y = val;
+      for (DataPoint dp in line.data) {
+        if (dp.value > y) y = dp.value;
       }
     }
     return y;
@@ -872,7 +868,7 @@ class _BezierChartPainter extends CustomPainter {
               onDataPointSnap(xAxisDataPoints[i].value);
               _currentCustomValues.add(
                 _CustomValue(
-                  value: "${intOrDouble(axisY)}",
+                  value: "${formatAsIntOrDouble(axisY)}",
                   label: line.label,
                   color: line.lineColor,
                 ),
@@ -1134,7 +1130,7 @@ class _BezierChartPainter extends CustomPainter {
   String _getInfoTitleText() {
     final scale = bezierChartScale;
     if (scale == BezierChartScale.CUSTOM) {
-      return "${intOrDouble(_currentXDataPoint.value)}\n";
+      return "${formatAsIntOrDouble(_currentXDataPoint.value)}\n";
     } else if (scale == BezierChartScale.WEEKLY) {
       final dateFormat = intl.DateFormat('EEE d');
       final date = _currentXDataPoint.xAxis as DateTime;
@@ -1172,7 +1168,7 @@ class _BezierChartPainter extends CustomPainter {
       if (footerValueBuilder != null) {
         return footerValueBuilder(dataPoint.value);
       } else {
-        return "${intOrDouble(dataPoint.value)}\n";
+        return "${formatAsIntOrDouble(dataPoint.value)}\n";
       }
     } else if (scale == BezierChartScale.WEEKLY) {
       final dateFormat = intl.DateFormat('EEE\nd');
@@ -1262,14 +1258,14 @@ bool _isSorted<T>(List<double> list, [int Function(double, double) compare]) {
 
 bool _checkCustomValues(List<BezierLine> list) {
   for (BezierLine line in list) {
-    if (!_allPositive(
-      line.data.map((dp) => dp.value).toList(),
+    if (!_areAllPositive(
+      line.data.map((dp) => dp.value),
     )) return false;
   }
   return true;
 }
 
-bool _allPositive(List<double> list) {
+bool _areAllPositive(Iterable<double> list) {
   for (double val in list) {
     if (val < 0) return false;
   }
@@ -1277,7 +1273,7 @@ bool _allPositive(List<double> list) {
 }
 
 ///This method remove the decimals if the value doesn't have decimals
-String intOrDouble(double str) {
+String formatAsIntOrDouble(double str) {
   final values = str.toString().split(".");
   if (values.length > 1) {
     final int intDecimal = int.parse(values[1]);

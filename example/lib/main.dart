@@ -130,7 +130,7 @@ Widget sample1(BuildContext context) {
                 bezierChartScale: BezierChartScale.CUSTOM,
                 xAxisCustomValues: const [0, 5, 10, 15, 20, 25, 30, 35],
                 footerValueBuilder: (double value) {
-                  return "${intOrDouble(value)}\ndays";
+                  return "${formatAsIntOrDouble(value)}\ndays";
                 },
                 series: const [
                   BezierLine(
