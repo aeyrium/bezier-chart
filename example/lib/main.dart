@@ -21,9 +21,9 @@ class MyHomePage extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => Scaffold(
-              appBar: AppBar(),
-              body: widget,
-            ),
+          appBar: AppBar(),
+          body: widget,
+        ),
       ),
     );
   }
@@ -43,49 +43,57 @@ class MyHomePage extends StatelessWidget {
               title: Text("Sample 1"),
               subtitle: Text("Number Chart"),
               onTap: () => _onTap(
-                    context,
-                    sample1(context),
-                  ),
+                context,
+                sample1(context),
+              ),
             ),
             ListTile(
               title: Text("Sample 2"),
               subtitle: Text("Number Chart/ multi curves"),
               onTap: () => _onTap(
-                    context,
-                    sample2(context),
-                  ),
+                context,
+                sample2(context),
+              ),
             ),
             ListTile(
               title: Text("Sample 3"),
               subtitle: Text("Weekly Chart"),
               onTap: () => _onTap(
-                    context,
-                    sample3(context),
-                  ),
+                context,
+                sample3(context),
+              ),
             ),
             ListTile(
               title: Text("Sample 4"),
               subtitle: Text("Montly Chart"),
               onTap: () => _onTap(
-                    context,
-                    sample4(context),
-                  ),
+                context,
+                sample4(context),
+              ),
             ),
             ListTile(
               title: Text("Sample 5"),
               subtitle: Text("Yearly Chart"),
               onTap: () => _onTap(
-                    context,
-                    sample5(context),
-                  ),
+                context,
+                sample5(context),
+              ),
             ),
             ListTile(
               title: Text("Sample 6"),
               subtitle: Text("Main Chart"),
               onTap: () => _onTap(
-                    context,
-                    sample6(context),
-                  ),
+                context,
+                sample6(context),
+              ),
+            ),
+            ListTile(
+              title: Text("Sample 7"),
+              subtitle: Text("Custom Chart - Number"),
+              onTap: () => _onTap(
+                context,
+                sample7(context),
+              ),
             ),
           ],
         ),
@@ -148,6 +156,7 @@ Widget sample1(BuildContext context) {
                   ),
                 ],
                 config: BezierChartConfig(
+                  startYAxisFromNonZeroValue: false,
                   bubbleIndicatorColor: Colors.white.withOpacity(0.9),
                   footerHeight: 40,
                   verticalIndicatorStrokeWidth: 3.0,
@@ -590,6 +599,84 @@ _buildChart(
           ),
         ),
       ),
+    ),
+  );
+}
+
+Widget sample7(BuildContext context) {
+  return Container(
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          Colors.black54,
+          Colors.black87,
+          Colors.black87,
+          Colors.black,
+        ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text(
+          "Bezier Chart - Numbers",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 28,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        Center(
+          child: Card(
+            elevation: 12,
+            child: Container(
+              height: MediaQuery.of(context).size.height / 2,
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: BezierChart(
+                bezierChartScale: BezierChartScale.CUSTOM,
+                xAxisCustomValues: const [0, 5, 10, 15, 20, 25, 30, 35],
+                footerValueBuilder: (double value) {
+                  return "${formatAsIntOrDouble(value)}\ndays";
+                },
+                series: const [
+                  BezierLine(
+                    label: "m",
+                    data: const [
+                      DataPoint<double>(value: 100, xAxis: 0),
+                      DataPoint<double>(value: 130, xAxis: 5),
+                      DataPoint<double>(value: 300, xAxis: 10),
+                      DataPoint<double>(value: 150, xAxis: 15),
+                      DataPoint<double>(value: 75, xAxis: 20),
+                      DataPoint<double>(value: 100, xAxis: 25),
+                      DataPoint<double>(value: 250, xAxis: 30),
+                      DataPoint<double>(value: 120, xAxis: 35),
+                    ],
+                  ),
+                ],
+                config: BezierChartConfig(
+                  bubbleIndicatorColor: Colors.white.withOpacity(0.9),
+                  footerHeight: 40,
+                  displayYAxis: true,
+                  backgroundGradient: LinearGradient(
+                    colors: [
+                      Colors.red[300],
+                      Colors.red[400],
+                      Colors.red[400],
+                      Colors.red[500],
+                      Colors.red,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                  snap: false,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     ),
   );
 }

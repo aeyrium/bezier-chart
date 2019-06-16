@@ -34,6 +34,9 @@ class BezierChartConfig {
   ///`true` if you want to display the value of the Y axis, [false] by default
   final bool displayYAxis;
 
+  ///`true` if you want to start the values of Y axis from the minimum value of your Y values.
+  final bool startYAxisFromNonZeroValue;
+
   ///TextStyle of the text of the Y Axis values
   final TextStyle yAxisTextStyle;
 
@@ -72,5 +75,6 @@ class BezierChartConfig {
     this.bubbleIndicatorColor = Colors.white,
     this.backgroundGradient,
     this.verticalIndicatorFixedPosition = true,
+    this.startYAxisFromNonZeroValue = true,
   });
 }

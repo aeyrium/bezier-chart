@@ -607,6 +607,7 @@ class BezierChartState extends State<BezierChart>
                       ),
                       painter: _BezierChartPainter(
                         config: widget.config,
+                        maxYValue: _yValues.last,
                         bezierChartScale: _currentBezierChartScale,
                         verticalIndicatorPosition: _verticalIndicatorPosition,
                         series: computedSeries,
@@ -632,12 +633,16 @@ class BezierChartState extends State<BezierChart>
                 ),
               );
               if (widget.config.displayYAxis) {
-                final fontSize = widget.config.yAxisTextStyle?.fontSize ?? 9.0;
+                final fontSize = widget.config.yAxisTextStyle?.fontSize ?? 8.0;
+                final maxValue = _yValues.last;
                 for (double val in _yValues) {
                   items.add(
                     Positioned(
                       bottom: _getRealValue(
-                              val,
+                              val *
+                                  (widget.config.startYAxisFromNonZeroValue
+                                      ? (val / maxValue)
+                                      : 1),
                               maxHeight - widget.config.footerHeight,
                               _yValues.last) +
                           widget.config.footerHeight +
@@ -690,6 +695,7 @@ class _BezierChartPainter extends CustomPainter {
   final double scrollOffset;
   bool footerDrawed = false;
   final FooterValueBuilder footerValueBuilder;
+  final double maxYValue;
 
   _BezierChartPainter({
     this.config,
@@ -703,6 +709,7 @@ class _BezierChartPainter extends CustomPainter {
     this.maxWidth,
     this.footerValueBuilder,
     this.scrollOffset,
+    this.maxYValue,
   }) : super(repaint: animation) {
     _maxValueY = _getMaxValueY();
     _maxValueX = _getMaxValueX();
@@ -719,13 +726,14 @@ class _BezierChartPainter extends CustomPainter {
 
   ///return the max value of the Axis Y
   double _getMaxValueY() {
+    /*
     double y = double.negativeInfinity;
     for (BezierLine line in series) {
       for (DataPoint dp in line.data) {
         if (dp.value > y) y = dp.value;
       }
-    }
-    return y;
+    }*/
+    return maxYValue;
   }
 
   @override
@@ -816,7 +824,8 @@ class _BezierChartPainter extends CustomPainter {
         final double axisY = value;
         final double valueY = height -
             _getRealValue(
-              axisY,
+              axisY *
+                  (config.startYAxisFromNonZeroValue ? (axisY / maxYValue) : 1),
               height,
               _maxValueY,
             );

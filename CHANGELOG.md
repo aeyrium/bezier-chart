@@ -1,6 +1,7 @@
 ## [1.0.9]
 
 - Optimizing `for` loops removing unnecessary convertion from `Iterable` to `List`.
+- `startYAxisFromNonZeroValue` property was added, if you are displaying the Y Axis then your chart will start from your lower value, if you set it to `false`, it will start from zero.
 
 ## [1.0.8]
 
