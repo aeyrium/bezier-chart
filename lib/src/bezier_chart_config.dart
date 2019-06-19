@@ -59,6 +59,12 @@ class BezierChartConfig {
   ///If the `contentWidth` is upper than the current width then the content will be scrollable (only valid for `bezierChartScale` = `CUSTOM`)
   final double contentWidth;
 
+  ///`true` if you want to display a vertical line on each X data point, it only works when there is one `BezierLine`.
+  final bool displayLinesXAxis;
+
+  ///Color for the vertical line in each X point, only works when `displayLinesXAxis` is true
+  final Color xLinesColor;
+
   BezierChartConfig({
     this.verticalIndicatorStrokeWidth = 2.0,
     this.verticalIndicatorColor = Colors.black,
@@ -76,5 +82,7 @@ class BezierChartConfig {
     this.backgroundGradient,
     this.verticalIndicatorFixedPosition = true,
     this.startYAxisFromNonZeroValue = true,
+    this.displayLinesXAxis = false,
+    this.xLinesColor = Colors.grey,
   });
 }

@@ -656,6 +656,7 @@ Widget sample7(BuildContext context) {
                   ),
                 ],
                 config: BezierChartConfig(
+                  displayLinesXAxis: true,
                   bubbleIndicatorColor: Colors.white.withOpacity(0.9),
                   footerHeight: 40,
                   displayYAxis: true,

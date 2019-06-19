@@ -781,6 +781,12 @@ class _BezierChartPainter extends CustomPainter {
         ..strokeWidth = line.lineStrokeWidth
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round;
+
+      Paint paintXLines = Paint()
+        ..color = config.xLinesColor
+        ..strokeWidth = 1.0
+        ..style = PaintingStyle.stroke;
+
       _AxisValue lastPoint;
 
       //display each data point
@@ -829,6 +835,11 @@ class _BezierChartPainter extends CustomPainter {
               height,
               _maxValueY,
             );
+
+        if (config.displayLinesXAxis && series.length == 1) {
+          canvas.drawLine(
+              Offset(valueX, height), Offset(valueX, valueY ), paintXLines);
+        }
 
         if (lastPoint == null) {
           lastPoint = _AxisValue(x: valueX, y: valueY);

@@ -2,6 +2,7 @@
 
 - Optimizing `for` loops removing unnecessary convertion from `Iterable` to `List`.
 - `startYAxisFromNonZeroValue` property was added, if you are displaying the Y Axis then your chart will start from your lower value, if you set it to `false`, it will start from zero.
+- `displayLinesXAxis` and `xLinesColor` were added to display a vertical line on each X data point, it only works when there is one `BezierLine`.
 
 ## [1.0.8]
 
