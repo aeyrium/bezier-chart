@@ -1,3 +1,7 @@
+## [1.0.10]
+
+- Fixed `pinchZoom` for `BezierChartConfig`.
+
 ## [1.0.9]
 
 - Optimizing `for` loops removing unnecessary convertion from `Iterable` to `List`.

@@ -314,6 +314,7 @@ Widget sample3(BuildContext context) {
         ],
         config: BezierChartConfig(
           verticalIndicatorStrokeWidth: 3.0,
+          pinchZoom: false,
           verticalIndicatorColor: Colors.black26,
           showVerticalIndicator: true,
           verticalIndicatorFixedPosition: false,

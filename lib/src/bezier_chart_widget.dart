@@ -134,7 +134,7 @@ class BezierChartState extends State<BezierChart>
   BezierChartScale _currentBezierChartScale;
 
   double _lastValueSnapped = double.infinity;
-  bool get isPinchZoomActive => _touchFingers > 1;
+  bool get isPinchZoomActive => (_touchFingers > 1 && widget.config.pinchZoom);
 
   ///When we only have 1 axis we don't need to much span to change the date type chart`
   bool get isOnlyOneAxis => _xAxisDataPoints.length <= 1;
