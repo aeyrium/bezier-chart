@@ -838,7 +838,7 @@ class _BezierChartPainter extends CustomPainter {
 
         if (config.displayLinesXAxis && series.length == 1) {
           canvas.drawLine(
-              Offset(valueX, height), Offset(valueX, valueY ), paintXLines);
+              Offset(valueX, height), Offset(valueX, valueY), paintXLines);
         }
 
         if (lastPoint == null) {
