@@ -11,6 +11,8 @@ import 'package:intl/intl.dart' as intl;
 import 'my_single_child_scroll_view.dart';
 
 typedef FooterValueBuilder = String Function(double value);
+typedef FooterDateTimeBuilder = String Function(
+    DateTime value, BezierChartScale scaleType);
 
 class BezierChart extends StatefulWidget {
   ///Chart configuration
@@ -26,6 +28,10 @@ class BezierChart extends StatefulWidget {
   ///This value is optional only if the `BezierChartScale` is `BezierChartScale.CUSTOM` otherwise it will be ignored
   ///This is used to display a custom footer value based on the current 'x' value
   final FooterValueBuilder footerValueBuilder;
+
+  ///This value is optional only if the `BezierChartScale` is Date type otherwise it will be ignored
+  ///This is used to display a custom footer value based on the current 'x' value
+  final FooterDateTimeBuilder footerDateTimeBuilder;
 
   ///This value is required only if the `BezierChartScale` is not `BezierChartScale.CUSTOM`
   final DateTime fromDate;
@@ -47,6 +53,7 @@ class BezierChart extends StatefulWidget {
     this.config,
     this.xAxisCustomValues,
     this.footerValueBuilder,
+    this.footerDateTimeBuilder,
     this.fromDate,
     this.toDate,
     this.selectedDate,
@@ -515,7 +522,24 @@ class BezierChartState extends State<BezierChart>
   @override
   void didUpdateWidget(BezierChart oldWidget) {
     ///Rebuild data points and series only if the BezierChartScale is different from the old one
-    if (oldWidget.bezierChartScale != widget.bezierChartScale) {
+    /// or if the series are different
+
+    bool areSeriesDifferent = false;
+    if (oldWidget.series.length != widget.series.length) {
+      areSeriesDifferent = true;
+    } else {
+      for (int i = 0; i < oldWidget.series.length; i++) {
+        final line1 = oldWidget.series[i];
+        final line2 = widget.series[i];
+        if (line1 != line2) {
+          areSeriesDifferent = true;
+          break;
+        }
+      }
+    }
+
+    if (oldWidget.bezierChartScale != widget.bezierChartScale ||
+        areSeriesDifferent) {
       _currentBezierChartScale = widget.bezierChartScale;
       _buildXDataPoints();
       _computeSeries();
@@ -627,6 +651,7 @@ class BezierChartState extends State<BezierChart>
                             ? _scrollController.offset
                             : 0.0,
                         footerValueBuilder: widget.footerValueBuilder,
+                        footerDateTimeBuilder: widget.footerDateTimeBuilder,
                       ),
                     ),
                   ),
@@ -695,6 +720,7 @@ class _BezierChartPainter extends CustomPainter {
   final double scrollOffset;
   bool footerDrawed = false;
   final FooterValueBuilder footerValueBuilder;
+  final FooterDateTimeBuilder footerDateTimeBuilder;
   final double maxYValue;
 
   _BezierChartPainter({
@@ -709,6 +735,7 @@ class _BezierChartPainter extends CustomPainter {
     this.maxWidth,
     this.footerValueBuilder,
     this.scrollOffset,
+    this.footerDateTimeBuilder,
     this.maxYValue,
   }) : super(repaint: animation) {
     _maxValueY = _getMaxValueY();
@@ -1184,12 +1211,14 @@ class _BezierChartPainter extends CustomPainter {
 
   String _getFooterText(DataPoint dataPoint) {
     final scale = bezierChartScale;
+    if (footerValueBuilder != null && scale == BezierChartScale.CUSTOM) {
+      return footerValueBuilder(dataPoint.value);
+    }
+    if (footerDateTimeBuilder != null && scale != BezierChartScale.CUSTOM) {
+      return footerDateTimeBuilder(dataPoint.xAxis as DateTime, scale);
+    }
     if (scale == BezierChartScale.CUSTOM) {
-      if (footerValueBuilder != null) {
-        return footerValueBuilder(dataPoint.value);
-      } else {
-        return "${formatAsIntOrDouble(dataPoint.value)}\n";
-      }
+      return "${formatAsIntOrDouble(dataPoint.value)}\n";
     } else if (scale == BezierChartScale.WEEKLY) {
       final dateFormat = intl.DateFormat('EEE\nd');
       return "${dateFormat.format(dataPoint.xAxis as DateTime)}";

@@ -1,5 +1,6 @@
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' as intl;
 
 void main() => runApp(MyApp());
 
@@ -283,10 +284,8 @@ Widget sample2(BuildContext context) {
 Widget sample3(BuildContext context) {
   final fromDate = DateTime(2019, 05, 22);
   final toDate = DateTime.now();
-
   final date1 = DateTime.now().subtract(Duration(days: 2));
   final date2 = DateTime.now().subtract(Duration(days: 3));
-
   return Center(
     child: Container(
       color: Colors.red,
@@ -297,6 +296,11 @@ Widget sample3(BuildContext context) {
         bezierChartScale: BezierChartScale.WEEKLY,
         toDate: toDate,
         selectedDate: toDate,
+        //this is optional
+        footerDateTimeBuilder: (DateTime value, BezierChartScale scaleType) {
+          final newFormat = intl.DateFormat('dd/MM');
+          return newFormat.format(value);
+        },
         series: [
           BezierLine(
             label: "Duty",

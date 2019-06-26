@@ -1,6 +1,7 @@
 ## [1.0.10]
 
 - Fixed `pinchZoom` for `BezierChartConfig`.
+- `footerDateTimeBuilder` was added as optional inside `BezierChart`, it allows you to display custom X footer for each `DateTime` value.
 
 ## [1.0.9]
 

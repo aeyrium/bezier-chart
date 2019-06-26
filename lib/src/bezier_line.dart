@@ -36,6 +36,21 @@ class BezierLine {
       data: bezierLine.data,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BezierLine &&
+          runtimeType == other.runtimeType &&
+          label == other.label &&
+          lineColor == other.lineColor &&
+          lineStrokeWidth == other.lineStrokeWidth;
+
+  @override
+  int get hashCode => data
+      .map((val) => val.value?.toString() ?? "")
+      .reduce((val1, val2) => "$val1$val2")
+      .hashCode;
 }
 
 ///This class represent each value `Y` per `X` axis
