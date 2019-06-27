@@ -44,7 +44,8 @@ class BezierLine {
           runtimeType == other.runtimeType &&
           label == other.label &&
           lineColor == other.lineColor &&
-          lineStrokeWidth == other.lineStrokeWidth;
+          lineStrokeWidth == other.lineStrokeWidth &&
+          hashCode == other.hashCode;
 
   @override
   int get hashCode => data
