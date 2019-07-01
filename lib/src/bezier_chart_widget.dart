@@ -51,6 +51,7 @@ class BezierChart extends StatefulWidget {
   final DateTime toDate;
 
   ///This value represents the date selected to display the info in the Chart
+  ///For `BezierChartScale.HOURLY` it will use year, month, day and hour
   ///For `BezierChartScale.WEEKLY` it will use year, month and day
   ///For `BezierChartScale.MONTHLY` it will use year, month
   ///For `BezierChartScale.YEARLY` it will use year
@@ -261,6 +262,21 @@ class BezierChartState extends State<BezierChart>
       _xAxisDataPoints = widget.xAxisCustomValues
           .map((val) => DataPoint<double>(value: val, xAxis: val))
           .toList();
+    } else if (scale == BezierChartScale.HOURLY) {
+      final hours = widget.toDate.difference(widget.fromDate).inHours;
+      for (int i = 0; i < hours; i++) {
+        final tempDate = widget.fromDate.add(
+          Duration(
+            hours: (i + 1),
+          ),
+        );
+        final newDate = DateTime(
+            tempDate.year, tempDate.month, tempDate.day, tempDate.hour, 0);
+        _xAxisDataPoints.add(
+          DataPoint<DateTime>(value: (i * 5).toDouble(), xAxis: newDate),
+        );
+        _checkMissingValues(newDate);
+      }
     } else if (scale == BezierChartScale.WEEKLY) {
       final days = widget.toDate.difference(widget.fromDate).inDays;
       for (int i = 0; i < days; i++) {
@@ -320,7 +336,11 @@ class BezierChartState extends State<BezierChart>
       return widget.config.contentWidth ??
           constraints.maxWidth - 2 * horizontalPadding;
     } else {
-      if (scale == BezierChartScale.WEEKLY) {
+      if (scale == BezierChartScale.HOURLY) {
+        horizontalSpacing = constraints.maxWidth / 10;
+        return _xAxisDataPoints.length * (horizontalSpacing * _currentScale) -
+            horizontalPadding / 2;
+      } else if (scale == BezierChartScale.WEEKLY) {
         horizontalSpacing = constraints.maxWidth / 7;
         return _xAxisDataPoints.length * (horizontalSpacing * _currentScale) -
             horizontalPadding / 2;
@@ -351,6 +371,12 @@ class BezierChartState extends State<BezierChart>
       if (_currentBezierChartScale == BezierChartScale.WEEKLY) {
         index = _xAxisDataPoints.indexWhere(
             (dp) => areEqualDates((dp.xAxis as DateTime), widget.selectedDate));
+      } else if (_currentBezierChartScale == BezierChartScale.HOURLY) {
+        index = _xAxisDataPoints.indexWhere((dp) =>
+            (dp.xAxis as DateTime).year == widget.selectedDate.year &&
+            (dp.xAxis as DateTime).month == widget.selectedDate.month &&
+            (dp.xAxis as DateTime).day == widget.selectedDate.day &&
+            (dp.xAxis as DateTime).hour == widget.selectedDate.hour);
       } else if (_currentBezierChartScale == BezierChartScale.MONTHLY) {
         index = _xAxisDataPoints.indexWhere((dp) =>
             (dp.xAxis as DateTime).year == widget.selectedDate.year &&
@@ -402,7 +428,8 @@ class BezierChartState extends State<BezierChart>
     _yValues = [];
     //fill data series for DateTime scale type
     if (_currentBezierChartScale == BezierChartScale.MONTHLY ||
-        _currentBezierChartScale == BezierChartScale.YEARLY) {
+        _currentBezierChartScale == BezierChartScale.YEARLY ||
+        _currentBezierChartScale == BezierChartScale.HOURLY) {
       for (BezierLine line in widget.series) {
         Map<String, double> valueMap = Map();
         for (DataPoint<DateTime> dataPoint in line.data) {
@@ -410,8 +437,11 @@ class BezierChartState extends State<BezierChart>
           if (_currentBezierChartScale == BezierChartScale.MONTHLY) {
             key =
                 "${dataPoint.xAxis.year},${dataPoint.xAxis.month.toString().padLeft(2, '0')}";
-          } else {
+          } else if (_currentBezierChartScale == BezierChartScale.YEARLY) {
             key = "${dataPoint.xAxis.year}";
+          } else {
+            key =
+                "${dataPoint.xAxis.year},${dataPoint.xAxis.month.toString().padLeft(2, '0')},${dataPoint.xAxis.day.toString().padLeft(2, '0')},${dataPoint.xAxis.hour.toString().padLeft(2, '0')}";
           }
 
           if (valueMap.containsKey(key)) {
@@ -429,7 +459,24 @@ class BezierChartState extends State<BezierChart>
             if (!_yValues.contains(value)) _yValues.add(value);
 
             ///Sum all the values corresponding to each month and create a new data serie
-            if (_currentBezierChartScale == BezierChartScale.MONTHLY) {
+            if (_currentBezierChartScale == BezierChartScale.HOURLY) {
+              List<String> split = key.split(",");
+              int year = int.parse(split[0]);
+              int month = int.parse(split[1]);
+              int day = int.parse(split[2]);
+              int hour = int.parse(split[3]);
+              final date = DateTime(year, month, day, hour, 0);
+              print("label: ${line.label}  VALUE: $value Date: $date");
+              newDataPoints.add(
+                DataPoint<DateTime>(
+                  value: value,
+                  xAxis: date,
+                ),
+              );
+            }
+
+            ///Sum all the values corresponding to each month and create a new data serie
+            else if (_currentBezierChartScale == BezierChartScale.MONTHLY) {
               List<String> split = key.split(",");
               int year = int.parse(split[0]);
               int month = int.parse(split[1]);
@@ -627,6 +674,8 @@ class BezierChartState extends State<BezierChart>
             _previousScale = _currentScale;
           },
           onScaleUpdate: _currentBezierChartScale != BezierChartScale.CUSTOM &&
+                  //Hourly chart doesn't support pinch/zoom for now
+                  _currentBezierChartScale != BezierChartScale.HOURLY &&
                   !_displayIndicator
               ? (details) => _onPinchZoom(_previousScale * details.scale)
               : null,
@@ -893,10 +942,19 @@ class _BezierChartPainter extends CustomPainter {
           //search from axis
           for (DataPoint<DateTime> dp in line.data) {
             final dateTime = (xAxisDataPoints[i].xAxis as DateTime);
-            if (areEqualDates(dateTime, dp.xAxis)) {
-              value = dp.value;
-              axisX = xAxisDataPoints[i].value;
-              break;
+
+            if (bezierChartScale == BezierChartScale.HOURLY) {
+              if (areEqualDatesIncludingHour(dateTime, dp.xAxis)) {
+                value = dp.value;
+                axisX = xAxisDataPoints[i].value;
+                break;
+              }
+            } else {
+              if (areEqualDates(dateTime, dp.xAxis)) {
+                value = dp.value;
+                axisX = xAxisDataPoints[i].value;
+                break;
+              }
             }
           }
 
@@ -1243,12 +1301,21 @@ class _BezierChartPainter extends CustomPainter {
     final scale = bezierChartScale;
     if (scale == BezierChartScale.CUSTOM) {
       return "${formatAsIntOrDouble(_currentXDataPoint.value)}\n";
+    } else if (scale == BezierChartScale.HOURLY) {
+      final dateFormat = intl.DateFormat('dd/MM HH:mm');
+      final date = _currentXDataPoint.xAxis as DateTime;
+      final now = DateTime.now();
+      if (areEqualDatesIncludingHour(date, now)) {
+        return "Now\n";
+      } else {
+        return "${dateFormat.format(_currentXDataPoint.xAxis)}\n";
+      }
     } else if (scale == BezierChartScale.WEEKLY) {
       final dateFormat = intl.DateFormat('EEE d');
       final date = _currentXDataPoint.xAxis as DateTime;
       final now = DateTime.now();
       if (areEqualDates(date, now)) {
-        return "Today\n";
+        return "Current\n";
       } else {
         return "${dateFormat.format(_currentXDataPoint.xAxis)}\n";
       }
@@ -1284,6 +1351,9 @@ class _BezierChartPainter extends CustomPainter {
     }
     if (scale == BezierChartScale.CUSTOM) {
       return "${formatAsIntOrDouble(dataPoint.value)}\n";
+    } else if (scale == BezierChartScale.HOURLY) {
+      final dateFormat = intl.DateFormat('HH:mm\n');
+      return "${dateFormat.format(dataPoint.xAxis as DateTime)}";
     } else if (scale == BezierChartScale.WEEKLY) {
       final dateFormat = intl.DateFormat('EEE\nd');
       return "${dateFormat.format(dataPoint.xAxis as DateTime)}";
@@ -1414,3 +1484,9 @@ bool areEqualDates(DateTime dateTime1, DateTime dateTime2) =>
     dateTime1.year == dateTime2.year &&
     dateTime1.month == dateTime2.month &&
     dateTime1.day == dateTime2.day;
+
+bool areEqualDatesIncludingHour(DateTime dateTime1, DateTime dateTime2) =>
+    dateTime1.year == dateTime2.year &&
+    dateTime1.month == dateTime2.month &&
+    dateTime1.day == dateTime2.day &&
+    dateTime1.hour == dateTime2.hour;

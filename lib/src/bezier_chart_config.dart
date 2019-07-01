@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 /// Type of Bezier line Chart
 enum BezierChartScale {
+  HOURLY,
   WEEKLY,
   MONTHLY,
   YEARLY,
