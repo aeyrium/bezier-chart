@@ -466,7 +466,6 @@ class BezierChartState extends State<BezierChart>
               int day = int.parse(split[2]);
               int hour = int.parse(split[3]);
               final date = DateTime(year, month, day, hour, 0);
-              print("label: ${line.label}  VALUE: $value Date: $date");
               newDataPoints.add(
                 DataPoint<DateTime>(
                   value: value,

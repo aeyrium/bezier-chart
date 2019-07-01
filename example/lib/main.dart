@@ -708,8 +708,6 @@ Widget sample8(BuildContext context) {
 
   final date1 = toDate.subtract(Duration(hours: 2));
   final date2 = toDate.subtract(Duration(hours: 3));
-  print("DATE1: $date1");
-  print("DATE2: $date2");
 
   final date3 = toDate.subtract(Duration(hours: 10));
   final date4 = toDate.subtract(Duration(hours: 15));
