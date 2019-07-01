@@ -295,6 +295,12 @@ Widget sample3(BuildContext context) {
         fromDate: fromDate,
         bezierChartScale: BezierChartScale.WEEKLY,
         toDate: toDate,
+        onIndicatorVisible: (val) {
+          print("Indicator Visible :$val");
+        },
+        onDateTimeSelected: (datetime) {
+          print("selected datetime: $datetime");
+        },
         selectedDate: toDate,
         //this is optional
         footerDateTimeBuilder: (DateTime value, BezierChartScale scaleType) {

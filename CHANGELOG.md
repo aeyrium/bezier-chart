@@ -1,3 +1,9 @@
+## [1.0.11]
+
+- `onIndicatorVisible` callback was added to check when the indicator is visible or not
+- `onValueSelected` was added , it displays the current `double` value selected by the indicator (if the chart is CUSTOM).
+- `onDateTimeSelected` was added, it displays the current `DateTime` selected by the indicator (if the chart is Date type).
+
 ## [1.0.10]
 
 - Fixed `pinchZoom` for `BezierChartConfig`.
