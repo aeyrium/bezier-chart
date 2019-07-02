@@ -278,11 +278,13 @@ class BezierChartState extends State<BezierChart>
         _checkMissingValues(newDate);
       }
     } else if (scale == BezierChartScale.WEEKLY) {
-      final days = widget.toDate.difference(widget.fromDate).inDays;
-      for (int i = 0; i < days; i++) {
+      final days = _convertToDateOnly(widget.toDate)
+          .difference(_convertToDateOnly(widget.fromDate))
+          .inDays;
+      for (int i = 0; i <= days; i++) {
         final newDate = widget.fromDate.add(
           Duration(
-            days: (i + 1),
+            days: (i),
           ),
         );
         _xAxisDataPoints.add(
@@ -327,6 +329,13 @@ class BezierChartState extends State<BezierChart>
         );
       }
     }
+  }
+
+  DateTime _convertToDateOnly(DateTime date) {
+    int year = date.year;
+    int month = date.month;
+    int day = date.day;
+    return DateTime(year, month, day);
   }
 
   ///Calculating the size of the content based on the parent constraints and on the `_currentBezierChartScale`
