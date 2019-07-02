@@ -104,6 +104,14 @@ class MyHomePage extends StatelessWidget {
                 sample8(context),
               ),
             ),
+            ListTile(
+              title: Text("Sample 9"),
+              subtitle: Text("BezierChartScale.WEEKLY problem."),
+              onTap: () => _onTap(
+                context,
+                sample9(context),
+              ),
+            ),
           ],
         ),
       ),
@@ -290,14 +298,10 @@ Widget sample2(BuildContext context) {
 //SAMPLE DATE - WEEKLY
 
 Widget sample3(BuildContext context) {
-  int dateInt1 = 1562013034796;
-  int dateInt2 = 1562079398067;
-  final fromDate = DateTime.fromMillisecondsSinceEpoch(dateInt1);
-  final toDate = DateTime.fromMillisecondsSinceEpoch(dateInt2);
-  final DateTime date1 = DateTime.fromMillisecondsSinceEpoch(dateInt1);
-  final DateTime date2 = DateTime.fromMillisecondsSinceEpoch(dateInt2);
-  //final date1 = DateTime.now().subtract(Duration(days: 2));
-  //final date2 = DateTime.now().subtract(Duration(days: 3));
+  final fromDate = DateTime(2019, 05, 22);
+  final toDate = DateTime.now();
+  final date1 = DateTime.now().subtract(Duration(days: 2));
+  final date2 = DateTime.now().subtract(Duration(days: 3));
   return Center(
     child: Container(
       color: Colors.red,
@@ -322,12 +326,12 @@ Widget sample3(BuildContext context) {
         series: [
           BezierLine(
             label: "Duty",
-            /*  onMissingValue: (dateTime) {
+            onMissingValue: (dateTime) {
               if (dateTime.day.isEven) {
                 return 10.0;
               }
               return 5.0;
-            },*/
+            },
             data: [
               DataPoint<DateTime>(value: 10, xAxis: date1),
               DataPoint<DateTime>(value: 50, xAxis: date2),
@@ -759,6 +763,65 @@ Widget sample8(BuildContext context) {
             end: Alignment.bottomCenter,
           ),
           footerHeight: 35.0,
+        ),
+      ),
+    ),
+  );
+}
+
+//Example of the problem with BezierChartScale.WEEKLY
+Widget sample9(BuildContext context) {
+  int dateInt1 = 1562013034796;
+  int dateInt2 = 1562079398067;
+  final fromDate = DateTime.fromMillisecondsSinceEpoch(dateInt1);
+  final toDate = DateTime.fromMillisecondsSinceEpoch(dateInt2);
+  final DateTime date1 = DateTime.fromMillisecondsSinceEpoch(dateInt1);
+  final DateTime date2 = DateTime.fromMillisecondsSinceEpoch(dateInt2);
+  //final date1 = DateTime.now().subtract(Duration(days: 2));
+  //final date2 = DateTime.now().subtract(Duration(days: 3));
+  return Center(
+    child: Container(
+      color: Colors.red,
+      height: MediaQuery.of(context).size.height / 2,
+      width: MediaQuery.of(context).size.width,
+      child: BezierChart(
+        fromDate: fromDate,
+        bezierChartScale: BezierChartScale.WEEKLY,
+        toDate: toDate,
+        onIndicatorVisible: (val) {
+          print("Indicator Visible :$val");
+        },
+        onDateTimeSelected: (datetime) {
+          print("selected datetime: $datetime");
+        },
+        selectedDate: toDate,
+        //this is optional
+        footerDateTimeBuilder: (DateTime value, BezierChartScale scaleType) {
+          final newFormat = intl.DateFormat('dd/MM');
+          return newFormat.format(value);
+        },
+        series: [
+          BezierLine(
+            label: "Duty",
+            /*  onMissingValue: (dateTime) {
+              if (dateTime.day.isEven) {
+                return 10.0;
+              }
+              return 5.0;
+            },*/
+            data: [
+              DataPoint<DateTime>(value: 10, xAxis: date1),
+              DataPoint<DateTime>(value: 50, xAxis: date2),
+            ],
+          ),
+        ],
+        config: BezierChartConfig(
+          verticalIndicatorStrokeWidth: 3.0,
+          pinchZoom: false,
+          verticalIndicatorColor: Colors.black26,
+          showVerticalIndicator: true,
+          verticalIndicatorFixedPosition: false,
+          backgroundColor: Colors.red,
         ),
       ),
     ),
