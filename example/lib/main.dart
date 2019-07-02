@@ -290,10 +290,14 @@ Widget sample2(BuildContext context) {
 //SAMPLE DATE - WEEKLY
 
 Widget sample3(BuildContext context) {
-  final fromDate = DateTime(2019, 05, 22);
-  final toDate = DateTime.now();
-  final date1 = DateTime.now().subtract(Duration(days: 2));
-  final date2 = DateTime.now().subtract(Duration(days: 3));
+  int dateInt1 = 1562013034796;
+  int dateInt2 = 1562079398067;
+  final fromDate = DateTime.fromMillisecondsSinceEpoch(dateInt1);
+  final toDate = DateTime.fromMillisecondsSinceEpoch(dateInt2);
+  final DateTime date1 = DateTime.fromMillisecondsSinceEpoch(dateInt1);
+  final DateTime date2 = DateTime.fromMillisecondsSinceEpoch(dateInt2);
+  //final date1 = DateTime.now().subtract(Duration(days: 2));
+  //final date2 = DateTime.now().subtract(Duration(days: 3));
   return Center(
     child: Container(
       color: Colors.red,
@@ -318,12 +322,12 @@ Widget sample3(BuildContext context) {
         series: [
           BezierLine(
             label: "Duty",
-            onMissingValue: (dateTime) {
+            /*  onMissingValue: (dateTime) {
               if (dateTime.day.isEven) {
                 return 10.0;
               }
               return 5.0;
-            },
+            },*/
             data: [
               DataPoint<DateTime>(value: 10, xAxis: date1),
               DataPoint<DateTime>(value: 50, xAxis: date2),
