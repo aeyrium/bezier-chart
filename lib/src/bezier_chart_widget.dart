@@ -870,6 +870,7 @@ class _BezierChartPainter extends CustomPainter {
         if (dp.value > y) y = dp.value;
       }
     }*/
+    if (maxYValue == 0.0) return 1.0;
     return maxYValue;
   }
 
@@ -977,7 +978,9 @@ class _BezierChartPainter extends CustomPainter {
         final double valueY = height -
             _getRealValue(
               axisY *
-                  (config.startYAxisFromNonZeroValue ? (axisY / maxYValue) : 1),
+                  (config.startYAxisFromNonZeroValue
+                      ? (axisY / _getMaxValueY())
+                      : 1),
               height,
               _maxValueY,
             );
