@@ -35,6 +35,11 @@ class BezierChartConfig {
   ///`true` if you want to display the value of the Y axis, [false] by default
   final bool displayYAxis;
 
+  ///If [displayYAxis] is true, then you can set a positive value to display the steps of Y axis values
+  ///e.g 1: stepsYAxis : 5 ,  if your maxValue is 100, then the Y values should be: [0,5,10,15 .... 100]
+  ///e.g 2: stepsYAxis : 10 , if your maxValue is 100, then the Y values should be: [10,20,30,40 .... 100]
+  final int stepsYAxis;
+
   ///`true` if you want to start the values of Y axis from the minimum value of your Y values.
   final bool startYAxisFromNonZeroValue;
 
@@ -81,9 +86,10 @@ class BezierChartConfig {
     this.pinchZoom = true,
     this.bubbleIndicatorColor = Colors.white,
     this.backgroundGradient,
-    this.verticalIndicatorFixedPosition = true,
+    this.verticalIndicatorFixedPosition = false,
     this.startYAxisFromNonZeroValue = true,
     this.displayLinesXAxis = false,
+    this.stepsYAxis,
     this.xLinesColor = Colors.grey,
   });
 }

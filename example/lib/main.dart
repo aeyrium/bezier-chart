@@ -181,6 +181,7 @@ Widget sample1(BuildContext context) {
                   showVerticalIndicator: true,
                   verticalIndicatorFixedPosition: false,
                   displayYAxis: true,
+                  stepsYAxis: 10,
                   backgroundGradient: LinearGradient(
                     colors: [
                       Colors.red[300],
@@ -684,9 +685,11 @@ Widget sample7(BuildContext context) {
                 ],
                 config: BezierChartConfig(
                   displayLinesXAxis: true,
+                  startYAxisFromNonZeroValue: true,
                   bubbleIndicatorColor: Colors.white.withOpacity(0.9),
                   footerHeight: 40,
                   displayYAxis: true,
+                  stepsYAxis: 15,
                   backgroundGradient: LinearGradient(
                     colors: [
                       Colors.red[300],

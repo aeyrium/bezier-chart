@@ -243,12 +243,14 @@ class BezierChartState extends State<BezierChart>
   }
 
   _checkMissingValues(DateTime newDate) {
-    if (widget.config.displayYAxis) {
-      for (BezierLine line in widget.series) {
-        if (line.onMissingValue != null) {
-          final newValue = line.onMissingValue(newDate);
-          if (!_tempYValues.contains(newValue)) _tempYValues.add(newValue);
-        }
+    for (BezierLine line in widget.series) {
+      if (line.onMissingValue != null) {
+        final newValue = line.onMissingValue(newDate);
+        if (!_tempYValues.contains(newValue)) _tempYValues.add(newValue);
+        //if there is no missingvalue specified we should use 0 as minimum value to avoid overlap
+      } else if (widget.config.startYAxisFromNonZeroValue &&
+          line.onMissingValue == null) {
+        if (!_tempYValues.contains(0)) _tempYValues.add(0);
       }
     }
   }
@@ -712,6 +714,7 @@ class BezierChartState extends State<BezierChart>
                       painter: _BezierChartPainter(
                         config: widget.config,
                         maxYValue: _yValues.last,
+                        minYValue: _yValues.first,
                         bezierChartScale: _currentBezierChartScale,
                         verticalIndicatorPosition: _verticalIndicatorPosition,
                         series: computedSeries,
@@ -765,22 +768,30 @@ class BezierChartState extends State<BezierChart>
               );
               if (widget.config.displayYAxis) {
                 final fontSize = widget.config.yAxisTextStyle?.fontSize ?? 8.0;
-                final maxValue = _yValues.last;
-                for (double val in _yValues) {
+                final maxValue = _yValues.last -
+                    (widget.config.startYAxisFromNonZeroValue
+                        ? _yValues.first
+                        : 0.0);
+                final steps = widget.config.stepsYAxis != null &&
+                        widget.config.stepsYAxis > 0
+                    ? widget.config.stepsYAxis
+                    : null;
+                _addYItem(double value) {
                   items.add(
                     Positioned(
+                      //diegoveloper
                       bottom: _getRealValue(
-                              val *
+                              value -
                                   (widget.config.startYAxisFromNonZeroValue
-                                      ? (val / maxValue)
-                                      : 1),
+                                      ? _yValues.first
+                                      : 0.0),
                               maxHeight - widget.config.footerHeight,
-                              _yValues.last) +
+                              maxValue) +
                           widget.config.footerHeight +
                           fontSize / 2,
                       left: 10.0,
                       child: Text(
-                        formatAsIntOrDouble(val),
+                        formatAsIntOrDouble(value),
                         style: widget.config.yAxisTextStyle ??
                             TextStyle(
                               color: Colors.white,
@@ -789,6 +800,22 @@ class BezierChartState extends State<BezierChart>
                       ),
                     ),
                   );
+                }
+
+                if (steps != null) {
+                  final max = _yValues.last;
+                  final min = widget.config.startYAxisFromNonZeroValue
+                      ? _yValues.first.ceil()
+                      : 0;
+                  for (int i = min; i <= max; i++) {
+                    if (i % steps == 0) {
+                      _addYItem(i.toDouble());
+                    }
+                  }
+                } else {
+                  for (double val in _yValues) {
+                    _addYItem(val);
+                  }
                 }
               }
               return Stack(
@@ -828,6 +855,7 @@ class _BezierChartPainter extends CustomPainter {
   final FooterValueBuilder footerValueBuilder;
   final FooterDateTimeBuilder footerDateTimeBuilder;
   final double maxYValue;
+  final double minYValue;
   final ValueChanged<double> onValueSelected;
   final ValueChanged<DateTime> onDateTimeSelected;
 
@@ -845,6 +873,7 @@ class _BezierChartPainter extends CustomPainter {
     this.scrollOffset,
     this.footerDateTimeBuilder,
     this.maxYValue,
+    this.minYValue,
     this.onDateTimeSelected,
     this.onValueSelected,
   }) : super(repaint: animation) {
@@ -871,7 +900,7 @@ class _BezierChartPainter extends CustomPainter {
       }
     }*/
     if (maxYValue == 0.0) return 1.0;
-    return maxYValue;
+    return maxYValue - (config.startYAxisFromNonZeroValue ? minYValue : 0.0);
   }
 
   @override
@@ -977,10 +1006,7 @@ class _BezierChartPainter extends CustomPainter {
         final double axisY = value;
         final double valueY = height -
             _getRealValue(
-              axisY *
-                  (config.startYAxisFromNonZeroValue
-                      ? (axisY / _getMaxValueY())
-                      : 1),
+              axisY - (config.startYAxisFromNonZeroValue ? minYValue : 0.0),
               height,
               _maxValueY,
             );

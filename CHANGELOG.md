@@ -1,3 +1,9 @@
+## [1.0.12]
+
+- `verticalIndicatorFixedPosition` from `BezierChartConfig` was changed `false` by default.
+- `stepsYAxis` was added to `BezierChartConfig` , it works only if `displayYAxis` is [true]. e.g: stepsYAxis : 5 ,  if your maxValue is 100, then the Y values should be: [0,5,10,15 .... 100]  (Check `sample` or `sample7`)
+
+
 ## [1.0.11]
 
 - `onIndicatorVisible` callback was added to check when the indicator is visible or not
