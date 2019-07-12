@@ -26,6 +26,15 @@ class BezierChartConfig {
   ///Color of the bubble indicator, it's white by default
   final Color bubbleIndicatorColor;
 
+  ///TextStyle for the title displayed inside the bubble indicator
+  final TextStyle bubbleIndicatorTitleStyle;
+
+  ///TextStyle for the value displayed inside the bubble indicator
+  final TextStyle bubbleIndicatorValueStyle;
+
+  ///TextStyle for the label displayed inside the bubble indicator
+  final TextStyle bubbleIndicatorLabelStyle;
+
   ///Color of the background of the chart
   final Color backgroundColor;
 
@@ -91,5 +100,20 @@ class BezierChartConfig {
     this.displayLinesXAxis = false,
     this.stepsYAxis,
     this.xLinesColor = Colors.grey,
+    this.bubbleIndicatorLabelStyle = const TextStyle(
+      color: Colors.grey,
+      fontWeight: FontWeight.w700,
+      fontSize: 9,
+    ),
+    this.bubbleIndicatorTitleStyle = const TextStyle(
+      color: Colors.grey,
+      fontWeight: FontWeight.w600,
+      fontSize: 9.5,
+    ),
+    this.bubbleIndicatorValueStyle = const TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.bold,
+      fontSize: 11,
+    ),
   });
 }

@@ -767,6 +767,25 @@ class BezierChartState extends State<BezierChart>
                 ),
               );
               if (widget.config.displayYAxis) {
+                if (_yValues != null && _yValues.isNotEmpty) {
+                  //add a background container for the Y Axis
+                  items.add(Positioned(
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                    child: Container(
+                      width: horizontalPadding / 2,
+                      decoration: widget.config.backgroundGradient != null
+                          ? BoxDecoration(
+                              gradient: widget.config.backgroundGradient)
+                          : null,
+                      color: widget.config.backgroundGradient != null
+                          ? null
+                          : widget.config.backgroundColor,
+                    ),
+                  ));
+                }
+
                 final fontSize = widget.config.yAxisTextStyle?.fontSize ?? 8.0;
                 final maxValue = _yValues.last -
                     (widget.config.startYAxisFromNonZeroValue
@@ -1188,19 +1207,11 @@ class _BezierChartPainter extends CustomPainter {
           textValues.add(
             TextSpan(
               text: "${customValue.value} ",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 11,
-              ),
+              style: config.bubbleIndicatorValueStyle.copyWith(fontSize: 11),
               children: [
                 TextSpan(
                   text: "${customValue.label}\n",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 9,
-                  ),
+                  style: config.bubbleIndicatorLabelStyle.copyWith(fontSize: 9),
                 ),
               ],
             ),
@@ -1223,11 +1234,7 @@ class _BezierChartPainter extends CustomPainter {
           textAlign: TextAlign.center,
           text: TextSpan(
             text: _getInfoTitleText(),
-            style: TextStyle(
-              color: Colors.grey,
-              fontWeight: FontWeight.w600,
-              fontSize: 9.5,
-            ),
+            style: config.bubbleIndicatorTitleStyle.copyWith(fontSize: 9.5),
             children: textValues,
           ),
           textDirection: TextDirection.ltr,

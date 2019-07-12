@@ -106,7 +106,7 @@ class MyHomePage extends StatelessWidget {
             ),
             ListTile(
               title: Text("Sample 9"),
-              subtitle: Text("BezierChartScale.WEEKLY problem."),
+              subtitle: Text("BezierChartScale.WEEKLY same day"),
               onTap: () => _onTap(
                 context,
                 sample9(context),
@@ -754,6 +754,14 @@ Widget sample8(BuildContext context) {
           verticalIndicatorColor: Colors.black26,
           showVerticalIndicator: true,
           verticalIndicatorFixedPosition: false,
+          bubbleIndicatorTitleStyle: TextStyle(
+            color: Colors.blue,
+          ),
+          bubbleIndicatorLabelStyle: TextStyle(
+            color: Colors.red,
+          ),
+          displayYAxis: true,
+          stepsYAxis: 20,
           backgroundGradient: LinearGradient(
             colors: [
               Colors.red[300],
