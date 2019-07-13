@@ -172,6 +172,8 @@ class BezierChartState extends State<BezierChart>
 
   DateTime _dateTimeSelected;
   double _valueSelected;
+  GlobalKey _keyLastYAxisItem = GlobalKey();
+  double _yAxisWidth = 0.0;
 
   ///Refresh the position of the vertical/bubble
   void _refreshPosition(details) {
@@ -376,6 +378,7 @@ class BezierChartState extends State<BezierChart>
 
   ///When the widget finish rendering for the first time
   _onLayoutDone(_) {
+    _yAxisWidth = _keyLastYAxisItem.currentContext.size.width;
     //Move to selected position
     if (widget.selectedDate != null) {
       int index = -1;
@@ -774,7 +777,7 @@ class BezierChartState extends State<BezierChart>
                     top: 0,
                     bottom: 0,
                     child: Container(
-                      width: horizontalPadding / 2,
+                      width: _yAxisWidth + 10,
                       decoration: widget.config.backgroundGradient != null
                           ? BoxDecoration(
                               gradient: widget.config.backgroundGradient)
@@ -795,10 +798,9 @@ class BezierChartState extends State<BezierChart>
                         widget.config.stepsYAxis > 0
                     ? widget.config.stepsYAxis
                     : null;
-                _addYItem(double value) {
+                _addYItem(double value, {Key key}) {
                   items.add(
                     Positioned(
-                      //diegoveloper
                       bottom: _getRealValue(
                               value -
                                   (widget.config.startYAxisFromNonZeroValue
@@ -811,11 +813,9 @@ class BezierChartState extends State<BezierChart>
                       left: 10.0,
                       child: Text(
                         formatAsIntOrDouble(value),
+                        key: key,
                         style: widget.config.yAxisTextStyle ??
-                            TextStyle(
-                              color: Colors.white,
-                              fontSize: fontSize,
-                            ),
+                            TextStyle(color: Colors.white, fontSize: fontSize),
                       ),
                     ),
                   );
@@ -826,14 +826,18 @@ class BezierChartState extends State<BezierChart>
                   final min = widget.config.startYAxisFromNonZeroValue
                       ? _yValues.first.ceil()
                       : 0;
-                  for (int i = min; i <= max; i++) {
+                  for (int i = min; i <= max + steps; i++) {
                     if (i % steps == 0) {
-                      _addYItem(i.toDouble());
+                      _addYItem(i.toDouble(),
+                          key: ((i + steps) > (max + steps))
+                              ? _keyLastYAxisItem
+                              : null);
                     }
                   }
                 } else {
                   for (double val in _yValues) {
-                    _addYItem(val);
+                    _addYItem(val,
+                        key: val == _yValues.last ? _keyLastYAxisItem : null);
                   }
                 }
               }
