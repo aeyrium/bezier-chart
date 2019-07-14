@@ -26,9 +26,6 @@ class _Sample10State extends State<Sample10> {
       _xAxis =
           list.map((item) => double.parse(item["Day"].toString())).toList();
     });
-
-    print("_ITEMS: $_items");
-    print("_xAxis: $_xAxis");
   }
 
   @override
