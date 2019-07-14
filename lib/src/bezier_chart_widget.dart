@@ -826,7 +826,7 @@ class BezierChartState extends State<BezierChart>
                   final min = widget.config.startYAxisFromNonZeroValue
                       ? _yValues.first.ceil()
                       : 0;
-                  for (int i = min; i <= max + steps; i++) {
+                  for (int i = min; i < max + steps; i++) {
                     if (i % steps == 0) {
                       _addYItem(i.toDouble(),
                           key: ((i + steps) > (max + steps))
