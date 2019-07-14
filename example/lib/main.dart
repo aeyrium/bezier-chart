@@ -2,6 +2,8 @@ import 'package:bezier_chart/bezier_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'sample10.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -110,6 +112,14 @@ class MyHomePage extends StatelessWidget {
               onTap: () => _onTap(
                 context,
                 sample9(context),
+              ),
+            ),
+            ListTile(
+              title: Text("Sample 10"),
+              subtitle: Text("Async Custom Chart - Number"),
+              onTap: () => _onTap(
+                context,
+                Sample10(),
               ),
             ),
           ],
