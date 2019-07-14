@@ -378,7 +378,7 @@ class BezierChartState extends State<BezierChart>
 
   ///When the widget finish rendering for the first time
   _onLayoutDone(_) {
-    _yAxisWidth = _keyLastYAxisItem.currentContext.size.width;
+    _yAxisWidth = _keyLastYAxisItem.currentContext?.size?.width;
     //Move to selected position
     if (widget.selectedDate != null) {
       int index = -1;
@@ -829,9 +829,7 @@ class BezierChartState extends State<BezierChart>
                   for (int i = min; i < max + steps; i++) {
                     if (i % steps == 0) {
                       _addYItem(i.toDouble(),
-                          key: ((i + steps) > (max + steps))
-                              ? _keyLastYAxisItem
-                              : null);
+                          key: ((i + steps) > max) ? _keyLastYAxisItem : null);
                     }
                   }
                 } else {

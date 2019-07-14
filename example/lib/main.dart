@@ -750,7 +750,7 @@ Widget sample8(BuildContext context) {
           BezierLine(
             label: "Duty",
             data: [
-              DataPoint<DateTime>(value: 10, xAxis: date1),
+              DataPoint<DateTime>(value: 0, xAxis: date1),
               DataPoint<DateTime>(value: 50, xAxis: date2),
               DataPoint<DateTime>(value: 100, xAxis: date3),
               DataPoint<DateTime>(value: 100, xAxis: date4),
@@ -771,7 +771,7 @@ Widget sample8(BuildContext context) {
             color: Colors.red,
           ),
           displayYAxis: true,
-          stepsYAxis: 20,
+          stepsYAxis: 25,
           backgroundGradient: LinearGradient(
             colors: [
               Colors.red[300],
