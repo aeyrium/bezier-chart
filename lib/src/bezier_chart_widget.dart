@@ -318,7 +318,7 @@ class BezierChartState extends State<BezierChart>
         return _xAxisDataPoints.length * (horizontalSpacing * _currentScale) -
             horizontalPadding / 2;
       } else if (scale == BezierChartScale.WEEKLYTRULY) {
-        horizontalSpacing = constraints.maxWidth / 12;
+        horizontalSpacing = constraints.maxWidth / 7;
         return _xAxisDataPoints.length * (horizontalSpacing * _currentScale) -
             horizontalPadding / 2;
       } else if (scale == BezierChartScale.MONTHLY) {
@@ -1228,7 +1228,7 @@ class _BezierChartPainter extends CustomPainter {
       final dateFormat = intl.DateFormat('EEE\nd');
       return "${dateFormat.format(dataPoint.xAxis as DateTime)}";
     } else if (scale == BezierChartScale.WEEKLYTRULY) {
-      final dateFormat = intl.DateFormat('EEE\nd');
+      final dateFormat = intl.DateFormat('ddd\nMMM');
       return "${dateFormat.format(dataPoint.xAxis as DateTime)}";
     } else if (scale == BezierChartScale.MONTHLY) {
       final dateFormat = intl.DateFormat('MMM');
