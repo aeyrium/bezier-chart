@@ -1186,7 +1186,7 @@ class _BezierChartPainter extends CustomPainter {
         return "${dateFormat.format(_currentXDataPoint.xAxis)}\n";
       }
     } else if (scale == BezierChartScale.WEEKLYTRULY) {
-      final dateFormat = intl.DateFormat('EEE d');
+      final dateFormat = intl.DateFormat('EEE MM-dd');
       final date = _currentXDataPoint.xAxis as DateTime;
       final now = DateTime.now();
       if (areEqualDates(date, now)) {
@@ -1228,8 +1228,14 @@ class _BezierChartPainter extends CustomPainter {
       final dateFormat = intl.DateFormat('EEE\nd');
       return "${dateFormat.format(dataPoint.xAxis as DateTime)}";
     } else if (scale == BezierChartScale.WEEKLYTRULY) {
-      final dateFormat = intl.DateFormat('ddd\nMMM');
-      return "${dateFormat.format(dataPoint.xAxis as DateTime)}";
+      final dateFormat = intl.DateFormat('MMM');
+      DateTime start = DateTime.fromMillisecondsSinceEpoch(
+              (dataPoint.xAxis as DateTime).millisecondsSinceEpoch)
+          .subtract(Duration(days: 3));
+      DateTime end = DateTime.fromMillisecondsSinceEpoch(
+              (dataPoint.xAxis as DateTime).millisecondsSinceEpoch)
+          .add(Duration(days: 3));
+      return "${start.day}-${end.day}\n${dateFormat.format(dataPoint.xAxis as DateTime)}";
     } else if (scale == BezierChartScale.MONTHLY) {
       final dateFormat = intl.DateFormat('MMM');
       final dateFormatYear = intl.DateFormat('y');
