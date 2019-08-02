@@ -418,7 +418,7 @@ class BezierChartState extends State<BezierChart>
           final space = (_contentWidth / _xAxisDataPoints.length);
           fixedPosition =
               Offset(isOnlyOneAxis ? 0.0 : (index * space) + space / 2, 0.0);
-          _scrollController.jumpTo((index * space) + space / 2);
+          _scrollController.jumpTo((index * space));
           setState(
             () {
               _verticalIndicatorPosition = fixedPosition;
