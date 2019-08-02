@@ -57,6 +57,10 @@ class BezierChart extends StatefulWidget {
   ///For `BezierChartScale.YEARLY` it will use year
   final DateTime selectedDate;
 
+  ///This value represents the value selected to display the info in the Chart
+  ///It's only for `BezierChartScale.CUSTOM`
+  final double selectedValue;
+
   ///Beziers used in the Axis Y
   final List<BezierLine> series;
 
@@ -72,6 +76,7 @@ class BezierChart extends StatefulWidget {
     this.onIndicatorVisible,
     this.onDateTimeSelected,
     this.onValueSelected,
+    this.selectedValue,
     @required this.bezierChartScale,
     @required this.series,
   })  : assert(
@@ -200,7 +205,7 @@ class BezierChartState extends State<BezierChart>
 
   ///After long press this method is called to display the bubble indicator if is not visible
   ///An animation and snap sound are triggered
-  _onDisplayIndicator(details) {
+  _onDisplayIndicator(details, {bool updatePosition = true}) {
     if (!_displayIndicator) {
       _displayIndicator = true;
       _animationController.forward(
@@ -211,7 +216,7 @@ class BezierChartState extends State<BezierChart>
       }
     }
     _onDataPointSnap(double.maxFinite);
-    _updatePosition(details.globalPosition);
+    if (updatePosition) _updatePosition(details.globalPosition);
   }
 
   ///Hide the vertical/bubble indicator and refresh the widget
@@ -380,7 +385,10 @@ class BezierChartState extends State<BezierChart>
   _onLayoutDone(_) {
     _yAxisWidth = _keyLastYAxisItem.currentContext?.size?.width;
     //Move to selected position
-    if (widget.selectedDate != null) {
+    if ((widget.selectedDate != null &&
+            _currentBezierChartScale != BezierChartScale.CUSTOM) ||
+        (widget.selectedValue != null &&
+            _currentBezierChartScale == BezierChartScale.CUSTOM)) {
       int index = -1;
       if (_currentBezierChartScale == BezierChartScale.WEEKLY) {
         index = _xAxisDataPoints.indexWhere(
@@ -398,29 +406,50 @@ class BezierChartState extends State<BezierChart>
       } else if (_currentBezierChartScale == BezierChartScale.YEARLY) {
         index = _xAxisDataPoints.indexWhere(
             (dp) => (dp.xAxis as DateTime).year == widget.selectedDate.year);
+      } else if (_currentBezierChartScale == BezierChartScale.CUSTOM) {
+        index = _xAxisDataPoints
+            .indexWhere((dp) => (dp.xAxis as double) == widget.selectedValue);
       }
 
       //If it's a valid index then scroll to the date selected based on the current position
       if (index >= 0) {
-        final jumpToX = (index * horizontalSpacing) -
-            horizontalPadding / 2 -
-            _keyScroll.currentContext.size.width / 2;
-        _scrollController.jumpTo(jumpToX);
+        Offset fixedPosition;
+        if (_currentBezierChartScale == BezierChartScale.CUSTOM) {
+          final space = (_contentWidth / _xAxisDataPoints.length);
+          fixedPosition =
+              Offset(isOnlyOneAxis ? 0.0 : (index * space) + space / 2, 0.0);
+          setState(
+            () {
+              _verticalIndicatorPosition = fixedPosition;
+              _onDisplayIndicator(
+                LongPressMoveUpdateDetails(
+                  globalPosition: fixedPosition,
+                  offsetFromOrigin: fixedPosition,
+                ),
+                updatePosition: false,
+              );
+            },
+          );
+        } else {
+          final jumpToX = (index * horizontalSpacing) -
+              horizontalPadding / 2 -
+              _keyScroll.currentContext.size.width / 2;
+          _scrollController.jumpTo(jumpToX);
 
-        final fixedPosition = Offset(
-            isOnlyOneAxis
-                ? 0.0
-                : (index * horizontalSpacing + 2 * horizontalPadding) -
-                    _scrollController.offset,
-            0.0);
-
-        _verticalIndicatorPosition = fixedPosition;
-        _onDisplayIndicator(
-          LongPressMoveUpdateDetails(
-            globalPosition: fixedPosition,
-            offsetFromOrigin: fixedPosition,
-          ),
-        );
+          fixedPosition = Offset(
+              isOnlyOneAxis
+                  ? 0.0
+                  : (index * horizontalSpacing + 2 * horizontalPadding) -
+                      _scrollController.offset,
+              0.0);
+          _verticalIndicatorPosition = fixedPosition;
+          _onDisplayIndicator(
+            LongPressMoveUpdateDetails(
+              globalPosition: fixedPosition,
+              offsetFromOrigin: fixedPosition,
+            ),
+          );
+        }
       }
     }
     _checkIfNeedScroll();

@@ -1,3 +1,7 @@
+## [1.0.13]
+
+- `selectedValue` was added for `BezierChartScale.CUSTOM`
+
 ## [1.0.12]
 
 - `verticalIndicatorFixedPosition` from `BezierChartConfig` was changed `false` by default.

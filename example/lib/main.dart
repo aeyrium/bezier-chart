@@ -163,6 +163,7 @@ Widget sample1(BuildContext context) {
               width: MediaQuery.of(context).size.width * 0.9,
               child: BezierChart(
                 bezierChartScale: BezierChartScale.CUSTOM,
+                selectedValue: 30,
                 xAxisCustomValues: const [0, 5, 10, 15, 20, 25, 30, 35],
                 footerValueBuilder: (double value) {
                   return "${formatAsIntOrDouble(value)}\ndays";
@@ -203,7 +204,7 @@ Widget sample1(BuildContext context) {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
-                  snap: false,
+                  snap: true,
                 ),
               ),
             ),
