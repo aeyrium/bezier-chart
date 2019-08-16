@@ -1,3 +1,7 @@
+## [1.0.13+1]
+
+- Fixed a bug related to `stepsYAxis` value
+
 ## [1.0.13]
 
 - `selectedValue` was added for `BezierChartScale.CUSTOM`
