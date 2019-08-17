@@ -94,7 +94,7 @@ void main() {
       expect(align.child is CustomPaint, true);
       final customPainter = align.child as CustomPaint;
       final localHorizontalPadding = 50.0;
-      final localVerticalPercent = 0.8;
+      final localVerticalPercent = 0.75;
       expect(scrollView.padding.horizontal, localHorizontalPadding * 2);
       expect(customPainter.size.width, width - 2 * localHorizontalPadding);
       expect(customPainter.size.height, height * localVerticalPercent);
