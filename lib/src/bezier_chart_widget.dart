@@ -29,9 +29,17 @@ class BezierChart extends StatefulWidget {
   ///This is used to display a custom footer value based on the current 'x' value
   final FooterValueBuilder footerValueBuilder;
 
+  ///[Optional] This callback only works if the `BezierChartScale` is `BezierChartScale.CUSTOM` otherwise it will be ignored
+  ///This is used to display a custom bubble label value based on the current 'x' value
+  final FooterValueBuilder bubbleLabelValueBuilder;
+
   ///[Optional] This callback only works if the `BezierChartScale` is Date type otherwise it will be ignored
   ///This is used to display a custom footer value based on the current 'x' value
   final FooterDateTimeBuilder footerDateTimeBuilder;
+
+  ///[Optional] This callback only works if the `BezierChartScale` is Date type otherwise it will be ignored
+  ///This is used to display a custom bubble label value based on the current 'x' value
+  final FooterDateTimeBuilder bubbleLabelDateTimeBuilder;
 
   ///[Optional] This callback notify when the display indicator is visible or not
   final ValueChanged<bool> onIndicatorVisible;
@@ -69,7 +77,9 @@ class BezierChart extends StatefulWidget {
     this.config,
     this.xAxisCustomValues,
     this.footerValueBuilder,
+    this.bubbleLabelValueBuilder,
     this.footerDateTimeBuilder,
+    this.bubbleLabelDateTimeBuilder,
     this.fromDate,
     this.toDate,
     this.selectedDate,
@@ -767,7 +777,9 @@ class BezierChartState extends State<BezierChart>
                             ? _scrollController.offset
                             : 0.0,
                         footerValueBuilder: widget.footerValueBuilder,
+                        bubbleLabelValueBuilder: widget.bubbleLabelValueBuilder,
                         footerDateTimeBuilder: widget.footerDateTimeBuilder,
+                        bubbleLabelDateTimeBuilder: widget.bubbleLabelDateTimeBuilder,
                         onValueSelected: (val) {
                           if (widget.onValueSelected != null) {
                             if (_valueSelected == null) {
@@ -906,7 +918,9 @@ class _BezierChartPainter extends CustomPainter {
   final double scrollOffset;
   bool footerDrawed = false;
   final FooterValueBuilder footerValueBuilder;
+  final FooterValueBuilder bubbleLabelValueBuilder;
   final FooterDateTimeBuilder footerDateTimeBuilder;
+  final FooterDateTimeBuilder bubbleLabelDateTimeBuilder;
   final double maxYValue;
   final double minYValue;
   final ValueChanged<double> onValueSelected;
@@ -923,8 +937,10 @@ class _BezierChartPainter extends CustomPainter {
     this.onDataPointSnap,
     this.maxWidth,
     this.footerValueBuilder,
+    this.bubbleLabelValueBuilder,
     this.scrollOffset,
     this.footerDateTimeBuilder,
+    this.bubbleLabelDateTimeBuilder,
     this.maxYValue,
     this.minYValue,
     this.onDateTimeSelected,
@@ -1384,6 +1400,12 @@ class _BezierChartPainter extends CustomPainter {
 
   String _getInfoTitleText() {
     final scale = bezierChartScale;
+    if (bubbleLabelValueBuilder!= null && scale == BezierChartScale.CUSTOM) {
+      return bubbleLabelValueBuilder(_currentXDataPoint.value);
+    }
+    if (bubbleLabelDateTimeBuilder!= null && scale != BezierChartScale.CUSTOM) {
+      return bubbleLabelDateTimeBuilder(_currentXDataPoint.xAxis as DateTime, scale);
+    }
     if (scale == BezierChartScale.CUSTOM) {
       return "${formatAsIntOrDouble(_currentXDataPoint.value)}\n";
     } else if (scale == BezierChartScale.HOURLY) {
