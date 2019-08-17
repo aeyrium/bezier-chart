@@ -354,6 +354,7 @@ Widget sample3(BuildContext context) {
           displayDataPointWhenNoValue: false,
           verticalIndicatorStrokeWidth: 3.0,
           pinchZoom: false,
+          physics: ClampingScrollPhysics(),
           verticalIndicatorColor: Colors.black26,
           showVerticalIndicator: true,
           verticalIndicatorFixedPosition: false,

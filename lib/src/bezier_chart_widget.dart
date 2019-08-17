@@ -733,7 +733,7 @@ class BezierChartState extends State<BezierChart>
                   controller: _scrollController,
                   physics: isPinchZoomActive || !_isScrollable
                       ? NeverScrollableScrollPhysics()
-                      : AlwaysScrollableScrollPhysics(),
+                      : widget.config.physics,
                   key: _keyScroll,
                   scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -959,11 +959,16 @@ class _BezierChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final height = size.height - config.footerHeight;
-    Paint paintVerticalIndicator = Paint()
-      ..color = config.verticalIndicatorColor
-      ..strokeWidth = config.verticalIndicatorStrokeWidth
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.square;
+    Paint paintVerticalIndicator = Paint();
+    try {
+      paintVerticalIndicator
+        ..color = config.verticalIndicatorColor
+        ..strokeWidth = config.verticalIndicatorStrokeWidth
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.square;
+    } catch (ex) {
+      print("err: $ex");
+    }
 
     Paint paintControlPoints = Paint()..strokeCap = StrokeCap.round;
 
@@ -1189,11 +1194,15 @@ class _BezierChartPainter extends CustomPainter {
 
     if (verticalIndicatorPosition != null && showIndicator) {
       if (config.snap) {
-        verticalX = _getRealValue(
-          _currentXDataPoint.value,
-          size.width,
-          _maxValueX,
-        );
+        if (_currentXDataPoint != null) {
+          verticalX = _getRealValue(
+            _currentXDataPoint.value,
+            size.width,
+            _maxValueX,
+          );
+        } else {
+          verticalX = 0.0;
+        }
       }
 
       if (p0 != null) {

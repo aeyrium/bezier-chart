@@ -79,9 +79,12 @@ class BezierChartConfig {
 
   ///Color for the vertical line in each X point, only works when `displayLinesXAxis` is true
   final Color xLinesColor;
-  
+
   ///`true` if you want do display the dot when there is no value specified (The values inside `onMissingValue`)
   final bool displayDataPointWhenNoValue;
+
+  ///The physics for horizontal ScrollView
+  final ScrollPhysics physics;
 
   BezierChartConfig({
     this.verticalIndicatorStrokeWidth = 2.0,
@@ -119,5 +122,6 @@ class BezierChartConfig {
       fontWeight: FontWeight.bold,
       fontSize: 11,
     ),
+    this.physics = const AlwaysScrollableScrollPhysics(),
   });
 }
