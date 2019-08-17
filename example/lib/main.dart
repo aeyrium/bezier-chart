@@ -122,6 +122,14 @@ class MyHomePage extends StatelessWidget {
                 Sample10(),
               ),
             ),
+            ListTile(
+              title: Text("Sample 11"),
+              subtitle: Text("Custom Bubble Label Example"),
+              onTap: () => _onTap(
+                context,
+                sample11(context),
+              ),
+            ),
           ],
         ),
       ),
@@ -850,3 +858,66 @@ Widget sample9(BuildContext context) {
     ),
   );
 }
+
+// bubbleLabelDateTimeBuilder usage example
+Widget sample11(BuildContext context) {
+  final fromDate = DateTime(2019, 05, 22);
+  final toDate = DateTime.now();
+  final date1 = DateTime.now().subtract(Duration(days: 2));
+  final date2 = DateTime.now().subtract(Duration(days: 3));
+  return Center(
+    child: Container(
+      color: Colors.red,
+      //height: MediaQuery.of(context).size.height / 2,
+      //width: MediaQuery.of(context).size.width,
+      child: BezierChart(
+        fromDate: fromDate,
+        bezierChartScale: BezierChartScale.WEEKLY,
+        toDate: toDate,
+        onIndicatorVisible: (val) {
+          print("Indicator Visible :$val");
+        },
+        onDateTimeSelected: (datetime) {
+          print("selected datetime: $datetime");
+        },
+        selectedDate: toDate,
+        //this is optional
+        footerDateTimeBuilder: (DateTime value, BezierChartScale scaleType) {
+          final newFormat = intl.DateFormat('dd/MMM');
+          return newFormat.format(value);
+        },
+        bubbleLabelDateTimeBuilder:
+            (DateTime value, BezierChartScale scaleType) {
+          final newFormat = intl.DateFormat('EEE d');
+          return "${newFormat.format(value)}\n";
+        },
+        series: [
+          BezierLine(
+            label: "Duty",
+            onMissingValue: (dateTime) {
+              if (dateTime.day.isEven) {
+                return 10.0;
+              }
+              return 5.0;
+            },
+            data: [
+              DataPoint<DateTime>(value: 30, xAxis: fromDate),
+              DataPoint<DateTime>(value: 20, xAxis: date1),
+              DataPoint<DateTime>(value: 50, xAxis: date2),
+            ],
+          ),
+        ],
+        config: BezierChartConfig(
+          displayDataPointWhenNoValue: false,
+          verticalIndicatorStrokeWidth: 3.0,
+          pinchZoom: false,
+          verticalIndicatorColor: Colors.black26,
+          showVerticalIndicator: true,
+          verticalIndicatorFixedPosition: false,
+          backgroundColor: Colors.red,
+        ),
+      ), // bc
+    ),
+  );
+}
+
