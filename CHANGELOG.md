@@ -2,6 +2,7 @@
 
 - Fixed a bug related to `stepsYAxis` value
 - new property added `displayDataPointWhenNoValue` for `BezierChartConfig`
+- new property added `physics` for `BezierChartConfig`
 
 ## [1.0.13]
 
