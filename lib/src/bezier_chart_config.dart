@@ -79,6 +79,9 @@ class BezierChartConfig {
 
   ///Color for the vertical line in each X point, only works when `displayLinesXAxis` is true
   final Color xLinesColor;
+  
+  ///`true` if you want do display the dot when there is no value specified (The values inside `onMissingValue`)
+  final bool displayDataPointWhenNoValue;
 
   BezierChartConfig({
     this.verticalIndicatorStrokeWidth = 2.0,
@@ -100,6 +103,7 @@ class BezierChartConfig {
     this.displayLinesXAxis = false,
     this.stepsYAxis,
     this.xLinesColor = Colors.grey,
+    this.displayDataPointWhenNoValue = true,
     this.bubbleIndicatorLabelStyle = const TextStyle(
       color: Colors.grey,
       fontWeight: FontWeight.w700,

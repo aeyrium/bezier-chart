@@ -1026,7 +1026,7 @@ class _BezierChartPainter extends CustomPainter {
         if (scrollOffset - range >= valueX || scrollOffset + range <= valueX) {
           continue;
         }
-
+        bool isMissingValue = false;
         if (bezierChartScale == BezierChartScale.CUSTOM) {
           value = line.data[i].value;
         } else {
@@ -1051,6 +1051,7 @@ class _BezierChartPainter extends CustomPainter {
 
           if (value == 0) {
             if (line.onMissingValue != null) {
+              isMissingValue = true;
               value = line.onMissingValue(xAxisDataPoints[i].xAxis as DateTime);
             }
           }
@@ -1077,7 +1078,13 @@ class _BezierChartPainter extends CustomPainter {
         final double controlPointX = lastPoint.x + (valueX - lastPoint.x) / 2;
         path.cubicTo(
             controlPointX, lastPoint.y, controlPointX, valueY, valueX, valueY);
-        dataPoints.add(Offset(valueX, valueY));
+        if (isMissingValue) {
+          if (config.displayDataPointWhenNoValue) {
+            dataPoints.add(Offset(valueX, valueY));
+          }
+        } else {
+          dataPoints.add(Offset(valueX, valueY));
+        }
 
         if (verticalIndicatorPosition != null &&
             verticalX >= lastPoint.x &&
