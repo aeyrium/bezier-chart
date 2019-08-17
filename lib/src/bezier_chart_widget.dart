@@ -727,7 +727,7 @@ class BezierChartState extends State<BezierChart>
             builder: (context, constraints) {
               _contentWidth = _buildContentWidth(constraints);
               final items = <Widget>[];
-              final maxHeight = constraints.biggest.height * 0.8;
+              final maxHeight = constraints.biggest.height * 0.75;
               items.add(
                 MySingleChildScrollView(
                   controller: _scrollController,
