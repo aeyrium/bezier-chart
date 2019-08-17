@@ -1,4 +1,4 @@
-## [1.0.13+1]
+## [1.0.14]
 
 - Fixed a bug related to `stepsYAxis` value
 - new property added `displayDataPointWhenNoValue` for `BezierChartConfig`
