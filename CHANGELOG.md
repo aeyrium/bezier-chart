@@ -3,6 +3,7 @@
 - Fixed a bug related to `stepsYAxis` value
 - new property added `displayDataPointWhenNoValue` for `BezierChartConfig`
 - new property added `physics` for `BezierChartConfig`
+- Added `bubbleLabelValueBuilder` and `bubbleLabelDateTimeBuilder` callbacks
 
 ## [1.0.13]
 
