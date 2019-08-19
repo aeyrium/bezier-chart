@@ -644,8 +644,10 @@ class BezierChartState extends State<BezierChart>
 
   @override
   void didUpdateWidget(BezierChart oldWidget) {
-    ///Rebuild data points and series only if the BezierChartScale is different from the old one
-    /// or if the series are different
+    /// Rebuild data points and series in case:
+    /// 1. if the BezierChartScale is different from the old one
+    /// 2. if the series are different
+    /// 3. if either fromDate or toDate are different
 
     bool areSeriesDifferent = false;
     if (oldWidget.series.length != widget.series.length) {
@@ -662,7 +664,9 @@ class BezierChartState extends State<BezierChart>
     }
 
     if (oldWidget.bezierChartScale != widget.bezierChartScale ||
-        areSeriesDifferent) {
+        areSeriesDifferent ||
+        oldWidget.fromDate != widget.fromDate ||
+        oldWidget.toDate != widget.toDate) {
       _currentBezierChartScale = widget.bezierChartScale;
       _buildXDataPoints();
       _computeSeries();
@@ -779,7 +783,8 @@ class BezierChartState extends State<BezierChart>
                         footerValueBuilder: widget.footerValueBuilder,
                         bubbleLabelValueBuilder: widget.bubbleLabelValueBuilder,
                         footerDateTimeBuilder: widget.footerDateTimeBuilder,
-                        bubbleLabelDateTimeBuilder: widget.bubbleLabelDateTimeBuilder,
+                        bubbleLabelDateTimeBuilder:
+                            widget.bubbleLabelDateTimeBuilder,
                         onValueSelected: (val) {
                           if (widget.onValueSelected != null) {
                             if (_valueSelected == null) {
@@ -1409,11 +1414,13 @@ class _BezierChartPainter extends CustomPainter {
 
   String _getInfoTitleText() {
     final scale = bezierChartScale;
-    if (bubbleLabelValueBuilder!= null && scale == BezierChartScale.CUSTOM) {
+    if (bubbleLabelValueBuilder != null && scale == BezierChartScale.CUSTOM) {
       return bubbleLabelValueBuilder(_currentXDataPoint.value);
     }
-    if (bubbleLabelDateTimeBuilder!= null && scale != BezierChartScale.CUSTOM) {
-      return bubbleLabelDateTimeBuilder(_currentXDataPoint.xAxis as DateTime, scale);
+    if (bubbleLabelDateTimeBuilder != null &&
+        scale != BezierChartScale.CUSTOM) {
+      return bubbleLabelDateTimeBuilder(
+          _currentXDataPoint.xAxis as DateTime, scale);
     }
     if (scale == BezierChartScale.CUSTOM) {
       return "${formatAsIntOrDouble(_currentXDataPoint.value)}\n";
