@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'sample10.dart';
+import 'sample12.dart';
 
 void main() => runApp(MyApp());
 
@@ -129,6 +130,12 @@ class MyHomePage extends StatelessWidget {
                 context,
                 sample11(context),
               ),
+            ),
+            ListTile(
+              title: Text("Sample 12"),
+              subtitle: Text("Dynamic date range"),
+              onTap: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Sample12())),
             ),
           ],
         ),
@@ -917,8 +924,7 @@ Widget sample11(BuildContext context) {
           verticalIndicatorFixedPosition: false,
           backgroundColor: Colors.red,
         ),
-      ), // bc
+      ),
     ),
   );
 }
-
