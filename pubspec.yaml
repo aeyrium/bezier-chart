@@ -14,7 +14,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.15.8
+  intl: ^0.16.0
 
 dev_dependencies:
   flutter_test:
