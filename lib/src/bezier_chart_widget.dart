@@ -1,4 +1,3 @@
-import 'dart:io' if (dart.library.js) 'dart:html';
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -249,8 +248,10 @@ class BezierChartState extends State<BezierChart>
 
   ///When the current indicator reach any data point a feedback is triggered
   void _onDataPointSnap(double value) {
+    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+
     if (_lastValueSnapped != value && widget.config.snap) {
-      if (Platform.isIOS) {
+      if (isIOS) {
         HapticFeedback.heavyImpact();
       } else {
         Feedback.forTap(context);
