@@ -4,6 +4,7 @@ import 'package:intl/intl.dart' as intl;
 
 import 'sample10.dart';
 import 'sample12.dart';
+import 'sample13.dart';
 
 void main() => runApp(MyApp());
 
@@ -137,7 +138,12 @@ class MyHomePage extends StatelessWidget {
               onTap: () => Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => Sample12())),
             ),
-          ],
+            ListTile(
+              title: Text("Sample 13"),
+              subtitle: Text("Dynamic date range"),
+              onTap: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Sample13())),
+            ),          ],
         ),
       ),
     );
