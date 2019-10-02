@@ -20,6 +20,9 @@ class BezierChart extends StatefulWidget {
   ///Type of Chart
   final BezierChartScale bezierChartScale;
 
+  ///Aggregation of Chart
+  final BezierChartAggregation bezierChartAggregation;
+
   ///This value is required only if the `BezierChartScale` is `BezierChartScale.CUSTOM`
   ///and these values must be sorted in increasing way (These will be showed in the Axis X).
   final List<double> xAxisCustomValues;
@@ -86,6 +89,7 @@ class BezierChart extends StatefulWidget {
     this.onDateTimeSelected,
     this.onValueSelected,
     this.selectedValue,
+    this.bezierChartAggregation = BezierChartAggregation.SUM,
     @required this.bezierChartScale,
     @required this.series,
   })  : assert(
@@ -482,11 +486,13 @@ class BezierChartState extends State<BezierChart>
     computedSeries = [];
     _yValues = [];
     //fill data series for DateTime scale type
+
     if (_currentBezierChartScale == BezierChartScale.MONTHLY ||
         _currentBezierChartScale == BezierChartScale.YEARLY ||
+        _currentBezierChartScale == BezierChartScale.WEEKLY ||
         _currentBezierChartScale == BezierChartScale.HOURLY) {
       for (BezierLine line in widget.series) {
-        Map<String, double> valueMap = Map();
+        Map<String, List<double>> tmpMap = Map();
         for (DataPoint<DateTime> dataPoint in line.data) {
           String key;
           if (_currentBezierChartScale == BezierChartScale.MONTHLY) {
@@ -494,17 +500,32 @@ class BezierChartState extends State<BezierChart>
                 "${dataPoint.xAxis.year},${dataPoint.xAxis.month.toString().padLeft(2, '0')}";
           } else if (_currentBezierChartScale == BezierChartScale.YEARLY) {
             key = "${dataPoint.xAxis.year}";
+          } else if (_currentBezierChartScale == BezierChartScale.WEEKLY) {
+            key =
+            "${dataPoint.xAxis.year},${dataPoint.xAxis.month.toString().padLeft(2, '0')},${dataPoint.xAxis.day.toString().padLeft(2, '0')}";
           } else {
             key =
                 "${dataPoint.xAxis.year},${dataPoint.xAxis.month.toString().padLeft(2, '0')},${dataPoint.xAxis.day.toString().padLeft(2, '0')},${dataPoint.xAxis.hour.toString().padLeft(2, '0')}";
           }
 
-          if (valueMap.containsKey(key)) {
-            final value = valueMap[key];
-            valueMap[key] = value + dataPoint.value;
-          } else {
-            valueMap[key] = dataPoint.value;
-          }
+          //support aggregations for y axis
+            if (!tmpMap.containsKey(key)) {
+              tmpMap[key] = new List<double>();
+            }
+            tmpMap[key].add(dataPoint.value);
+
+
+        }
+
+        Map<String, double> valueMap = Map();
+        if(widget.bezierChartAggregation == BezierChartAggregation.SUM){
+          valueMap = tmpMap.map((k,v) => MapEntry(k,v.reduce((c1, c2) => c1+c2)));
+        }else if(widget.bezierChartAggregation == BezierChartAggregation.FIRST){
+          valueMap = tmpMap.map((k,v) => MapEntry(k,v.reduce((c1, c2) => c1)));
+        }else if(widget.bezierChartAggregation == BezierChartAggregation.AVERAGE){
+          valueMap = tmpMap.map((k,v) => MapEntry(k,v.reduce((c1, c2) => c1+c2)/v.length));
+        }else if(widget.bezierChartAggregation == BezierChartAggregation.COUNT){
+          valueMap = tmpMap.map((k,v) => MapEntry(k,v.length.toDouble()));
         }
 
         List<DataPoint<DateTime>> newDataPoints = [];
@@ -541,7 +562,19 @@ class BezierChartState extends State<BezierChart>
                   xAxis: date,
                 ),
               );
-            } else {
+            } else if (_currentBezierChartScale == BezierChartScale.WEEKLY){
+              List<String> split = key.split(",");
+              int year = int.parse(split[0]);
+              int month = int.parse(split[1]);
+              int day = int.parse(split[2]);
+              final date = DateTime(year, month, day, 0);
+              newDataPoints.add(
+                DataPoint<DateTime>(
+                  value: value,
+                  xAxis: date,
+                ),
+              );
+            }else{
               ///Sum all the values corresponding to each year and create a new data serie
               int year = int.parse(key);
               final date = DateTime(year);

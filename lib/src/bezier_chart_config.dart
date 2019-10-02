@@ -11,6 +11,13 @@ enum BezierChartScale {
   CUSTOM,
 }
 
+enum BezierChartAggregation{
+  AVERAGE,
+  SUM,
+  FIRST,
+  COUNT,
+}
+
 ///`BezierChartConfig` allows the customization of the `BezierChart` widget
 class BezierChartConfig {
   ///`true` if you want to display the vertical indicator
