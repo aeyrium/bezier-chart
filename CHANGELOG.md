@@ -1,3 +1,9 @@
+## [1.0.15]
+
+- Fixed a bug related to `BezierChartScale.WEEKLY`
+- new property added `bezierChartAggregation` for `BezierChartConfig`
+- if datapoints now overlap the chosen aggregation method is used -> Supported are: `AVERAGE`, `SUM`, `FIRST`, `COUNT`
+
 ## [1.0.14]
 
 - Fixed a bug related to `stepsYAxis` value
