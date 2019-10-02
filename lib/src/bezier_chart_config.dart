@@ -11,7 +11,7 @@ enum BezierChartScale {
   CUSTOM,
 }
 
-enum BezierChartAggregation{
+enum BezierChartAggregation {
   AVERAGE,
   SUM,
   FIRST,
