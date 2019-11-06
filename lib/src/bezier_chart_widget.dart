@@ -598,6 +598,8 @@ class BezierChartState extends State<BezierChart>
             label: line.label,
             lineStrokeWidth: line.lineStrokeWidth,
             onMissingValue: line.onMissingValue,
+            dataPointFillColor: line.dataPointFillColor,
+            dataPointStrokeColor: line.dataPointStrokeColor,
             data: newDataPoints,
           ),
         );
@@ -1234,14 +1236,14 @@ class _BezierChartPainter extends CustomPainter {
             paintControlPoints
               ..style = PaintingStyle.stroke
               ..strokeWidth = 10
-              ..color = line.lineColor);
+              ..color = line.dataPointStrokeColor);
         canvas.drawPoints(
           PointMode.points,
           dataPoints,
           paintControlPoints
             ..style = PaintingStyle.fill
             ..strokeWidth = line.lineStrokeWidth * 1.5
-            ..color = config.backgroundColor,
+            ..color = line.dataPointFillColor,
         );
       }
     }
@@ -1288,8 +1290,7 @@ class _BezierChartPainter extends CustomPainter {
         if (config.showVerticalIndicator) {
           canvas.drawLine(
             Offset(verticalX, height),
-            Offset(verticalX,
-                config.verticalIndicatorFixedPosition ? 0.0 : center.dy),
+            Offset(verticalX, config.verticalLineFullHeight ? 0.0 : center.dy),
             paintVerticalIndicator,
           );
         }
@@ -1299,7 +1300,7 @@ class _BezierChartPainter extends CustomPainter {
           centerForCircle,
           radiusDotIndicatorMain,
           Paint()
-            ..color = series.reversed.toList().last.lineColor
+            ..color = series.reversed.toList().last.dataPointFillColor
             ..strokeWidth = 4.0,
         );
 

@@ -1,3 +1,8 @@
+## [1.0.16]
+
+- `dataPointFillColor` and `dataPointStrokeColor` were added in BezierLine.
+- `verticalLineFullHeight` was added in `BezierChartConfig`.
+
 ## [1.0.15]
 
 - Fixed a bug related to `BezierChartScale.WEEKLY`

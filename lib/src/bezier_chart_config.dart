@@ -30,6 +30,9 @@ class BezierChartConfig {
   ///`true` if you want to keep the info indicator in a fixed position
   final bool verticalIndicatorFixedPosition;
 
+  ///`true` if you want to display the vertical line in full height
+  final bool verticalLineFullHeight;
+
   ///Color of the bubble indicator, it's white by default
   final Color bubbleIndicatorColor;
 
@@ -130,5 +133,7 @@ class BezierChartConfig {
       fontSize: 11,
     ),
     this.physics = const AlwaysScrollableScrollPhysics(),
-  });
+    bool verticalLineFullHeight,
+  }) : this.verticalLineFullHeight =
+            verticalLineFullHeight ?? verticalIndicatorFixedPosition;
 }

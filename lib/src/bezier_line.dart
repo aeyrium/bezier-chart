@@ -4,7 +4,14 @@ typedef MissingValueBuilder = double Function(DateTime value);
 
 ///This Bezier line is used to display your data
 class BezierLine {
+  ///Line color for each data point
   final Color lineColor;
+
+  ///Color for the dot fill on each data point
+  final Color dataPointFillColor;
+
+  ///Color for the dot stroke on each data point
+  final Color dataPointStrokeColor;
 
   ///`width` of the bezier line
   final double lineStrokeWidth;
@@ -24,14 +31,19 @@ class BezierLine {
     this.lineStrokeWidth = 3.0,
     this.label = "",
     this.onMissingValue,
+    Color dataPointFillColor,
+    Color dataPointStrokeColor,
     this.data,
-  });
+  })  : this.dataPointFillColor = dataPointFillColor ?? lineColor,
+        this.dataPointStrokeColor = dataPointStrokeColor ?? lineColor;
 
   factory BezierLine.copy({BezierLine bezierLine}) {
     return BezierLine(
       lineColor: bezierLine.lineColor,
       lineStrokeWidth: bezierLine.lineStrokeWidth,
       label: bezierLine.label,
+      dataPointFillColor: bezierLine.dataPointFillColor,
+      dataPointStrokeColor: bezierLine.dataPointStrokeColor,
       onMissingValue: bezierLine.onMissingValue,
       data: bezierLine.data,
     );
@@ -45,6 +57,8 @@ class BezierLine {
           label == other.label &&
           lineColor == other.lineColor &&
           lineStrokeWidth == other.lineStrokeWidth &&
+          dataPointFillColor == other.dataPointFillColor &&
+          dataPointStrokeColor == other.dataPointStrokeColor &&
           hashCode == other.hashCode;
 
   @override
