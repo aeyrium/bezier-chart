@@ -517,8 +517,10 @@ class BezierChartState extends State<BezierChart>
 
         Map<String, double> valueMap = Map();
         if (widget.bezierChartAggregation == BezierChartAggregation.SUM) {
-          valueMap =
-              tmpMap.map((k, v) => MapEntry(k, v.reduce((c1, c2) => c1 + c2)));
+          valueMap = tmpMap.map((k, v) => MapEntry(
+              k,
+              v.reduce(
+                  (c1, c2) => double.parse((c1 + c2).toStringAsFixed(2)))));
         } else if (widget.bezierChartAggregation ==
             BezierChartAggregation.FIRST) {
           valueMap =
