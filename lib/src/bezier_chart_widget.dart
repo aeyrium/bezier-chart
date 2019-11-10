@@ -631,6 +631,13 @@ class BezierChartState extends State<BezierChart>
   _onPinchZoom(double scale) {
     scale = double.parse(scale.toStringAsFixed(1));
     if (isPinchZoomActive) {
+      BezierChartScale lastScale = BezierChartScale.WEEKLY;
+      if (_currentBezierChartScale == BezierChartScale.MONTHLY) {
+        lastScale = BezierChartScale.MONTHLY;
+      } else if (_currentBezierChartScale == BezierChartScale.YEARLY) {
+        lastScale = BezierChartScale.YEARLY;
+      }
+
       //when the scale is below 1 then we'll try to change the chart scale depending of the `_currentBezierChartScale`
       if (scale < 1) {
         if (_currentBezierChartScale == BezierChartScale.WEEKLY) {
@@ -686,7 +693,8 @@ class BezierChartState extends State<BezierChart>
         }
       }
 
-      if (widget.onScaleChanged != null) {
+      if (widget.onScaleChanged != null &&
+          lastScale != _currentBezierChartScale) {
         widget.onScaleChanged(_currentBezierChartScale);
       }
     }
