@@ -74,6 +74,9 @@ class BezierChart extends StatefulWidget {
   ///Beziers used in the Axis Y
   final List<BezierLine> series;
 
+  ///Notify if the `BezierChartScale` changed, it only works with date scales.
+  final ValueChanged<BezierChartScale> onScaleChanged;
+
   BezierChart({
     Key key,
     this.config,
@@ -92,6 +95,7 @@ class BezierChart extends StatefulWidget {
     this.bezierChartAggregation = BezierChartAggregation.SUM,
     @required this.bezierChartScale,
     @required this.series,
+    this.onScaleChanged,
   })  : assert(
           (bezierChartScale == BezierChartScale.CUSTOM &&
                   xAxisCustomValues != null &&
@@ -627,6 +631,7 @@ class BezierChartState extends State<BezierChart>
   _onPinchZoom(double scale) {
     scale = double.parse(scale.toStringAsFixed(1));
     if (isPinchZoomActive) {
+      final lastScale = _currentBezierChartScale;
       //when the scale is below 1 then we'll try to change the chart scale depending of the `_currentBezierChartScale`
       if (scale < 1) {
         if (_currentBezierChartScale == BezierChartScale.WEEKLY) {
@@ -680,6 +685,11 @@ class BezierChartState extends State<BezierChart>
             },
           );
         }
+      }
+
+      if (lastScale != _currentBezierChartScale &&
+          widget.onScaleChanged != null) {
+        widget.onScaleChanged(_currentBezierChartScale);
       }
     }
   }

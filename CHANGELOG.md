@@ -2,6 +2,7 @@
 
 - `dataPointFillColor` and `dataPointStrokeColor` were added in BezierLine.
 - `verticalLineFullHeight` was added in `BezierChartConfig`.
+- `onScaleChanged` was added in `BezierChart` to notify when the scale was changed.
 
 ## [1.0.15]
 
