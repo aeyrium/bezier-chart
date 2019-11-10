@@ -654,7 +654,7 @@ class BezierChartState extends State<BezierChart>
             _checkIfNeedScroll();
           },
         );
-
+        _notifyScaleChanged(lastScale);
         return;
         //if the scale is greater than 1.5 then we'll try to change the chart scale depending of the `_currentBezierChartScale`
       } else if (scale > 1.5 || (isOnlyOneAxis && scale > 1.2)) {
@@ -669,6 +669,7 @@ class BezierChartState extends State<BezierChart>
               _checkIfNeedScroll();
             },
           );
+          _notifyScaleChanged(lastScale);
         } else if (_currentBezierChartScale == BezierChartScale.MONTHLY) {
           _currentBezierChartScale = BezierChartScale.WEEKLY;
           _currentScale = 1.0;
@@ -680,6 +681,7 @@ class BezierChartState extends State<BezierChart>
               _checkIfNeedScroll();
             },
           );
+          _notifyScaleChanged(lastScale);
           return;
         }
       } else {
@@ -692,11 +694,13 @@ class BezierChartState extends State<BezierChart>
           );
         }
       }
+    }
+  }
 
-      if (widget.onScaleChanged != null &&
-          lastScale != _currentBezierChartScale) {
-        widget.onScaleChanged(_currentBezierChartScale);
-      }
+  void _notifyScaleChanged(BezierChartScale lastScale) {
+    if (widget.onScaleChanged != null &&
+        lastScale != _currentBezierChartScale) {
+      widget.onScaleChanged(_currentBezierChartScale);
     }
   }
 
