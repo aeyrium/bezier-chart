@@ -536,7 +536,14 @@ class BezierChartState extends State<BezierChart>
         } else if (widget.bezierChartAggregation ==
             BezierChartAggregation.COUNT) {
           valueMap = tmpMap.map((k, v) => MapEntry(k, v.length.toDouble()));
+        } else if (widget.bezierChartAggregation ==
+            BezierChartAggregation.MAX) {
+          valueMap = tmpMap.map((k, v) => MapEntry(k, v.reduce((c1, c2) => c1 > c2 ? c1 : c2)));
+        } else if (widget.bezierChartAggregation ==
+            BezierChartAggregation.MIN) {
+          valueMap = tmpMap.map((k, v) => MapEntry(k, v.reduce((c1, c2) => c1 < c2 ? c1 : c2)));
         }
+
 
         List<DataPoint<DateTime>> newDataPoints = [];
         valueMap.keys.forEach(
