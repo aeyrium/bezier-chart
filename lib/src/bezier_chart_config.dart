@@ -16,6 +16,8 @@ enum BezierChartAggregation {
   SUM,
   FIRST,
   COUNT,
+  MAX,
+  MIN,
 }
 
 ///`BezierChartConfig` allows the customization of the `BezierChart` widget
