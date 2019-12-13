@@ -77,7 +77,7 @@ class BezierChart extends StatefulWidget {
   ///Notify if the `BezierChartScale` changed, it only works with date scales.
   final ValueChanged<BezierChartScale> onScaleChanged;
 
-  ///If set, the lines ate drawn with animation. Defaults to FALSE
+  ///If set, the lines are drawn with animation. Defaults to FALSE
   final bool animateAppear;
 
   BezierChart({
@@ -185,7 +185,6 @@ class BezierChartState extends State<BezierChart>
   BezierChartScale _currentBezierChartScale;
 
   double _lastValueSnapped = double.infinity;
-
   bool get isPinchZoomActive => (_touchFingers > 1 && widget.config.pinchZoom);
 
   ///When we only have 1 axis we don't need to much span to change the date type chart`
@@ -546,13 +545,12 @@ class BezierChartState extends State<BezierChart>
           valueMap = tmpMap.map((k, v) => MapEntry(k, v.length.toDouble()));
         } else if (widget.bezierChartAggregation ==
             BezierChartAggregation.MAX) {
-          valueMap = tmpMap.map(
-              (k, v) => MapEntry(k, v.reduce((c1, c2) => c1 > c2 ? c1 : c2)));
+          valueMap = tmpMap.map((k, v) => MapEntry(k, v.reduce((c1, c2) => c1 > c2 ? c1 : c2)));
         } else if (widget.bezierChartAggregation ==
             BezierChartAggregation.MIN) {
-          valueMap = tmpMap.map(
-              (k, v) => MapEntry(k, v.reduce((c1, c2) => c1 < c2 ? c1 : c2)));
+          valueMap = tmpMap.map((k, v) => MapEntry(k, v.reduce((c1, c2) => c1 < c2 ? c1 : c2)));
         }
+
 
         List<DataPoint<DateTime>> newDataPoints = [];
         valueMap.keys.forEach(
@@ -1283,8 +1281,7 @@ class _BezierChartPainter extends CustomPainter {
       //only draw the footer for the first line because it is the same for all the lines
       if (!footerDrawed) footerDrawed = true;
       if (appearFraction < 1.0) {
-        canvas.clipRect(
-            Rect.fromLTWH(0, 0, size.width * appearFraction, size.height));
+        canvas.clipRect(Rect.fromLTWH(0, 0, size.width * appearFraction, size.height));
       }
       canvas.drawPath(path, paintLine);
       if (config.showDataPoints) {
