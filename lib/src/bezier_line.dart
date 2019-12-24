@@ -23,6 +23,9 @@ class BezierLine {
   ///It uses the double value returned by the function based on the current `DateTime` received as parameter
   final MissingValueBuilder onMissingValue;
 
+  /// 忽略 null 值, 若 false 则调用 onMissingValue 来获取缺失值
+  final bool ignoreNullValue;
+
   ///Label used in the bubble info indicator
   final String label;
 
@@ -31,6 +34,7 @@ class BezierLine {
     this.lineStrokeWidth = 3.0,
     this.label = "",
     this.onMissingValue,
+    this.ignoreNullValue = false, 
     Color dataPointFillColor,
     Color dataPointStrokeColor,
     this.data,
@@ -46,6 +50,7 @@ class BezierLine {
       dataPointStrokeColor: bezierLine.dataPointStrokeColor,
       onMissingValue: bezierLine.onMissingValue,
       data: bezierLine.data,
+      ignoreNullValue: bezierLine.ignoreNullValue,
     );
   }
 

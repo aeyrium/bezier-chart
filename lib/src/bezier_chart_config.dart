@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 enum BezierChartScale {
   HOURLY,
   WEEKLY,
+  WEEKLYTRULY,
   MONTHLY,
   YEARLY,
 
