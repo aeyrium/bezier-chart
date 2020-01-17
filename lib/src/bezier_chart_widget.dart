@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -538,12 +539,13 @@ class BezierChartState extends State<BezierChart>
           valueMap = tmpMap.map((k, v) => MapEntry(k, v.length.toDouble()));
         } else if (widget.bezierChartAggregation ==
             BezierChartAggregation.MAX) {
-          valueMap = tmpMap.map((k, v) => MapEntry(k, v.reduce((c1, c2) => c1 > c2 ? c1 : c2)));
+          valueMap = tmpMap.map(
+              (k, v) => MapEntry(k, v.reduce((c1, c2) => c1 > c2 ? c1 : c2)));
         } else if (widget.bezierChartAggregation ==
             BezierChartAggregation.MIN) {
-          valueMap = tmpMap.map((k, v) => MapEntry(k, v.reduce((c1, c2) => c1 < c2 ? c1 : c2)));
+          valueMap = tmpMap.map(
+              (k, v) => MapEntry(k, v.reduce((c1, c2) => c1 < c2 ? c1 : c2)));
         }
-
 
         List<DataPoint<DateTime>> newDataPoints = [];
         valueMap.keys.forEach(
@@ -1259,21 +1261,24 @@ class _BezierChartPainter extends CustomPainter {
       canvas.drawPath(path, paintLine);
       if (config.showDataPoints) {
         //draw data points
-        canvas.drawPoints(
+        //Data points won't work until Flutter team fix this issue : https://github.com/flutter/flutter/issues/32218
+        if (!kIsWeb) {
+          canvas.drawPoints(
+              PointMode.points,
+              dataPoints,
+              paintControlPoints
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 10
+                ..color = line.dataPointStrokeColor);
+          canvas.drawPoints(
             PointMode.points,
             dataPoints,
             paintControlPoints
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 10
-              ..color = line.dataPointStrokeColor);
-        canvas.drawPoints(
-          PointMode.points,
-          dataPoints,
-          paintControlPoints
-            ..style = PaintingStyle.fill
-            ..strokeWidth = line.lineStrokeWidth * 1.5
-            ..color = line.dataPointFillColor,
-        );
+              ..style = PaintingStyle.fill
+              ..strokeWidth = line.lineStrokeWidth * 1.5
+              ..color = line.dataPointFillColor,
+          );
+        }
       }
     }
 
