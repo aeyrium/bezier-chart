@@ -3,6 +3,8 @@
 - `dataPointFillColor` and `dataPointStrokeColor` were added in BezierLine.
 - `verticalLineFullHeight` was added in `BezierChartConfig`.
 - `onScaleChanged` was added in `BezierChart` to notify when the scale was changed.
+- Issue related to updating the chart with new data fixed. https://github.com/aeyrium/bezier-chart/issues/62
+- Web support was added
 
 ## [1.0.15]
 
