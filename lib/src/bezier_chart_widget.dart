@@ -713,23 +713,38 @@ class BezierChartState extends State<BezierChart>
     }
   }
 
+  bool areSeriesDifferent = false;
+
   @override
   void didUpdateWidget(BezierChart oldWidget) {
     /// Rebuild data points and series in case:
     /// 1. if the BezierChartScale is different from the old one
     /// 2. if the series are different
     /// 3. if either fromDate or toDate are different
+    areSeriesDifferent = false;
 
-    bool areSeriesDifferent = false;
     if (oldWidget.series.length != widget.series.length) {
       areSeriesDifferent = true;
     } else {
-      for (int i = 0; i < oldWidget.series.length; i++) {
-        final line1 = oldWidget.series[i];
-        final line2 = widget.series[i];
-        if (line1 != line2) {
-          areSeriesDifferent = true;
-          break;
+      if (oldWidget.series.length == widget.series.length) {
+        for (int i = 0; i < oldWidget.series.length; i++) {
+          final size1 = oldWidget.series[i];
+          final size2 = widget.series[i];
+          if (size1.data.length != size2.data.length) {
+            areSeriesDifferent = true;
+            break;
+          }
+        }
+      }
+
+      if (!areSeriesDifferent) {
+        for (int i = 0; i < oldWidget.series.length; i++) {
+          final line1 = oldWidget.series[i];
+          final line2 = widget.series[i];
+          if (line1 != line2) {
+            areSeriesDifferent = true;
+            break;
+          }
         }
       }
     }
@@ -830,6 +845,7 @@ class BezierChartState extends State<BezierChart>
                         maxHeight,
                       ),
                       painter: _BezierChartPainter(
+                        shouldRepaintChart: areSeriesDifferent,
                         config: widget.config,
                         maxYValue: _yValues.last,
                         minYValue: _yValues.first,
@@ -1001,8 +1017,10 @@ class _BezierChartPainter extends CustomPainter {
   final double minYValue;
   final ValueChanged<double> onValueSelected;
   final ValueChanged<DateTime> onDateTimeSelected;
+  final bool shouldRepaintChart;
 
   _BezierChartPainter({
+    this.shouldRepaintChart,
     this.config,
     this.verticalIndicatorPosition,
     this.series,
@@ -1601,6 +1619,7 @@ class _BezierChartPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_BezierChartPainter oldDelegate) =>
+      shouldRepaintChart ||
       oldDelegate.verticalIndicatorPosition != verticalIndicatorPosition ||
       oldDelegate.scrollOffset != scrollOffset ||
       oldDelegate.showIndicator != showIndicator;
