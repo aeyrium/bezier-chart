@@ -6,6 +6,7 @@ enum BezierChartScale {
   WEEKLY,
   MONTHLY,
   YEARLY,
+  QUARTER,
 
   ///numbers sorted in an increasing way.
   CUSTOM,

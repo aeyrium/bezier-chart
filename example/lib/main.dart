@@ -45,6 +45,13 @@ class MyHomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ListTile(
+              title: Text("Sample 15 Minutes"),
+              subtitle: Text("Quarter Chart"),
+              onTap: () => _onTap(
+                context,
+                sample15Minutes(context),
+              ),
+            ),ListTile(
               title: Text("Sample 1"),
               subtitle: Text("Number Chart"),
               onTap: () => _onTap(
@@ -148,6 +155,87 @@ class MyHomePage extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget sample15Minutes(BuildContext context) {
+  final fromDate = DateTime(2020, 03, 21, 00, 05, 30);
+  final toDate = DateTime.now();
+  double yAxisStep;
+  List<DataPoint> dataSet = [
+    DataPoint<DateTime>(value: 29, xAxis: DateTime(2020, 03, 17, 16, 29)),
+    DataPoint<DateTime>(value: 25, xAxis: DateTime(2020, 03, 18, 22, 22)),
+    DataPoint<DateTime>(value: 19.5, xAxis: DateTime(2020, 03, 20, 13, 38)),
+    DataPoint<DateTime>(value: 17.65, xAxis: DateTime(2020, 03, 21, 13, 38)),
+    DataPoint<DateTime>(value: 14.32, xAxis: DateTime(2020, 03, 22, 09, 38)),
+    DataPoint<DateTime>(value: 34.5, xAxis: DateTime(2020, 03, 22, 16, 46)),
+    DataPoint<DateTime>(value: 26.5, xAxis: DateTime(2020, 03, 23, 10, 23)),
+    DataPoint<DateTime>(value: 28.5,xAxis: DateTime(2020, 03, 23, 03, 46)),
+    DataPoint<DateTime>(value: 45.5, xAxis: DateTime(2020, 03, 23, 05, 05)),
+    DataPoint<DateTime>(value: 18.5, xAxis: DateTime(2020, 03, 23, 09, 17)),
+  ];
+
+  yAxisStep = dataSet.elementAt(dataSet.length - 1).value.toInt() / 3;
+
+  return Center(
+    child: Container(
+      color: Colors.red,
+      //height: MediaQuery.of(context).size.height / 2,
+      //width: MediaQuery.of(context).size.width,
+      child: BezierChart(
+        fromDate: fromDate,
+        bezierChartScale: BezierChartScale.QUARTER,
+        bezierChartAggregation: BezierChartAggregation.AVERAGE,
+        footerValueBuilder: (double value) {
+          return "${formatAsIntOrDouble(value)}\ndays";
+        },
+        toDate: toDate,
+        onIndicatorVisible: (val) {
+          print("Indicator Visible :$val");
+        },
+        onDateTimeSelected: (datetime) {
+          print("selected datetime: $datetime");
+        },
+        selectedDate: toDate,
+        footerDateTimeBuilder:
+            (DateTime value, BezierChartScale scaleType) {
+          final newFormat = intl.DateFormat('dd MMM HH:mm');
+          return newFormat.format(value);
+        },
+        bubbleLabelDateTimeBuilder:
+            (DateTime value, BezierChartScale scaleType) {
+          final newFormat = intl.DateFormat('dd MMM HH:mm');
+          return "${newFormat.format(value)}\n";
+        },
+        series: [
+          BezierLine(
+              dataPointFillColor: Colors.black,
+              lineStrokeWidth: 4.0,
+              lineColor: Colors.green,
+//                  label: "Duty",
+//                onMissingValue: (dateTime) {
+//                  return null;
+//                },
+              onMissingValue: (date) => 0.0,
+//                  data: dataPoint
+              data: dataSet
+
+          ),
+        ],
+        config: BezierChartConfig(
+          displayDataPointWhenNoValue: false,
+          verticalIndicatorStrokeWidth: 3.0,
+          startYAxisFromNonZeroValue: true,
+          pinchZoom: true,
+          verticalIndicatorColor: Colors.black,
+          showVerticalIndicator: true,
+          verticalIndicatorFixedPosition: false,
+          backgroundColor: Colors.white,
+          displayYAxis: true,
+          stepsYAxis: yAxisStep.toInt(),
+        ),
+      ),
+    ),
+  );
 }
 
 //SAMPLE CUSTOM VALUES
