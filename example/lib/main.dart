@@ -143,7 +143,8 @@ class MyHomePage extends StatelessWidget {
               subtitle: Text("Dynamic date range"),
               onTap: () => Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => Sample13())),
-            ),          ],
+            ),
+          ],
         ),
       ),
     );
@@ -350,6 +351,9 @@ Widget sample3(BuildContext context) {
         onDateTimeSelected: (datetime) {
           print("selected datetime: $datetime");
         },
+        onScaleChanged: (scale) {
+          print("Scale: $scale");
+        },
         selectedDate: toDate,
         //this is optional
         footerDateTimeBuilder: (DateTime value, BezierChartScale scaleType) {
@@ -374,7 +378,7 @@ Widget sample3(BuildContext context) {
         config: BezierChartConfig(
           displayDataPointWhenNoValue: false,
           verticalIndicatorStrokeWidth: 3.0,
-          pinchZoom: false,
+          pinchZoom: true,
           physics: ClampingScrollPhysics(),
           verticalIndicatorColor: Colors.black26,
           showVerticalIndicator: true,
