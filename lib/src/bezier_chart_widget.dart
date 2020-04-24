@@ -811,7 +811,7 @@ class BezierChartState extends State<BezierChart>
           }
         },
         child: GestureDetector(
-          onLongPressStart: isPinchZoomActive ? null : _onDisplayIndicator,
+          onLongPressStart: widget.config.updatePositionOnTap ? null : (isPinchZoomActive ? null : _onDisplayIndicator),
           onLongPressMoveUpdate: isPinchZoomActive ? null : _refreshPosition,
           onScaleStart: (_) {
             _previousScale = _currentScale;
@@ -822,7 +822,8 @@ class BezierChartState extends State<BezierChart>
                   !_displayIndicator
               ? (details) => _onPinchZoom(_previousScale * details.scale)
               : null,
-          onTap: isPinchZoomActive ? null : _onHideIndicator,
+          onTap: widget.config.updatePositionOnTap ? null : (isPinchZoomActive ? null : _onHideIndicator),
+          onTapDown: widget.config.updatePositionOnTap ? (isPinchZoomActive ? null : _refreshPosition) : null,
           child: LayoutBuilder(
             builder: (context, constraints) {
               _contentWidth = _buildContentWidth(constraints);
@@ -1364,11 +1365,14 @@ class _BezierChartPainter extends CustomPainter {
             10 - ((infoHeight / (8.75)) * _currentCustomValues.length);
         infoHeight =
             infoHeight + (_currentCustomValues.length - 1) * (infoHeight / 3);
+
         for (_CustomValue customValue
             in _currentCustomValues.reversed.toList()) {
           textValues.add(
             TextSpan(
-              text: "${customValue.value} ",
+              text: config.bubbleIndicatorValueFormat != null
+                  ? "${config.bubbleIndicatorValueFormat.format(double.parse(customValue.value))} "
+                  : "${customValue.value} ",
               style: config.bubbleIndicatorValueStyle.copyWith(fontSize: 11),
               children: [
                 TextSpan(
