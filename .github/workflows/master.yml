@@ -27,9 +27,11 @@ jobs:
           version_name: version
       - name: 'Print New Version'
         run: echo ${{ steps.config.outputs.version_name }}  
-      - name: The version from your pubspec.yaml is the same as Master, Please update the version
+      - name: 'Compare Vresion'
         if: steps.config.outputs.version_name == steps.previoustag.outputs.tag
-        run: exit 1
+        run: |
+            echo 'The version from your pubspec.yaml is the same as Master, Please update the version'
+            exit 1
       - shell: bash
         run: |
           echo ${{ steps.config.outputs.version_name }}  > version.txt
@@ -39,7 +41,7 @@ jobs:
           name: home
           path: version.txt   
 
-  publish:
+   publish:
     needs: [check_version]
     runs-on: ubuntu-latest
     steps:
@@ -53,7 +55,7 @@ jobs:
           skip_test: true
           dry_run: false
 
-  tag:
+   tag:
     needs: [publish]
     name: 'Tag Version'
     runs-on: ubuntu-latest
