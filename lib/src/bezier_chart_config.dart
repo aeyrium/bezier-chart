@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 /// Type of Bezier line Chart
 enum BezierChartScale {
@@ -43,6 +44,9 @@ class BezierChartConfig {
 
   ///TextStyle for the value displayed inside the bubble indicator
   final TextStyle bubbleIndicatorValueStyle;
+
+  ///NumberFormat for the value displayed inside the bubble indicator
+  final NumberFormat bubbleIndicatorValueFormat;
 
   ///TextStyle for the label displayed inside the bubble indicator
   final TextStyle bubbleIndicatorLabelStyle;
@@ -98,6 +102,9 @@ class BezierChartConfig {
   ///The physics for horizontal ScrollView
   final ScrollPhysics physics;
 
+  ///`true` if you want do update bubble info on tap action instead of long press. This option will disable tap to hide bubble action
+  final bool updatePositionOnTap;
+
   BezierChartConfig({
     this.verticalIndicatorStrokeWidth = 2.0,
     this.verticalIndicatorColor = Colors.black,
@@ -134,7 +141,9 @@ class BezierChartConfig {
       fontWeight: FontWeight.bold,
       fontSize: 11,
     ),
+    this.bubbleIndicatorValueFormat,
     this.physics = const AlwaysScrollableScrollPhysics(),
+    this.updatePositionOnTap = false,
     bool verticalLineFullHeight,
   }) : this.verticalLineFullHeight =
             verticalLineFullHeight ?? verticalIndicatorFixedPosition;
