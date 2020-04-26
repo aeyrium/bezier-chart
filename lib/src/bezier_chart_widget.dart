@@ -811,7 +811,9 @@ class BezierChartState extends State<BezierChart>
           }
         },
         child: GestureDetector(
-          onLongPressStart: widget.config.updatePositionOnTap ? null : (isPinchZoomActive ? null : _onDisplayIndicator),
+          onLongPressStart: widget.config.updatePositionOnTap
+              ? null
+              : (isPinchZoomActive ? null : _onDisplayIndicator),
           onLongPressMoveUpdate: isPinchZoomActive ? null : _refreshPosition,
           onScaleStart: (_) {
             _previousScale = _currentScale;
@@ -822,8 +824,12 @@ class BezierChartState extends State<BezierChart>
                   !_displayIndicator
               ? (details) => _onPinchZoom(_previousScale * details.scale)
               : null,
-          onTap: widget.config.updatePositionOnTap ? null : (isPinchZoomActive ? null : _onHideIndicator),
-          onTapDown: widget.config.updatePositionOnTap ? (isPinchZoomActive ? null : _refreshPosition) : null,
+          onTap: widget.config.updatePositionOnTap
+              ? null
+              : (isPinchZoomActive ? null : _onHideIndicator),
+          onTapDown: widget.config.updatePositionOnTap
+              ? (isPinchZoomActive ? null : _refreshPosition)
+              : null,
           child: LayoutBuilder(
             builder: (context, constraints) {
               _contentWidth = _buildContentWidth(constraints);
