@@ -1,6 +1,5 @@
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'sample10.dart';
@@ -148,7 +147,8 @@ class MyHomePage extends StatelessWidget {
             ),
             ListTile(
               title: Text("Sample 14"),
-              subtitle: Text("Sample with updatePositionOnTap & format indicator value"),
+              subtitle: Text(
+                  "Sample with updatePositionOnTap & format indicator value"),
               onTap: () => Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => Sample14())),
             ),
