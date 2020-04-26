@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart' as intl;
-import 'dart:async';
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -83,8 +82,7 @@ class _Sample13State extends State<Sample13> {
                   return 44.5;
                 },
                 data: [
-                  DataPoint<DateTime>(
-                      value: 5.9, xAxis: DateTime(2019, 9, 24)),
+                  DataPoint<DateTime>(value: 5.9, xAxis: DateTime(2019, 9, 24)),
                   DataPoint<DateTime>(
                       value: 10.5, xAxis: DateTime(2019, 9, 24)),
                   DataPoint<DateTime>(

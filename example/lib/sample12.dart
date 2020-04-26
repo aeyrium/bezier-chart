@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart' as intl;
-import 'dart:async';
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:flutter/material.dart';
 
