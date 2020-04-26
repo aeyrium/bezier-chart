@@ -1,21 +1,22 @@
 import 'package:intl/intl.dart' as intl;
+import 'dart:async';
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:flutter/material.dart';
 
-class Sample13 extends StatefulWidget {
+class Sample14 extends StatefulWidget {
   @override
-  _Sample13State createState() => _Sample13State();
+  _Sample14State createState() => _Sample14State();
 }
 
-class _Sample13State extends State<Sample13> {
+class _Sample14State extends State<Sample14> {
   DateTime fromDate;
   DateTime toDate;
 
   @override
   void initState() {
     super.initState();
-    fromDate = DateTime(2019, 08, 1);
-    toDate = DateTime.now();
+    fromDate = DateTime(2019, 09, 1);
+    toDate = DateTime(2019, 09, 30);
   }
 
   @override
@@ -55,7 +56,6 @@ class _Sample13State extends State<Sample13> {
           child: BezierChart(
             fromDate: fromDate,
             bezierChartScale: BezierChartScale.WEEKLY,
-            bezierChartAggregation: BezierChartAggregation.AVERAGE,
             toDate: toDate,
             onIndicatorVisible: (val) {
               print("Indicator Visible :$val");
@@ -79,32 +79,31 @@ class _Sample13State extends State<Sample13> {
               BezierLine(
                 label: "Duty",
                 onMissingValue: (dateTime) {
-                  return 44.5;
+                  return 3120.5;
                 },
                 data: [
-                  DataPoint<DateTime>(value: 5.9, xAxis: DateTime(2019, 9, 24)),
                   DataPoint<DateTime>(
-                      value: 10.5, xAxis: DateTime(2019, 9, 24)),
+                      value: 3235.9, xAxis: DateTime(2019, 9, 24)),
                   DataPoint<DateTime>(
-                      value: 15.21, xAxis: DateTime(2019, 9, 24)),
+                      value: 2340.5, xAxis: DateTime(2019, 9, 25)),
                   DataPoint<DateTime>(
-                      value: 20.5, xAxis: DateTime(2019, 9, 30)),
-                  //DataPoint<DateTime>(value: 44.5, xAxis: fromDate),
-                  //DataPoint<DateTime>(value: 40, xAxis: date1),
-                  //DataPoint<DateTime>(value: 43.5, xAxis: date2),
+                      value: 2115.21, xAxis: DateTime(2019, 9, 26)),
+                  DataPoint<DateTime>(
+                      value: 3120.5, xAxis: DateTime(2019, 9, 27)),
+                  DataPoint<DateTime>(
+                      value: 3235.9, xAxis: DateTime(2019, 9, 30)),
                 ],
               ),
             ],
             config: BezierChartConfig(
-              displayDataPointWhenNoValue: false,
-              verticalIndicatorStrokeWidth: 3.0,
-              pinchZoom: false,
-              verticalIndicatorColor: Colors.black26,
+              updatePositionOnTap: true,
+              bubbleIndicatorValueFormat: intl.NumberFormat("###,##0.00", "en_US"),
+              verticalIndicatorStrokeWidth: 1.0,
+              verticalIndicatorColor: Colors.white30,
               showVerticalIndicator: true,
               verticalIndicatorFixedPosition: false,
-              backgroundColor: Colors.red,
-              displayYAxis: true,
-              stepsYAxis: 1,
+              backgroundColor: Colors.transparent,
+              footerHeight: 40.0,
             ),
           ),
         ),

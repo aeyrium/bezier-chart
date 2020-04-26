@@ -1,3 +1,7 @@
+## [1.0.17]
+
+- Format bubble value and `updatePositionOnTap` were added. Thanks @ltdangkhoa.
+
 ## [1.0.16]
 
 - `dataPointFillColor` and `dataPointStrokeColor` were added in BezierLine.
