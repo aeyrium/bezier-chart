@@ -158,7 +158,7 @@ class BezierChartState extends State<BezierChart>
   bool _displayIndicator = false;
 
   ///padding for leading and trailing of the chart
-  final double horizontalPadding = 50.0;
+  final double horizontalPadding = 0.0;
 
   ///spacing between each datapoint
   double horizontalSpacing = 60.0;
@@ -834,7 +834,7 @@ class BezierChartState extends State<BezierChart>
             builder: (context, constraints) {
               _contentWidth = _buildContentWidth(constraints);
               final items = <Widget>[];
-              final maxHeight = constraints.biggest.height * 0.75;
+              final maxHeight = constraints.biggest.height;
               items.add(
                 MySingleChildScrollView(
                   controller: _scrollController,
