@@ -99,52 +99,56 @@ class BezierChartConfig {
   ///`true` if you want do display the dot when there is no value specified (The values inside `onMissingValue`)
   final bool displayDataPointWhenNoValue;
 
+  ///`true` if you want to display the same value as the previous value when there is no value specified (Either from the data points or from The values inside `onMissingValue`)
+  final bool displayPreviousDataPointWhenNoValue;
+
   ///The physics for horizontal ScrollView
   final ScrollPhysics physics;
 
   ///`true` if you want do update bubble info on tap action instead of long press. This option will disable tap to hide bubble action
   final bool updatePositionOnTap;
 
-  BezierChartConfig({
-    this.verticalIndicatorStrokeWidth = 2.0,
-    this.verticalIndicatorColor = Colors.black,
-    this.showVerticalIndicator = true,
-    this.showDataPoints = true,
-    this.displayYAxis = false,
-    this.snap = true,
-    this.backgroundColor = Colors.transparent,
-    this.xAxisTextStyle,
-    this.yAxisTextStyle,
-    this.footerHeight = 35.0,
-    this.contentWidth,
-    this.pinchZoom = true,
-    this.bubbleIndicatorColor = Colors.white,
-    this.backgroundGradient,
-    this.verticalIndicatorFixedPosition = false,
-    this.startYAxisFromNonZeroValue = true,
-    this.displayLinesXAxis = false,
-    this.stepsYAxis,
-    this.xLinesColor = Colors.grey,
-    this.displayDataPointWhenNoValue = true,
-    this.bubbleIndicatorLabelStyle = const TextStyle(
-      color: Colors.grey,
-      fontWeight: FontWeight.w700,
-      fontSize: 9,
-    ),
-    this.bubbleIndicatorTitleStyle = const TextStyle(
-      color: Colors.grey,
-      fontWeight: FontWeight.w600,
-      fontSize: 9.5,
-    ),
-    this.bubbleIndicatorValueStyle = const TextStyle(
-      color: Colors.black,
-      fontWeight: FontWeight.bold,
-      fontSize: 11,
-    ),
-    this.bubbleIndicatorValueFormat,
-    this.physics = const AlwaysScrollableScrollPhysics(),
-    this.updatePositionOnTap = false,
-    bool verticalLineFullHeight,
-  }) : this.verticalLineFullHeight =
+  BezierChartConfig(
+      {this.verticalIndicatorStrokeWidth = 2.0,
+      this.verticalIndicatorColor = Colors.black,
+      this.showVerticalIndicator = true,
+      this.showDataPoints = true,
+      this.displayYAxis = false,
+      this.snap = true,
+      this.backgroundColor = Colors.transparent,
+      this.xAxisTextStyle,
+      this.yAxisTextStyle,
+      this.footerHeight = 35.0,
+      this.contentWidth,
+      this.pinchZoom = true,
+      this.bubbleIndicatorColor = Colors.white,
+      this.backgroundGradient,
+      this.verticalIndicatorFixedPosition = false,
+      this.startYAxisFromNonZeroValue = true,
+      this.displayLinesXAxis = false,
+      this.stepsYAxis,
+      this.xLinesColor = Colors.grey,
+      this.displayDataPointWhenNoValue = true,
+      this.displayPreviousDataPointWhenNoValue = false,
+      this.bubbleIndicatorLabelStyle = const TextStyle(
+        color: Colors.grey,
+        fontWeight: FontWeight.w700,
+        fontSize: 9,
+      ),
+      this.bubbleIndicatorTitleStyle = const TextStyle(
+        color: Colors.grey,
+        fontWeight: FontWeight.w600,
+        fontSize: 9.5,
+      ),
+      this.bubbleIndicatorValueStyle = const TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+        fontSize: 11,
+      ),
+      this.bubbleIndicatorValueFormat,
+      this.physics = const AlwaysScrollableScrollPhysics(),
+      this.updatePositionOnTap = false,
+      bool verticalLineFullHeight})
+      : this.verticalLineFullHeight =
             verticalLineFullHeight ?? verticalIndicatorFixedPosition;
 }
