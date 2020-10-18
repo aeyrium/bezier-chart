@@ -468,7 +468,9 @@ Widget sample5(BuildContext context) {
   final date4 = DateTime.now().subtract(Duration(days: 320));
 
   final date5 = DateTime.now().subtract(Duration(days: 650));
-  final date6 = DateTime.now().subtract(Duration(days: 652));
+  final date6 = DateTime.now().subtract(Duration(days: 2000));
+
+  final date7 = DateTime.now().subtract(Duration(days: 2500));
 
   return Center(
     child: Container(
@@ -483,12 +485,6 @@ Widget sample5(BuildContext context) {
         series: [
           BezierLine(
             label: "Duty",
-            onMissingValue: (dateTime) {
-              if (dateTime.year.isEven) {
-                return 20.0;
-              }
-              return 5.0;
-            },
             data: [
               DataPoint<DateTime>(value: 10, xAxis: date1),
               DataPoint<DateTime>(value: 50, xAxis: date2),
@@ -496,6 +492,7 @@ Widget sample5(BuildContext context) {
               DataPoint<DateTime>(value: 100, xAxis: date4),
               DataPoint<DateTime>(value: 40, xAxis: date5),
               DataPoint<DateTime>(value: 47, xAxis: date6),
+              DataPoint<DateTime>(value: 70, xAxis: date7),
             ],
           ),
           BezierLine(
@@ -518,6 +515,8 @@ Widget sample5(BuildContext context) {
           ),
         ],
         config: BezierChartConfig(
+          displayDataPointWhenNoValue: false,
+          displayPreviousDataPointWhenNoValue: true,
           verticalIndicatorStrokeWidth: 3.0,
           verticalIndicatorColor: Colors.black26,
           showVerticalIndicator: true,
