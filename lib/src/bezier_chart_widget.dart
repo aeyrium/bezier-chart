@@ -78,6 +78,9 @@ class BezierChart extends StatefulWidget {
   ///Notify if the `BezierChartScale` changed, it only works with date scales.
   final ValueChanged<BezierChartScale> onScaleChanged;
 
+  ///If set, the lines are drawn with animation. Defaults to FALSE
+  final bool animateAppear;
+
   BezierChart({
     Key key,
     this.config,
@@ -97,6 +100,7 @@ class BezierChart extends StatefulWidget {
     @required this.bezierChartScale,
     @required this.series,
     this.onScaleChanged,
+    this.animateAppear = false
   })  : assert(
           (bezierChartScale == BezierChartScale.CUSTOM &&
                   xAxisCustomValues != null &&
@@ -148,10 +152,13 @@ class BezierChart extends StatefulWidget {
 
 @visibleForTesting
 class BezierChartState extends State<BezierChart>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   AnimationController _animationController;
+  Animation _appearAnimation;
   ScrollController _scrollController;
   GlobalKey _keyScroll = GlobalKey();
+
+  double _appearFraction = 0.0;
 
   ///Track the current position when dragging the indicator
   Offset _verticalIndicatorPosition;
@@ -770,6 +777,21 @@ class BezierChartState extends State<BezierChart>
         milliseconds: 300,
       ),
     );
+
+    if(widget.animateAppear) {
+      var controller = AnimationController(
+          duration: Duration(milliseconds: 2000), vsync: this);
+
+      _appearAnimation = Tween(begin: 0.0, end: 1.0).animate(controller)
+        ..addListener(() {
+          setState(() {
+            _appearFraction = _appearAnimation.value;
+          });
+        });
+
+      controller.forward();
+    }
+
     _buildXDataPoints();
     _computeSeries();
     WidgetsBinding.instance.addPostFrameCallback(_onLayoutDone);
@@ -868,6 +890,7 @@ class BezierChartState extends State<BezierChart>
                             curve: Curves.elasticOut,
                           ),
                         ),
+                        appearFraction: widget.animateAppear ? _appearFraction : 1.0,
                         xAxisDataPoints: _xAxisDataPoints,
                         onDataPointSnap: _onDataPointSnap,
                         maxWidth: MediaQuery.of(context).size.width,
@@ -1011,6 +1034,7 @@ class _BezierChartPainter extends CustomPainter {
   final double radiusDotIndicatorItems = 3.5;
   final bool showIndicator;
   final Animation animation;
+  final double appearFraction;
   final ValueChanged<double> onDataPointSnap;
   final BezierChartScale bezierChartScale;
   final double maxWidth;
@@ -1034,6 +1058,7 @@ class _BezierChartPainter extends CustomPainter {
     this.showIndicator,
     this.xAxisDataPoints,
     this.animation,
+    this.appearFraction,
     this.bezierChartScale,
     this.onDataPointSnap,
     this.maxWidth,
@@ -1288,7 +1313,9 @@ class _BezierChartPainter extends CustomPainter {
 
       //only draw the footer for the first line because it is the same for all the lines
       if (!footerDrawed) footerDrawed = true;
-
+      if (appearFraction < 1.0) {
+        canvas.clipRect(Rect.fromLTWH(0, 0, size.width * appearFraction, size.height));
+      }
       canvas.drawPath(path, paintLine);
       if (config.showDataPoints) {
         //draw data points
@@ -1644,6 +1671,7 @@ class _BezierChartPainter extends CustomPainter {
 class _AxisValue {
   final double x;
   final double y;
+
   const _AxisValue({
     this.x,
     this.y,
