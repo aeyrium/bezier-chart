@@ -91,7 +91,7 @@ class BezierChartConfig {
   final double contentWidth;
 
   ///`true` if you want to display a vertical line on each X data point, it only works when there is one `BezierLine`.
-  final bool displayLinesXAxis;
+  final bool displayLinesXAxis, displayLinesYAxis;
 
   ///Color for the vertical line in each X point, only works when `displayLinesXAxis` is true
   final Color xLinesColor;
@@ -123,6 +123,7 @@ class BezierChartConfig {
     this.verticalIndicatorFixedPosition = false,
     this.startYAxisFromNonZeroValue = true,
     this.displayLinesXAxis = false,
+    this.displayLinesYAxis = false,
     this.stepsYAxis,
     this.xLinesColor = Colors.grey,
     this.displayDataPointWhenNoValue = true,
