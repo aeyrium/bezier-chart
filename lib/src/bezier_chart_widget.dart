@@ -11,6 +11,7 @@ import 'package:intl/intl.dart' as intl;
 import 'my_single_child_scroll_view.dart';
 
 typedef FooterValueBuilder = String Function(double value);
+typedef ContentValueBuilder = String Function(double value);
 typedef FooterDateTimeBuilder = String Function(
     DateTime value, BezierChartScale scaleType);
 
@@ -78,6 +79,8 @@ class BezierChart extends StatefulWidget {
   ///Notify if the `BezierChartScale` changed, it only works with date scales.
   final ValueChanged<BezierChartScale> onScaleChanged;
 
+  final ContentValueBuilder bubbleContentBuilder;
+
   BezierChart({
     Key key,
     this.config,
@@ -93,6 +96,7 @@ class BezierChart extends StatefulWidget {
     this.onDateTimeSelected,
     this.onValueSelected,
     this.selectedValue,
+    this.bubbleContentBuilder,
     this.bezierChartAggregation = BezierChartAggregation.SUM,
     @required this.bezierChartScale,
     @required this.series,
@@ -879,6 +883,7 @@ class BezierChartState extends State<BezierChart>
                         footerDateTimeBuilder: widget.footerDateTimeBuilder,
                         bubbleLabelDateTimeBuilder:
                             widget.bubbleLabelDateTimeBuilder,
+                        bubbleContentBuilder: widget.bubbleContentBuilder,
                         onValueSelected: (val) {
                           if (widget.onValueSelected != null) {
                             if (_valueSelected == null) {
@@ -1026,6 +1031,8 @@ class _BezierChartPainter extends CustomPainter {
   final ValueChanged<DateTime> onDateTimeSelected;
   final bool shouldRepaintChart;
 
+  final ContentValueBuilder bubbleContentBuilder;
+
   _BezierChartPainter({
     this.shouldRepaintChart,
     this.config,
@@ -1046,6 +1053,7 @@ class _BezierChartPainter extends CustomPainter {
     this.minYValue,
     this.onDateTimeSelected,
     this.onValueSelected,
+    this.bubbleContentBuilder,
   }) : super(repaint: animation) {
     _maxValueY = _getMaxValueY();
     _maxValueX = _getMaxValueX();
@@ -1132,7 +1140,6 @@ class _BezierChartPainter extends CustomPainter {
       _AxisValue lastPoint;
 
       //display each data point
-      double previousValue;
       for (int i = 0; i < xAxisDataPoints.length; i++) {
         double value = 0.0;
 
@@ -1176,13 +1183,8 @@ class _BezierChartPainter extends CustomPainter {
             if (line.onMissingValue != null) {
               isMissingValue = true;
               value = line.onMissingValue(xAxisDataPoints[i].xAxis as DateTime);
-            } else if (config.displayPreviousDataPointWhenNoValue &&
-                previousValue != null) {
-              isMissingValue = true;
-              value = previousValue;
             }
           }
-          previousValue = value;
         }
 
         final double axisY = value;
@@ -1262,7 +1264,7 @@ class _BezierChartPainter extends CustomPainter {
               onDataPointSnap(xAxisDataPoints[i].value);
               _currentCustomValues.add(
                 _CustomValue(
-                  value: "${formatAsIntOrDouble(axisY)}",
+                  value: bubbleContentBuilder != null ? bubbleContentBuilder(axisY) : "${formatAsIntOrDouble(axisY)}",
                   label: line.label,
                   color: line.lineColor,
                 ),
