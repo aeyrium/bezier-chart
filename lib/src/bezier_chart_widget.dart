@@ -1077,6 +1077,11 @@ class _BezierChartPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final height = size.height - config.footerHeight;
     Paint paintVerticalIndicator = Paint();
+
+    double infoWidth = 0; //base value, modified based on the label text
+    double infoHeight = 40;
+
+
     try {
       paintVerticalIndicator
         ..color = config.verticalIndicatorColor
@@ -1189,7 +1194,7 @@ class _BezierChartPainter extends CustomPainter {
         final double valueY = height -
             _getRealValue(
               axisY - (config.startYAxisFromNonZeroValue ? minYValue : 0.0),
-              height,
+              height - infoHeight,
               _maxValueY,
             );
 
@@ -1340,8 +1345,7 @@ class _BezierChartPainter extends CustomPainter {
           (verticalX - p0.dx) / (p3.dx - p0.dx),
         );
 
-        double infoWidth = 0; //base value, modified based on the label text
-        double infoHeight = 40;
+      
 
         //bubble indicator padding
         final horizontalPadding = 28.0;
