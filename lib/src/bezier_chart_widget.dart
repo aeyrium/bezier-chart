@@ -1140,6 +1140,7 @@ class _BezierChartPainter extends CustomPainter {
       _AxisValue lastPoint;
 
       //display each data point
+      double previousValue;
       for (int i = 0; i < xAxisDataPoints.length; i++) {
         double value = 0.0;
 
@@ -1183,8 +1184,13 @@ class _BezierChartPainter extends CustomPainter {
             if (line.onMissingValue != null) {
               isMissingValue = true;
               value = line.onMissingValue(xAxisDataPoints[i].xAxis as DateTime);
+            } else if (config.displayPreviousDataPointWhenNoValue &&
+                previousValue != null) {
+              isMissingValue = true;
+              value = previousValue;
             }
           }
+          previousValue = value;
         }
 
         final double axisY = value;
