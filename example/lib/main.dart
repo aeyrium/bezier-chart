@@ -136,21 +136,17 @@ class MyHomePage extends StatelessWidget {
             ListTile(
               title: Text("Sample 12"),
               subtitle: Text("Dynamic date range"),
-              onTap: () => Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => Sample12())),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => Sample12())),
             ),
             ListTile(
               title: Text("Sample 13"),
               subtitle: Text("Dynamic date range"),
-              onTap: () => Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => Sample13())),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => Sample13())),
             ),
             ListTile(
               title: Text("Sample 14"),
-              subtitle: Text(
-                  "Sample with updatePositionOnTap & format indicator value"),
-              onTap: () => Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => Sample14())),
+              subtitle: Text("Sample with updatePositionOnTap & format indicator value"),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => Sample14())),
             ),
           ],
         ),
@@ -225,10 +221,10 @@ Widget sample1(BuildContext context) {
                   stepsYAxis: 10,
                   backgroundGradient: LinearGradient(
                     colors: [
-                      Colors.red[300],
-                      Colors.red[400],
-                      Colors.red[400],
-                      Colors.red[500],
+                      Colors.red[300]!,
+                      Colors.red[400]!,
+                      Colors.red[400]!,
+                      Colors.red[500]!,
                       Colors.red,
                     ],
                     begin: Alignment.topCenter,
@@ -320,10 +316,10 @@ Widget sample2(BuildContext context) {
               footerHeight: 45,
               backgroundGradient: LinearGradient(
                 colors: [
-                  Colors.purpleAccent[400],
-                  Colors.purpleAccent[400],
-                  Colors.purpleAccent[700],
-                  Colors.purpleAccent[700],
+                  Colors.purpleAccent[400]!,
+                  Colors.purpleAccent[400]!,
+                  Colors.purpleAccent[700]!,
+                  Colors.purpleAccent[700]!,
                   Colors.purpleAccent,
                 ],
                 begin: Alignment.topCenter,
@@ -364,7 +360,7 @@ Widget sample3(BuildContext context) {
         },
         selectedDate: toDate,
         //this is optional
-        footerDateTimeBuilder: (DateTime value, BezierChartScale scaleType) {
+        footerDateTimeBuilder: (DateTime value, BezierChartScale? scaleType) {
           final newFormat = intl.DateFormat('dd/MM');
           return newFormat.format(value);
         },
@@ -377,7 +373,7 @@ Widget sample3(BuildContext context) {
               }
               return 5.0;
             },
-            data: [
+            data: <DataPoint<DateTime>>[
               DataPoint<DateTime>(value: 10, xAxis: date1),
               DataPoint<DateTime>(value: 50, xAxis: date2),
             ],
@@ -432,7 +428,7 @@ Widget sample4(BuildContext context) {
               }
               return 5.0;
             },
-            data: [
+            data: <DataPoint<DateTime>>[
               DataPoint<DateTime>(value: 10, xAxis: date1),
               DataPoint<DateTime>(value: 50, xAxis: date2),
               DataPoint<DateTime>(value: 20, xAxis: date3),
@@ -485,7 +481,7 @@ Widget sample5(BuildContext context) {
         series: [
           BezierLine(
             label: "Duty",
-            data: [
+            data: <DataPoint<DateTime>>[
               DataPoint<DateTime>(value: 10, xAxis: date1),
               DataPoint<DateTime>(value: 50, xAxis: date2),
               DataPoint<DateTime>(value: 100, xAxis: date3),
@@ -504,7 +500,7 @@ Widget sample5(BuildContext context) {
               }
               return 3.0;
             },
-            data: [
+            data: <DataPoint<DateTime>>[
               DataPoint<DateTime>(value: 20, xAxis: date1),
               DataPoint<DateTime>(value: 30, xAxis: date2),
               DataPoint<DateTime>(value: 150, xAxis: date3),
@@ -523,10 +519,10 @@ Widget sample5(BuildContext context) {
           verticalIndicatorFixedPosition: false,
           backgroundGradient: LinearGradient(
             colors: [
-              Colors.red[300],
-              Colors.red[400],
-              Colors.red[400],
-              Colors.red[500],
+              Colors.red[300]!,
+              Colors.red[400]!,
+              Colors.red[400]!,
+              Colors.red[500]!,
               Colors.red,
             ],
             begin: Alignment.topCenter,
@@ -569,10 +565,10 @@ Widget sample6(BuildContext context) {
           context,
           LinearGradient(
             colors: [
-              Colors.red[300],
-              Colors.red[400],
-              Colors.red[400],
-              Colors.red[500],
+              Colors.red[300]!,
+              Colors.red[400]!,
+              Colors.red[400]!,
+              Colors.red[500]!,
               Colors.red,
             ],
             begin: Alignment.topCenter,
@@ -584,10 +580,10 @@ Widget sample6(BuildContext context) {
             context,
             LinearGradient(
               colors: [
-                Colors.purple[300],
-                Colors.purple[400],
-                Colors.purple[400],
-                Colors.purple[500],
+                Colors.purple[300]!,
+                Colors.purple[400]!,
+                Colors.purple[400]!,
+                Colors.purple[500]!,
                 Colors.purple,
               ],
               begin: Alignment.topCenter,
@@ -598,8 +594,7 @@ Widget sample6(BuildContext context) {
   );
 }
 
-_buildChart(
-    BezierChartScale scale, BuildContext context, LinearGradient gradient) {
+_buildChart(BezierChartScale scale, BuildContext context, LinearGradient gradient) {
   final fromDate = DateTime(2012, 11, 22);
   final toDate = DateTime.now();
 
@@ -634,7 +629,7 @@ _buildChart(
                 }
                 return 5.0;
               },
-              data: [
+              data: <DataPoint<DateTime>>[
                 DataPoint<DateTime>(value: 10, xAxis: date1),
                 DataPoint<DateTime>(value: 50, xAxis: date2),
                 DataPoint<DateTime>(value: 100, xAxis: date3),
@@ -652,7 +647,7 @@ _buildChart(
                 }
                 return 3.0;
               },
-              data: [
+              data: <DataPoint<DateTime>>[
                 DataPoint<DateTime>(value: 20, xAxis: date1),
                 DataPoint<DateTime>(value: 30, xAxis: date2),
                 DataPoint<DateTime>(value: 150, xAxis: date3),
@@ -737,10 +732,10 @@ Widget sample7(BuildContext context) {
                   stepsYAxis: 15,
                   backgroundGradient: LinearGradient(
                     colors: [
-                      Colors.red[300],
-                      Colors.red[400],
-                      Colors.red[400],
-                      Colors.red[500],
+                      Colors.red[300]!,
+                      Colors.red[400]!,
+                      Colors.red[400]!,
+                      Colors.red[500]!,
                       Colors.red,
                     ],
                     begin: Alignment.topCenter,
@@ -784,7 +779,7 @@ Widget sample8(BuildContext context) {
         series: [
           BezierLine(
             label: "Duty",
-            data: [
+            data: <DataPoint<DateTime>>[
               DataPoint<DateTime>(value: 0, xAxis: date1),
               DataPoint<DateTime>(value: 50, xAxis: date2),
               DataPoint<DateTime>(value: 100, xAxis: date3),
@@ -809,10 +804,10 @@ Widget sample8(BuildContext context) {
           stepsYAxis: 25,
           backgroundGradient: LinearGradient(
             colors: [
-              Colors.red[300],
-              Colors.red[400],
-              Colors.red[400],
-              Colors.red[500],
+              Colors.red[300]!,
+              Colors.red[400]!,
+              Colors.red[400]!,
+              Colors.red[500]!,
               Colors.red,
             ],
             begin: Alignment.topCenter,
@@ -852,7 +847,7 @@ Widget sample9(BuildContext context) {
         },
         selectedDate: toDate,
         //this is optional
-        footerDateTimeBuilder: (DateTime value, BezierChartScale scaleType) {
+        footerDateTimeBuilder: (DateTime value, BezierChartScale? scaleType) {
           final newFormat = intl.DateFormat('dd/MM');
           return newFormat.format(value);
         },
@@ -865,7 +860,7 @@ Widget sample9(BuildContext context) {
               }
               return 5.0;
             },*/
-            data: [
+            data: <DataPoint<DateTime>>[
               DataPoint<DateTime>(value: 10, xAxis: date1),
               DataPoint<DateTime>(value: 50, xAxis: date2),
             ],
@@ -907,12 +902,11 @@ Widget sample11(BuildContext context) {
         },
         selectedDate: toDate,
         //this is optional
-        footerDateTimeBuilder: (DateTime value, BezierChartScale scaleType) {
+        footerDateTimeBuilder: (DateTime value, BezierChartScale? scaleType) {
           final newFormat = intl.DateFormat('dd/MMM');
           return newFormat.format(value);
         },
-        bubbleLabelDateTimeBuilder:
-            (DateTime value, BezierChartScale scaleType) {
+        bubbleLabelDateTimeBuilder: (DateTime value, BezierChartScale? scaleType) {
           final newFormat = intl.DateFormat('EEE d');
           return "${newFormat.format(value)}\n";
         },
@@ -925,7 +919,7 @@ Widget sample11(BuildContext context) {
               }
               return 5.0;
             },
-            data: [
+            data: <DataPoint<DateTime>>[
               DataPoint<DateTime>(value: 30, xAxis: fromDate),
               DataPoint<DateTime>(value: 20, xAxis: date1),
               DataPoint<DateTime>(value: 50, xAxis: date2),
