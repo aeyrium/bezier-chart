@@ -8,8 +8,8 @@ class Sample13 extends StatefulWidget {
 }
 
 class _Sample13State extends State<Sample13> {
-  DateTime fromDate;
-  DateTime toDate;
+  DateTime? fromDate;
+  DateTime? toDate;
 
   @override
   void initState() {
@@ -25,8 +25,8 @@ class _Sample13State extends State<Sample13> {
 
   @override
   Widget build(BuildContext context) {
-    final date1 = toDate.subtract(Duration(days: 2));
-    final date2 = toDate.subtract(Duration(days: 3));
+    final date1 = toDate!.subtract(Duration(days: 2));
+    final date2 = toDate!.subtract(Duration(days: 3));
     return Scaffold(
       appBar: AppBar(
         title: Text("Dynamic date range"),
@@ -65,13 +65,11 @@ class _Sample13State extends State<Sample13> {
             },
             selectedDate: toDate,
             //this is optional
-            footerDateTimeBuilder:
-                (DateTime value, BezierChartScale scaleType) {
+            footerDateTimeBuilder: (DateTime value, BezierChartScale? scaleType) {
               final newFormat = intl.DateFormat('dd/MMM');
               return newFormat.format(value);
             },
-            bubbleLabelDateTimeBuilder:
-                (DateTime value, BezierChartScale scaleType) {
+            bubbleLabelDateTimeBuilder: (DateTime value, BezierChartScale? scaleType) {
               final newFormat = intl.DateFormat('EEE d');
               return "${newFormat.format(value)}\n";
             },
@@ -81,14 +79,11 @@ class _Sample13State extends State<Sample13> {
                 onMissingValue: (dateTime) {
                   return 44.5;
                 },
-                data: [
+                data: <DataPoint<DateTime>>[
                   DataPoint<DateTime>(value: 5.9, xAxis: DateTime(2019, 9, 24)),
-                  DataPoint<DateTime>(
-                      value: 10.5, xAxis: DateTime(2019, 9, 24)),
-                  DataPoint<DateTime>(
-                      value: 15.21, xAxis: DateTime(2019, 9, 24)),
-                  DataPoint<DateTime>(
-                      value: 20.5, xAxis: DateTime(2019, 9, 30)),
+                  DataPoint<DateTime>(value: 10.5, xAxis: DateTime(2019, 9, 24)),
+                  DataPoint<DateTime>(value: 15.21, xAxis: DateTime(2019, 9, 24)),
+                  DataPoint<DateTime>(value: 20.5, xAxis: DateTime(2019, 9, 30)),
                   //DataPoint<DateTime>(value: 44.5, xAxis: fromDate),
                   //DataPoint<DateTime>(value: 40, xAxis: date1),
                   //DataPoint<DateTime>(value: 43.5, xAxis: date2),

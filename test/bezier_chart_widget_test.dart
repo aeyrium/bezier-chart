@@ -31,11 +31,11 @@ void main() {
   }
 
   Widget _buildWidget({
-    double height,
-    double width,
-    double contentWidth,
+    double? height,
+    double? width,
+    double? contentWidth,
     Color backgroundColor = Colors.white,
-    LinearGradient backgroundGradient,
+    LinearGradient? backgroundGradient,
   }) {
     return Center(
       child: Container(
@@ -95,7 +95,7 @@ void main() {
       final customPainter = align.child as CustomPaint;
       final localHorizontalPadding = 50.0;
       final localVerticalPercent = 0.75;
-      expect(scrollView.padding.horizontal, localHorizontalPadding * 2);
+      expect(scrollView.padding!.horizontal, localHorizontalPadding * 2);
       expect(customPainter.size.width, width - 2 * localHorizontalPadding);
       expect(customPainter.size.height, height * localVerticalPercent);
     },
@@ -187,7 +187,7 @@ void main() {
 
       final state = tester.state(find.byType(BezierChart)) as BezierChartState;
       expect(state.computedSeries.length, 1);
-      expect(state.computedSeries.first.data.length, 4);
+      expect(state.computedSeries.first.data!.length, 4);
     },
   );
 }
