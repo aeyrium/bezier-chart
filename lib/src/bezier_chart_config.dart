@@ -46,7 +46,7 @@ class BezierChartConfig {
   final TextStyle bubbleIndicatorValueStyle;
 
   ///NumberFormat for the value displayed inside the bubble indicator
-  final NumberFormat bubbleIndicatorValueFormat;
+  final NumberFormat? bubbleIndicatorValueFormat;
 
   ///TextStyle for the label displayed inside the bubble indicator
   final TextStyle bubbleIndicatorLabelStyle;
@@ -55,7 +55,7 @@ class BezierChartConfig {
   final Color backgroundColor;
 
   ///Gradient of the background of the chart
-  final LinearGradient backgroundGradient;
+  final LinearGradient? backgroundGradient;
 
   ///`true` if you want to display the value of the Y axis, [false] by default
   final bool displayYAxis;
@@ -63,16 +63,16 @@ class BezierChartConfig {
   ///If [displayYAxis] is true, then you can set a positive value to display the steps of Y axis values
   ///e.g 1: stepsYAxis : 5 ,  if your maxValue is 100, then the Y values should be: [0,5,10,15 .... 100]
   ///e.g 2: stepsYAxis : 10 , if your maxValue is 100, then the Y values should be: [10,20,30,40 .... 100]
-  final int stepsYAxis;
+  final int? stepsYAxis;
 
   ///`true` if you want to start the values of Y axis from the minimum value of your Y values.
   final bool startYAxisFromNonZeroValue;
 
   ///TextStyle of the text of the Y Axis values
-  final TextStyle yAxisTextStyle;
+  final TextStyle? yAxisTextStyle;
 
   ///TextStyle of the text of the X Axis values
-  final TextStyle xAxisTextStyle;
+  final TextStyle? xAxisTextStyle;
 
   ///Height of the footer
   final double footerHeight;
@@ -88,7 +88,7 @@ class BezierChartConfig {
   final bool pinchZoom;
 
   ///If the `contentWidth` is upper than the current width then the content will be scrollable (only valid for `bezierChartScale` = `CUSTOM`)
-  final double contentWidth;
+  final double? contentWidth;
 
   ///`true` if you want to display a vertical line on each X data point, it only works when there is one `BezierLine`.
   final bool displayLinesXAxis;
@@ -108,47 +108,46 @@ class BezierChartConfig {
   ///`true` if you want do update bubble info on tap action instead of long press. This option will disable tap to hide bubble action
   final bool updatePositionOnTap;
 
-  BezierChartConfig(
-      {this.verticalIndicatorStrokeWidth = 2.0,
-      this.verticalIndicatorColor = Colors.black,
-      this.showVerticalIndicator = true,
-      this.showDataPoints = true,
-      this.displayYAxis = false,
-      this.snap = true,
-      this.backgroundColor = Colors.transparent,
-      this.xAxisTextStyle,
-      this.yAxisTextStyle,
-      this.footerHeight = 35.0,
-      this.contentWidth,
-      this.pinchZoom = true,
-      this.bubbleIndicatorColor = Colors.white,
-      this.backgroundGradient,
-      this.verticalIndicatorFixedPosition = false,
-      this.startYAxisFromNonZeroValue = true,
-      this.displayLinesXAxis = false,
-      this.stepsYAxis,
-      this.xLinesColor = Colors.grey,
-      this.displayDataPointWhenNoValue = true,
-      this.displayPreviousDataPointWhenNoValue = false,
-      this.bubbleIndicatorLabelStyle = const TextStyle(
-        color: Colors.grey,
-        fontWeight: FontWeight.w700,
-        fontSize: 9,
-      ),
-      this.bubbleIndicatorTitleStyle = const TextStyle(
-        color: Colors.grey,
-        fontWeight: FontWeight.w600,
-        fontSize: 9.5,
-      ),
-      this.bubbleIndicatorValueStyle = const TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.bold,
-        fontSize: 11,
-      ),
-      this.bubbleIndicatorValueFormat,
-      this.physics = const AlwaysScrollableScrollPhysics(),
-      this.updatePositionOnTap = false,
-      bool verticalLineFullHeight})
-      : this.verticalLineFullHeight =
-            verticalLineFullHeight ?? verticalIndicatorFixedPosition;
+  BezierChartConfig({
+    this.verticalIndicatorStrokeWidth = 2.0,
+    this.verticalIndicatorColor = Colors.black,
+    this.showVerticalIndicator = true,
+    this.showDataPoints = true,
+    this.displayYAxis = false,
+    this.snap = true,
+    this.backgroundColor = Colors.transparent,
+    this.xAxisTextStyle,
+    this.yAxisTextStyle,
+    this.footerHeight = 35.0,
+    this.contentWidth,
+    this.pinchZoom = true,
+    this.bubbleIndicatorColor = Colors.white,
+    this.backgroundGradient,
+    this.verticalIndicatorFixedPosition = false,
+    this.startYAxisFromNonZeroValue = true,
+    this.displayLinesXAxis = false,
+    this.stepsYAxis,
+    this.xLinesColor = Colors.grey,
+    this.displayDataPointWhenNoValue = true,
+    this.displayPreviousDataPointWhenNoValue = false,
+    this.bubbleIndicatorLabelStyle = const TextStyle(
+      color: Colors.grey,
+      fontWeight: FontWeight.w700,
+      fontSize: 9,
+    ),
+    this.bubbleIndicatorTitleStyle = const TextStyle(
+      color: Colors.grey,
+      fontWeight: FontWeight.w600,
+      fontSize: 9.5,
+    ),
+    this.bubbleIndicatorValueStyle = const TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.bold,
+      fontSize: 11,
+    ),
+    this.bubbleIndicatorValueFormat,
+    this.physics = const AlwaysScrollableScrollPhysics(),
+    this.updatePositionOnTap = false,
+    bool? verticalLineFullHeight,
+  }) : this.verticalLineFullHeight = verticalLineFullHeight ?? verticalIndicatorFixedPosition;
 }
