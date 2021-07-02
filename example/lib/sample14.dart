@@ -25,8 +25,6 @@ class _Sample14State extends State<Sample14> {
 
   @override
   Widget build(BuildContext context) {
-    final date1 = toDate!.subtract(Duration(days: 2));
-    final date2 = toDate!.subtract(Duration(days: 3));
     return Scaffold(
       appBar: AppBar(
         title: Text("Dynamic date range"),
