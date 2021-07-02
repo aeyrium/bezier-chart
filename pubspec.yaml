@@ -6,12 +6,12 @@ homepage: https://aeyrium.com/products/mxtracker/
 repository: https://github.com/aeyrium/bezier-chart
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.16.0
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
