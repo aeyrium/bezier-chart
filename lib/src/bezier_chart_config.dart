@@ -149,5 +149,6 @@ class BezierChartConfig {
     this.physics = const AlwaysScrollableScrollPhysics(),
     this.updatePositionOnTap = false,
     bool? verticalLineFullHeight,
-  }) : this.verticalLineFullHeight = verticalLineFullHeight ?? verticalIndicatorFixedPosition;
+  }) : this.verticalLineFullHeight =
+            verticalLineFullHeight ?? verticalIndicatorFixedPosition;
 }
