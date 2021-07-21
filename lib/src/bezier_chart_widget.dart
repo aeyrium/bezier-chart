@@ -1,13 +1,13 @@
 import 'dart:math';
 import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'bezier_line.dart';
-import 'bezier_chart_config.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'bezier_chart_config.dart';
+import 'bezier_line.dart';
 import 'my_single_child_scroll_view.dart';
 
 typedef FooterValueBuilder = String Function(double value);
@@ -1198,6 +1198,19 @@ class _BezierChartPainter extends CustomPainter {
         if (config!.displayLinesXAxis && series!.length == 1) {
           canvas.drawLine(
               Offset(valueX, height), Offset(valueX, valueY), paintXLines);
+        }
+        if (config.displayLinesYAxis) {
+          double yVal = valueY;
+          // Y axis Horizontal Line here.
+          double yHeight = height -
+              _getRealValue(
+                yVal - (config.startYAxisFromNonZeroValue ? minYValue : 0.0),
+                height,
+                _maxValueY,
+              );
+
+          canvas.drawLine(
+              Offset(0, yHeight), Offset(size.width, yHeight), paintXLines);
         }
 
         if (lastPoint == null) {
