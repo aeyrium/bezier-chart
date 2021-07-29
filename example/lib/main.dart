@@ -136,17 +136,21 @@ class MyHomePage extends StatelessWidget {
             ListTile(
               title: Text("Sample 12"),
               subtitle: Text("Dynamic date range"),
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => Sample12())),
+              onTap: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Sample12())),
             ),
             ListTile(
               title: Text("Sample 13"),
               subtitle: Text("Dynamic date range"),
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => Sample13())),
+              onTap: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Sample13())),
             ),
             ListTile(
               title: Text("Sample 14"),
-              subtitle: Text("Sample with updatePositionOnTap & format indicator value"),
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => Sample14())),
+              subtitle: Text(
+                  "Sample with updatePositionOnTap & format indicator value"),
+              onTap: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Sample14())),
             ),
           ],
         ),
@@ -594,7 +598,8 @@ Widget sample6(BuildContext context) {
   );
 }
 
-_buildChart(BezierChartScale scale, BuildContext context, LinearGradient gradient) {
+_buildChart(
+    BezierChartScale scale, BuildContext context, LinearGradient gradient) {
   final fromDate = DateTime(2012, 11, 22);
   final toDate = DateTime.now();
 
@@ -906,7 +911,8 @@ Widget sample11(BuildContext context) {
           final newFormat = intl.DateFormat('dd/MMM');
           return newFormat.format(value);
         },
-        bubbleLabelDateTimeBuilder: (DateTime value, BezierChartScale? scaleType) {
+        bubbleLabelDateTimeBuilder:
+            (DateTime value, BezierChartScale? scaleType) {
           final newFormat = intl.DateFormat('EEE d');
           return "${newFormat.format(value)}\n";
         },

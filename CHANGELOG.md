@@ -1,3 +1,7 @@
+## [2.0.0]
+
+- Migrated to null-safety.
+
 ## [1.0.17 - 1.0.17+1]
 
 - Format bubble value and `updatePositionOnTap` were added. Thanks @ltdangkhoa.

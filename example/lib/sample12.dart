@@ -64,11 +64,13 @@ class _Sample12State extends State<Sample12> {
             },
             selectedDate: toDate,
             //this is optional
-            footerDateTimeBuilder: (DateTime value, BezierChartScale? scaleType) {
+            footerDateTimeBuilder:
+                (DateTime value, BezierChartScale? scaleType) {
               final newFormat = intl.DateFormat('dd/MMM');
               return newFormat.format(value);
             },
-            bubbleLabelDateTimeBuilder: (DateTime value, BezierChartScale? scaleType) {
+            bubbleLabelDateTimeBuilder:
+                (DateTime value, BezierChartScale? scaleType) {
               final newFormat = intl.DateFormat('EEE d');
               return "${newFormat.format(value)}\n";
             },
@@ -79,8 +81,10 @@ class _Sample12State extends State<Sample12> {
                   return 44.5;
                 },
                 data: <DataPoint<DateTime>>[
-                  DataPoint<DateTime>(value: 45.5, xAxis: DateTime(2019, 7, 25)),
-                  DataPoint<DateTime>(value: 48.5, xAxis: DateTime(2019, 7, 30)),
+                  DataPoint<DateTime>(
+                      value: 45.5, xAxis: DateTime(2019, 7, 25)),
+                  DataPoint<DateTime>(
+                      value: 48.5, xAxis: DateTime(2019, 7, 30)),
                   DataPoint<DateTime>(value: 44.5, xAxis: fromDate),
                   DataPoint<DateTime>(value: 40, xAxis: date1),
                   DataPoint<DateTime>(value: 43.5, xAxis: date2),
